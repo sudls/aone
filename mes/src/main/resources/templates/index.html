@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>메인페이지</title>
+    <th:block th:replace="fragments/config::configFragment"></th:block>
+    <!--    <th:block layout:fragment="script"></th:block>-->
+    <!--    <th:block layout:fragment="css"></th:block>-->
 </head>
 <body>
-
+<header th:replace="fragments/nav::nav"></header>
+<!--<div layout:fragment="nav"></div>-->
+<div layout:fragment="content">
+   메인페이지
+</div>
 </body>
 </html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>aone-현황관리</title>
+    <th:block th:replace="fragments/config::configFragment"></th:block>
+    <link th:href="@{/css/statusPage.css}" rel="stylesheet">
+    <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
+
+    <!-- 부트스트랩 CSS 추가 -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- 부트스트랩 JavaScript 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="fragments/nav::nav"></div>
+<!--<div layout:fragment="nav"></div>-->
+<div layout:fragment="content" id="contnet">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div>
+        <h1 style="display: inline-block">수주 진척도 조회</h1>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>수주 ID</th>
+            <th>입고</th>
+            <th>전처리</th>
+            <th>추출</th>
+            <th>혼합</th>
+            <th>충진</th>
+            <th>검사</th>
+            <th>포장</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>000-001</td>
+            <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+            <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+            <td><span style="font-size:30px; font-weight: 500; color:var(--grey)">-</span></td>
+            <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+            <td><i class="fas fa-spinner fa-pulse" style="color:var(--green)"></i></td>
+            <td></td>
+            <td></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+    <hr>
+
+    <h1>설비별 공정 현황</h1>
+    <ul>
+        <li>
+            <h3>추출</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr">
+                <div class="borderBox">
+                    <h4>액상 추출기1</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">그래프</div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><span></span></p>
+                            <p><b>제품명:</b><span></span></p>
+                            <p><b>시작 시간:</b><span></span></p>
+                            <p><b>종료 시간:</b><span></span></p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="borderBox">
+                    <h4>액상 추출기2</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">그래프</div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><span></span></p>
+                            <p><b>제품명:</b><span></span></p>
+                            <p><b>시작 시간:</b><span></span></p>
+                            <p><b>종료 시간:</b><span></span></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <h3>혼합</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr">
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <h3>충진</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr">
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <h3>검사</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr">
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="border:1px solid #ccc">
+                    <h4>액상 추출기1</h4>
+                    <div>
+                        <div>그래프</div>
+                        <div>
+                            <ul>
+                                <li>작업 ID:</li>
+                                <li>제품명:</li>
+                                <li>시작 시간:</li>
+                                <li>종료 시간:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+</div>
+
+</div>
+</body>
+</html>

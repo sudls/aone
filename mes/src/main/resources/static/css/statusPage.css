@@ -1,0 +1,26 @@
+.graphBox{
+    height:180px;
+    width:180px;
+    /*border:1px solid blue;*/
+    padding:10px;
+}
+
+.borderBox{
+    border:2px solid #ccc;
+}
+
+.gridItem{
+    /*border:1px solid #ccc;*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.statusInfo{
+    height: 200px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+
+}

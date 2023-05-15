@@ -1,0 +1,105 @@
+/* reset.css */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+@import url(colors.css);
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* 전체 요소에 기본적으로 적용되는 스타일 초기화 */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend{
+  font-family: "Pretendard-Regular";
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+/* body의 기본 스타일 설정 */
+body {
+  line-height: 1;
+}
+
+/* ol, ul 리스트 스타일 초기화 */
+ol,
+ul {
+  list-style: none;
+}
+
+/* 링크 스타일 초기화 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, table, th, td, tr, input, select, option {
+  font-family: "Pretendard-Regular";
+}
+/* 버튼 스타일 초기화 */
+/*button {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+}*/
+
+/* 추가적인 초기화 스타일 작성 가능 */
