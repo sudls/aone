@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class Vender {
+public class Vendor {
     // id   auto_increment
     @Id
     @Column
