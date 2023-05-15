@@ -22,7 +22,6 @@ public class SalesOrder {
     private String productName;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "vendor_id")
     private Vendor vendorId;
 

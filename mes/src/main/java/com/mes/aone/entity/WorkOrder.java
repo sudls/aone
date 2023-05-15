@@ -1,6 +1,7 @@
 package com.mes.aone.entity;
 
 
+import com.mes.aone.contant.State;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,12 +30,10 @@ public class WorkOrder {
     private State workStatus;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "process_plan_id")
     private ProcessPlan productionPlanId;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "sales_order_id")
     private SalesOrder salesOrderId;
 }

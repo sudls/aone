@@ -19,7 +19,6 @@ public class PurchaseOrder {
     private Long purchaseOrderId;   // 발주테이블 고유ID
 
     @ManyToOne
-    @Column(length = 50)
     @JoinColumn(name = "material_name")
     private Material materialName;   // 발주 자재명 (BOM이랑 연결??)
 

@@ -20,7 +20,6 @@ public class ProcessPlan {
     private Long processPlanId;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "process_id")
     private Process processId;
 
@@ -31,7 +30,6 @@ public class ProcessPlan {
     private Date endTime;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "sales_order_id")
     private PurchaseOrder salesOrderId;
 

@@ -19,7 +19,6 @@ public class WorkResult {
     private Long workResultId;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "work_order_id")
     private WorkOrder workOrderId;
 

@@ -23,7 +23,6 @@ public class Process {
     private Integer processLeadtime;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "facility_id")
     private Facility facilityId;
 

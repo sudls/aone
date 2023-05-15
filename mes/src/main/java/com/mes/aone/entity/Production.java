@@ -23,7 +23,6 @@ public class Production {
     @Column(nullable = false)
     private int productionQty;  //생산수량
 
-    @Column(nullable = false)
     @JoinColumn(name = "processStage")
     private int processStage;   //공정단계
 
