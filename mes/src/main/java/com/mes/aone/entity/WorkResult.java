@@ -16,20 +16,17 @@ public class WorkResult {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     private Long workResultId;
 
     @ManyToOne
-    @Column
-    @NotNull
+    @Column(nullable = false)
+    @JoinColumn(name = "work_order_id")
     private WorkOrder workOrderId;
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private Date workFinishDate;
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private Integer workFinishQty;
 
 }

@@ -16,29 +16,25 @@ public class WorkOrder {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     private Long workOrderId;
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private Date workOrderDate;
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private Integer workOrderQty;
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private State workStatus;
 
     @ManyToOne
-    @Column
-    @NotNull
-    private ProcessPlan processPlanId;
+    @Column(nullable = false)
+    @JoinColumn(name = "process_plan_id")
+    private ProcessPlan productionPlanId;
 
     @ManyToOne
-    @Column
-    @NotNull
+    @Column(nullable = false)
+    @JoinColumn(name = "sales_order_id")
     private SalesOrder salesOrderId;
 }
