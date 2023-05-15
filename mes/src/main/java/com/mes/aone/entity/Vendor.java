@@ -1,39 +1,34 @@
 package com.mes.aone.entity;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
-public class Vender {
+@Getter @Setter @ToString
+public class Vendor {
     // id   auto_increment
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     private Long vendorId;
 
     // 업체명
-    @Column(length = 50)
-    @NotNull
+    @Column(nullable = false, length = 50)
     private String vendorName;
 
     // 연락처
-    @Column(length = 12)
-    @NotNull
+    @Column(nullable = false, length = 13)
     private String vendorTel;
 
     // 주소
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private String vendorAddr;
 
     // 사업자등록번호
-    @Column(length = 15)
-    @NotNull
+    @Column(nullable = false, length = 15)
     private String vendorNumber;
 
     // 비고
