@@ -17,11 +17,18 @@ class StockRepositoryTest{
     @DisplayName("재고 저장테스트")
     public void createStockTest(){
         Stock stock = new Stock();
-        stock.setStockName("테스트 재고");
-        stock.setStockQty(6);
+        stock.setStockName("양배추박스");
+        stock.setStockQty(0);
 
         Stock savedStock = stockRepository.save(stock);
         System.out.println(savedStock.toString());
     }
 
+
+//    @Test
+//    @DisplayName("재고 수량조회테스트")
+//    public void findByStockIdTest(){              // 상품명, 수량
+//        Stock findStock = stockRepository.findByStockId(1);
+//        System.out.println(findStock.toString());
+//    }
 }
