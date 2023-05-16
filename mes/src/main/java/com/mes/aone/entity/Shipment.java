@@ -25,11 +25,13 @@ public class Shipment {
     @Column(nullable = false)
     private LocalDate shipmentDate; //출하날짜
 
-    @Column(nullable = false)
-    private Long salesOrderId;  //수주테이블id랑 연결...
+    @OneToOne
+    @JoinColumn(name = "salesOrderId")
+    private SalesOrder salesOrder;  //수주테이블의 id
 
-    @Column(nullable = false)
-    private String lotNumber;   //lot번호
+    @OneToOne
+    @JoinColumn(name = "lotNumber")
+    private Production production;   //생산테이블의 lot번호
 
 
 }
