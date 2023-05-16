@@ -23,7 +23,6 @@ th, td {
 }
 table thead{
     position: sticky;
-    z-index: 999;
     top: 0;
 }
 

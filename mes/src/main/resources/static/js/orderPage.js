@@ -31,3 +31,27 @@ document.getElementById("orderNum").addEventListener("change", function() {
         this.value = 0; // 값이 0 미만일 경우 0으로 설정
     }
 });
+
+//---
+//체크박스 선택시 해당 행 값 반환
+function toggleSelectedRow(checkbox) {
+    var row = checkbox.parentNode.parentNode;
+    row.classList.toggle("selected");
+    console.log(getSelectedValues());
+}
+
+function getSelectedValues() {
+    var table = document.querySelector(".table-container table");
+    var selectedValues = [];
+
+    var checkboxes = table.querySelectorAll("tbody input[type='checkbox']");
+    checkboxes.forEach(function(checkbox) {
+        var row = checkbox.parentNode.parentNode;
+        if (checkbox.checked) {
+            var value = row.cells[1].textContent; // 2번째 열의 값을 가져옴 (수주번호)
+            selectedValues.push(value);
+        }
+    });
+    return selectedValues;
+
+}
