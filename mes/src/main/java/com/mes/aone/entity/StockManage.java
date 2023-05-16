@@ -32,9 +32,8 @@ public class StockManage {
     private StockManamgeState stockManamgeState;
 
     // 제품명 : 양배추박스, 양배추포
-//    @ManyToOne
-//    @JoinColumn(name = "stock_name")
-    @Column(nullable = false, length = 50)
-    private String stockManageName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_manage_name", referencedColumnName = "stock_name")
+    private Stock stockManageName;
 
 }

@@ -16,10 +16,8 @@ public class Stock {
     private Long stockId;
 
     // 제품명
-//    @Column(nullable = false, length = 50)
-    @ManyToOne
-    @JoinColumn(name = "stock_manage_name")
-    private StockManage stockName;
+    @Column(name="stock_name", nullable = false, length = 50)
+    private String stockName;
 
     // 수량
     @Column(nullable = false)
