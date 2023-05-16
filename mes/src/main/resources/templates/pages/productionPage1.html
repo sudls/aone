@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
-<!--    <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">-->
+    <!--    <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">-->
     <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contnet">
-    <div>
+    <div class="titlebox">
         <h1 style="display: inline-block">작업 지시현황</h1>
-        <button class="bg-green" style="float: right" type="button">Execl 다운로드</button>
+        <button class="bg-green" style="float: right" type="button"
+                onclick="downloadTablesAsExcel()">Execl 다운로드</button>
     </div>
 
     <hr>
@@ -49,39 +50,40 @@
 
     </form>
     <hr>
-    <table>
-        <thead>
-        <tr>
-            <th>제품명</th>
-            <th colspan="2">수량</th>
-        </tr>
-        </thead>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>제품명</th>
+                <th colspan="2">수량</th>
+            </tr>
+            </thead>
 
-        <tbody>
-        <tr>
-            <td>양배추즙</td>
-            <td>/box</td>
-            <td>/ea</td>
-        </tr>
-        <tr>
-            <td>흑마늘즙</td>
-            <td>/box</td>
-            <td>/ea</td>
-        </tr>
-        <tr>
-            <td>석류젤리스틱</td>
-            <td>/box</td>
-            <td>/ea</td>
-        </tr>
-        <tr>
-            <td>매실젤리스틱</td>
-            <td>/box</td>
-            <td>/ea</td>
-        </tr>
+            <tbody>
+            <tr>
+                <td>양배추즙</td>
+                <td>/box</td>
+                <td>/ea</td>
+            </tr>
+            <tr>
+                <td>흑마늘즙</td>
+                <td>/box</td>
+                <td>/ea</td>
+            </tr>
+            <tr>
+                <td>석류젤리스틱</td>
+                <td>/box</td>
+                <td>/ea</td>
+            </tr>
+            <tr>
+                <td>매실젤리스틱</td>
+                <td>/box</td>
+                <td>/ea</td>
+            </tr>
 
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
     <hr>
 
     <div style="margin:20px 0;">
@@ -89,6 +91,7 @@
         <b>제품명 : </b><span>양배추즙</span>
     </div>
 
+    <div class="table-container" style="height: 600px">
     <table>
         <thead>
         <tr>
@@ -109,6 +112,7 @@
 
         </tbody>
     </table>
+    </div>
 </div>
 
 </body>

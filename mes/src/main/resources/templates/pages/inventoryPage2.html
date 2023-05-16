@@ -10,14 +10,14 @@
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
-<!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contnet">
 
-    <div>
-        <h1 style="display: inline-block">원자재 발주 현황</h1>
-        <button class="bg-green" style="float: right" >Execl 다운로드</button>
+    <div class="titlebox">
+        <h1>원자재 발주 현황</h1>
+        <button class="bg-green" style="float: right"
+                onclick="downloadTablesAsExcel()">Execl 다운로드</button>
     </div>
-
+    <hr>
     <div style="margin-bottom: 20px;">
         <form action="">
             <input type="text" placeholder="발주번호">
@@ -47,6 +47,8 @@
 
         </form>
     </div>
+    <hr>
+    <div class="table-container" style="height: 900px">
     <table>
         <thead>
         <tr>
@@ -72,6 +74,7 @@
 
         </tbody>
     </table>
+    </div>
 </div>
 
 </div>

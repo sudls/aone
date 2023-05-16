@@ -7,6 +7,7 @@
     <th:block th:replace="fragments/config::configFragment"></th:block>
     <link th:href="@{/css/orderPageStyle.css}" rel="stylesheet">
     <script th:src="@{/js/orderPage.js}" defer></script>
+
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
@@ -23,6 +24,7 @@
 
     <hr>
     <form action="">
+
         <select name="" id="productname">
             <option disabled selected>제품명</option>
             <option value="">양배추즙</option>
@@ -44,42 +46,58 @@
             <option disabled selected>주문상태</option>
             <option value="">대기</option>
             <option value="">확정</option>
+            <option value="">취소</option>
         </select>
 
         <button>검색</button>
     </form>
 
     <hr>
+    <button class="bg-green" style="float: right; margin: 20px 0;"
+            onclick="downloadTablesAsExcel()">Exel다운로드</button>
 
-    <button class="bg-green" style="float: right; margin: 20px 0;">Exel다운로드</button>
-    <table>
-        <thead>
-        <tr>
-            <th></th>
-            <th>수주번호</th>
-            <th>제품명</th>
-            <th>거래처</th>
-            <th>수량(box)</th>
-            <th>수주일</th>
-            <th>예상 납품일</th>
-            <th>주문상태</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-                <input type="checkbox">
-            </td>
-            <td>123123</td>
-            <td>양배추즙</td>
-            <td>쿠팡</td>
-            <td>322</td>
-            <td>23.02.05</td>
-            <td>23.02.15</td>
-            <td>대기</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-container" style="height: 800px">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>수주번호</th>
+                <th>제품명</th>
+                <th>거래처</th>
+                <th>수량(box)</th>
+                <th>수주일</th>
+                <th>예상 납품일</th>
+                <th>주문상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderDTO, status: ${orderDTOList}">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td th:text="${orderDTO.salesOrderId}"></td>
+                <td th:text="${orderDTO.productName}"></td>
+                <td>
+                    <span th:if="${orderDTO.vendorId == 'ven-11'}">11번가</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-cou'}">쿠팡</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-a'}">에이농장</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-nh'}">○○농협</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
+                </td>
+                <td th:text="${orderDTO.salesQty}"></td>
+                <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
+                <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
+
+                <td >
+                    <span th:if="${orderDTO.salesStatus.name() == 'A'}">대기</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'B'}">확정</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'C'}">취소</span>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">

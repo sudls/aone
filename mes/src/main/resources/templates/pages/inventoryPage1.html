@@ -14,7 +14,7 @@
 <div layout:fragment="content" id="contnet">
     <h1>원자재 총 수량</h1>
 
-    <table>
+    <table style="border: 2px solid #ddd">
         <thead>
         <tr>
             <th>자재명</th>
@@ -78,32 +78,35 @@
 
 
             <button type="submit">검색</button>
-            <button class="bg-green" style="float: right" type="button">Execl 다운로드</button>
+            <button class="bg-green" style="float: right" type="button"
+                    onclick="downloadTablesAsExcel()">Execl 다운로드</button>
         </form>
     </div>
-    <table>
-        <thead>
-        <tr>
-            <th>발주번호</th>
-            <th>자재명</th>
-            <th>상태</th>
-            <th>수량</th>
-            <th>단위</th>
-            <th>날짜</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>123123</td>
-            <td>양배추</td>
-            <td>입고</td>
-            <td>222</td>
-            <td>kg</td>
-            <td>23.12.12</td>
-        </tr>
+    <div class="table-container" style="height: 600px">
+        <table>
+            <thead>
+            <tr>
+                <th>발주번호</th>
+                <th>자재명</th>
+                <th>상태</th>
+                <th>수량</th>
+                <th>단위</th>
+                <th>날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>123123</td>
+                <td>양배추</td>
+                <td>입고</td>
+                <td>222</td>
+                <td>kg</td>
+                <td>23.12.12</td>
+            </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>

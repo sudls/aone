@@ -3,10 +3,13 @@
 <!--공통으로 사용되는 css, js 설정-->
 <th:block th:fragment="configFragment">
   <link th:href="@{/css/reset.css}" rel="stylesheet">
-  <link th:href="@{/css/color.css}" rel="stylesheet">
+  <link th:href="@{/css/colors.css}" rel="stylesheet">
   <link th:href="@{/css/contentStyle.css}" rel="stylesheet">
   <link th:href="@{/css/tableStyle.css}" rel="stylesheet">
   <link th:href="@{/css/buttonStyle.css}" rel="stylesheet">
-<!--  <script th:src="@{/js/nav.js}"></script>-->
+
+  <script th:src="@{/js/exceldown.js}" defer></script>
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
 </th:block>
 </html>

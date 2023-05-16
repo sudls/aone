@@ -20,62 +20,66 @@
             <input type="text" placeholder="LOT 번호">
 
             <button type="submit">검색</button>
-            <button class="bg-green" style="float: right">Execl 다운로드</button>
+            <button class="bg-green" style="float: right"
+                    onclick="downloadTablesAsExcel()">Execl 다운로드</button>
         </form>
     </div>
 
     <hr>
 
     <h3>출고 / 재고 목록</h3>
-    <table>
-        <thead>
-        <tr>
-            <th></th>
-            <th>제품명</th>
-            <th>상태(출고/재고)</th>
-            <th>수량</th>
-            <th>단위</th>
-            <th>LOT</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>양배추즙</td>
-            <td>출고</td>
-            <td>500</td>
-            <td>box</td>
-            <td>k-756544</td>
-        </tr>
+    <div class="table-container" style="height: 400px">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>제품명</th>
+                <th>상태(출고/재고)</th>
+                <th>수량</th>
+                <th>단위</th>
+                <th>LOT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>양배추즙</td>
+                <td>출고</td>
+                <td>500</td>
+                <td>box</td>
+                <td>k-756544</td>
+            </tr>
 
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
     <hr>
     <h3>생산</h3>
-    <table>
-        <thead>
-        <tr>
-            <th></th>
-            <th>공정</th>
-            <th>공정 LOT</th>
-            <th>수량</th>
-            <th>단위</th>
-            <th>LOT</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>원료계량</td>
-            <td>a-01234</td>
-            <td>1000</td>
-            <td>kg</td>
-            <td>k-756544</td>
-        </tr>
+    <div class="table-container" style="height: 500px">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>공정</th>
+                <th>공정 LOT</th>
+                <th>수량</th>
+                <th>단위</th>
+                <th>LOT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>원료계량</td>
+                <td>a-01234</td>
+                <td>1000</td>
+                <td>kg</td>
+                <td>k-756544</td>
+            </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </div>

@@ -14,7 +14,7 @@
 <div layout:fragment="content" id="contnet">
   <h1>총 재고수량</h1>
 
-  <table>
+  <table style="border: 2px solid #ddd">
     <thead>
     <tr>
       <th>제품명</th>
@@ -71,9 +71,12 @@
 
 
       <button type="submit">검색</button>
-      <button class="bg-green" style="float: right" type="button">Execl 다운로드</button>
+      <button class="bg-green" style="float: right" type="button"
+              onclick="downloadTablesAsExcel()">Execl 다운로드</button>
     </form>
   </div>
+
+  <div class="table-container" style="height: 600px">
   <table>
     <thead>
     <tr>
@@ -94,6 +97,7 @@
 
     </tbody>
   </table>
+  </div>
 </div>
 
 </body>

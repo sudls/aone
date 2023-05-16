@@ -6,13 +6,10 @@
     <title>aone-현황관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
     <link th:href="@{/css/statusPage.css}" rel="stylesheet">
+    <link th:href="@{/css/progressbar.css}" rel="stylesheet">
     <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
 
-    <!-- 부트스트랩 CSS 추가 -->
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- 부트스트랩 JavaScript 추가 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
@@ -25,6 +22,7 @@
         <h1 style="display: inline-block">수주 진척도 조회</h1>
     </div>
 
+    <div class="table-container" style="height: 300px">
     <table>
         <thead>
         <tr>
@@ -45,43 +43,62 @@
             <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
             <td><span style="font-size:30px; font-weight: 500; color:var(--grey)">-</span></td>
             <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+            <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
             <td><i class="fas fa-spinner fa-pulse" style="color:var(--green)"></i></td>
-            <td></td>
             <td></td>
 
         </tr>
 
         </tbody>
     </table>
+    </div>
     <hr>
-
     <h1>설비별 공정 현황</h1>
     <ul>
         <li>
-            <h3>추출</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr">
-                <div class="borderBox">
+            <p class="greenLabel">추출</p>
+            <div class="flexbox-r">
+                <div class="flexbox-r-item">
                     <h4>액상 추출기1</h4>
                     <div class="gridItem">
-                        <div class="graphBox">그래프</div>
+                        <div class="graphBox">
+                            <div class="progress-circle over50 p66">
+                                <span>66%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><span></span></p>
-                            <p><b>제품명:</b><span></span></p>
-                            <p><b>시작 시간:</b><span></span></p>
-                            <p><b>종료 시간:</b><span></span></p>
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
 
                         </div>
                     </div>
+
                 </div>
-                <div class="borderBox">
+                <div>
                     <h4>액상 추출기2</h4>
                     <div class="gridItem">
-                        <div class="graphBox">그래프</div>
+                        <div class="graphBox">
+
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><span></span></p>
-                            <p><b>제품명:</b><span></span></p>
-                            <p><b>시작 시간:</b><span></span></p>
-                            <p><b>종료 시간:</b><span></span></p>
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
 
                         </div>
                     </div>
@@ -89,132 +106,207 @@
             </div>
         </li>
         <li>
-            <h3>혼합</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr">
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
+            <p class="greenLabel">혼합</p>
+            <div class="flexbox-r">
+                <div class="flexbox-r-item">
+                    <h4>혼합 저장 탱크1</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
                         </div>
                     </div>
+
                 </div>
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
+                <div>
+                    <h4>혼합 저장 탱크2</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <h3>충진</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr">
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
                         </div>
                     </div>
                 </div>
             </div>
         </li>
         <li>
-            <h3>검사</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr">
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
+            <p class="greenLabel">충진</p>
+            <div class="flexbox-r">
+                <div>
+                <div class="flexbox-r-item">
+                    <h4>파우치 포장1</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
                         </div>
                     </div>
                 </div>
-                <div style="border:1px solid #ccc">
-                    <h4>액상 추출기1</h4>
-                    <div>
-                        <div>그래프</div>
-                        <div>
-                            <ul>
-                                <li>작업 ID:</li>
-                                <li>제품명:</li>
-                                <li>시작 시간:</li>
-                                <li>종료 시간:</li>
-                            </ul>
+
+                <div class="flexbox-r-item">
+                    <h4>파우치 포장2</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div>
+                <div class="flexbox-r-item">
+                    <h4>액상 스틱 포장1</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flexbox-r-item">
+                    <h4>액상 스틱 포장2</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <p class="greenLabel">검사</p>
+            <div class="flexbox-r">
+                <div class="flexbox-r-item">
+                    <h4>열교환기</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+                            <div class="progress-circle p0">
+                                <span class="p0">0%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span></span></p>
+                            <p><b>제품명:</b><br><span></span></p>
+                            <p><b>시작 시간:</b><br><span></span></p>
+                            <p><b>종료 시간:</b><br><span></span></p>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <h4>금속 검출기</h4>
+                    <div class="gridItem">
+                        <div class="graphBox">
+
+                            <div class="progress-circle p30">
+                                <span>30%</span>
+                                <div class="left-half-clipper">
+                                    <div class="first50-bar"></div>
+                                    <div class="value-bar"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="statusInfo">
+                            <p><b>작업 ID:</b><br><span>000-001</span></p>
+                            <p><b>제품명:</b><br><span>양배추즙</span></p>
+                            <p><b>시작 시간:</b><br><span>23.00.00 12:15</span></p>
+                            <p><b>종료 시간:</b><br><span>23.00.00 12:15</span></p>
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </li>
+
+
     </ul>
 
 

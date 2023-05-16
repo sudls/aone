@@ -13,7 +13,7 @@
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contnet">
 
-    <div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-content: center ">
+    <div class="titlebox" >
         <h1 style="display: inline-block">생산현황</h1>
         <form action="">
             <select name="" id="option1">
@@ -30,7 +30,8 @@
             <button>검색</button>
         </form>
     </div>
-
+    <hr>
+    <div class="table-container" style="height: 900px">
     <table>
         <thead>
         <tr>
@@ -56,7 +57,7 @@
 
         </tbody>
     </table>
-
+    </div>
 </div>
 
 </body>

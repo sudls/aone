@@ -9,6 +9,7 @@
   font-style: normal;
 }
 
+
 /* 전체 요소에 기본적으로 적용되는 스타일 초기화 */
 html,
 body,
@@ -101,5 +102,19 @@ button, table, th, td, tr, input, select, option {
   cursor: pointer;
   outline: none;
 }*/
+hr{
+  margin:30px 0;
+  border-color:#ccc;
+}
 
-/* 추가적인 초기화 스타일 작성 가능 */
+/* 모든 페이지 공통 적용*/
+.titlebox{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.titlebox h1{
+  display: inline-block;
+  margin:0;
+}

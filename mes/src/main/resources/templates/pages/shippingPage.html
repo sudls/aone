@@ -13,9 +13,10 @@
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contnet">
 
-    <div>
+    <div class="titlebox">
         <h1 style="display: inline-block">출하현황</h1>
-        <button class="bg-green" style="float: right">Execl 다운로드</button>
+        <button class="bg-green" style="float: right"
+                onclick="downloadTablesAsExcel()">Execl 다운로드</button>
     </div>
 
     <hr>
@@ -34,7 +35,7 @@
                 <option value="">석류젤리스틱</option>
                 <option value="">매실젤리스틱</option>
             </select>
-            <br><br>
+
             <input type="date">~
             <input type="date">
 
@@ -49,6 +50,7 @@
         </form>
     </div>
     <hr>
+    <div class="table-container" style="height: 800px">
     <table>
         <thead>
         <tr>
@@ -72,6 +74,7 @@
 
         </tbody>
     </table>
+    </div>
 </div>
 
 </body>
