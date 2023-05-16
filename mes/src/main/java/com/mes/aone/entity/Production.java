@@ -17,14 +17,15 @@ public class Production {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productionId;  //생산테이블id
 
-    @Column(length = 50, nullable = false) @NotNull
+    @Column(length = 50, nullable = false)
     private String productionName;  //제품명
 
     @Column(nullable = false)
     private int productionQty;  //생산수량
 
+    @OneToOne
     @JoinColumn(name = "processStage")
-    private int processStage;   //공정단계
+    private ProcessPlan processPlan;   //공정단계
 
     @Column(length = 50, nullable = false)
     private String lotNumber;   //lot번호
