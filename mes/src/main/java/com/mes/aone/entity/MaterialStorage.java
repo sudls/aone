@@ -20,7 +20,7 @@ public class MaterialStorage {
     private Long materialStorageId;   // 자재보관테이블 고유ID
 
     @ManyToOne
-    @JoinColumn(name = "material_name")
+    @JoinColumn(name = "material_name", referencedColumnName = "material_name")
     private Material materialName;        // 자재보관 자재명 발주테이블의 자재명과 연결?
 
     @Column(nullable = false)

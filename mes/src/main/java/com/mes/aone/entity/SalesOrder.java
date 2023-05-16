@@ -1,9 +1,12 @@
 package com.mes.aone.entity;
 
 import com.mes.aone.contant.Status;
+import com.mes.aone.dto.SalesOrderDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,21 +25,32 @@ public class SalesOrder {
     private String productName;
 
     @ManyToOne
-    @JoinColumn(name = "vendor_id")
+    @JoinColumn(name = "vendor_id", nullable = false)
     private Vendor vendorId;
 
     @Column(nullable = false)
     private Integer salesQty;
 
+    @CreationTimestamp
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date salesDate;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status salesStatus;
+    private Status salesStatus = Status.A;          // 입력시 기본값 A:대기
 
-    @Column(nullable = false)
-    private Date estDelivery;
+    // 예상납품일
+//    @Column(nullable = false)
+//    private Date estDelivery;
 
+
+    public static SalesOrder toSalesOrder(SalesOrderDTO dto) {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(dto, SalesOrder.class);
+    }
+
+//    public void updateSalesOrder(SalesOrderDTO salesOrderDTO){      //BoardsFormDTO boardsFormDTO
+//        this.salesStatus = salesOrderDTO.getsalesStatus();
+//    }
 
 }
