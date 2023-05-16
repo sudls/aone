@@ -11,7 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(locations = "classpath:application-test.properties")
 class VendorRepositoryTest {
     @Autowired
-    VenderRepository venderRepository;
+    VendorRepository vendorRepository;
 
     @Test
     @DisplayName("거래처 저장테스트")
@@ -22,7 +22,7 @@ class VendorRepositoryTest {
         vender.setVendorAddr("테스트 주소");
         vender.setVendorNumber("xxx-xx-xxxxx");
         vender.setVendorMemo("테스트비고");
-        Vendor savedVendor = venderRepository.save(vender);
+        Vendor savedVendor = vendorRepository.save(vender);
         System.out.println(savedVendor.toString());
     }
 }
