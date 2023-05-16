@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-class VenderRepositoryTest {
+class VendorRepositoryTest {
     @Autowired
     VenderRepository venderRepository;
 
