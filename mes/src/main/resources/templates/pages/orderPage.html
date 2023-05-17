@@ -11,10 +11,10 @@
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
-<!--<div layout:fragment="nav"></div>-->
+
 <div layout:fragment="content" id="contentStyle">
     <div class="titlebox">
-        <h1 style="display:inline-block">수주관리</h1>
+        <h1>수주관리</h1>
         <div class="btn-box">
             <button class="bg-green" id="btnAdd">등록</button>
             <button class="bg-orange">삭제</button>
@@ -38,8 +38,11 @@
             <option value="">11번가</option>
         </select>
 
-        <input type="date">~
-        <input type="date">
+        <div class="periodBox">
+            <input type="date">
+            <span>~</span>
+            <input type="date">
+        </div>
 
         <select name="" id="state">
             <option disabled selected>주문상태</option>
