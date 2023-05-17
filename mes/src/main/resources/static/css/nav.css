@@ -1,0 +1,106 @@
+@import url(reset.css);
+
+.logoImg {
+  width: 300px;
+}
+.logoBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.sidemenu {
+  position: fixed;
+  width: 320px;
+  background-color: var(--green);
+  height: 100%;
+  padding: 20px 0;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  border-top-right-radius: 30px;
+}
+
+
+/* 
+html {
+  background-color: ghostwhite;
+}
+.content {
+  margin: 100px;
+  padding: 50px;
+  background-color: white;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+} */
+
+/*메뉴*/
+
+/* .accordion-menu {
+} */
+
+.accordion-menu li:last-child .dropdown {
+  border-bottom: 0;
+}
+
+.accordion-menu li.active .dropdown {
+  color: var(--ivory); /*활성화된 메뉴 배경색*/
+}
+.accordion-menu li.active .dropdown .fa-chevron-down {
+  transform: rotate(180deg); /* v아이콘*/
+}
+.dropdown {
+  cursor: pointer;
+  display: block;
+  padding: 15px 15px 15px 45px;
+  font-size: 18px;
+  border-bottom: 2px solid var(--navy);
+  color: var(--navy);
+  position: relative;
+  transition: all 0.4s ease-out;
+}
+
+.dropdown:hover {
+  background: var(--yellow); /* 주 메뉴 hover배경색 */
+}
+
+.dropdown i {
+  position: absolute;
+  top: 17px;
+  left: 16px;
+}
+
+.dropdown .fa-chevron-down {
+  right: 12px;
+  left: auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.submenuItems {
+  display: none;
+  background: var(--ivory); /*선택된 메뉴의 서브메뉴 배경색*/
+  transition: all 2s ease-in-out;
+}
+
+.accordion-menu li.active .submenuItems {
+  display: block;
+}
+
+.submenuItems a {
+  display: block;
+  color: var(--navy);
+  font-weight: 600;
+  padding: 12px 12px 12px 45px;
+  transition: all 0.2s ease-out;
+  text-decoration: none;
+}
+
+.submenuItems a:hover {
+  background-color: var(--darkgreen);
+  color: var(--ivory);
+}
+
+.sub-link.active {
+  background-color: red; /* 선택한 서브 메뉴의 배경색을 변경 */
+  color: #000; /* 선택한 서브 메뉴의 글자색을 변경 */
+}
