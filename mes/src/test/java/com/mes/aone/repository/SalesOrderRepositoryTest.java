@@ -36,8 +36,9 @@ class SalesOrderRepositoryTest {
 
 
     @BeforeEach
+//    @DisplayName("수주등록테스트")
     public void createSalesOrderList() {        // 수주 등록
-        Vendor vendor = vendorRepository.findByVendorId("ven-11");
+        Vendor vendor = vendorRepository.findByVendorId("거래처아이디");
          for(int i=1; i<10; i++) {
              SalesOrder sOrder = new SalesOrder();
 
@@ -46,6 +47,7 @@ class SalesOrderRepositoryTest {
              sOrder.setSalesQty(384 + i);
 
              SalesOrder savedSalesOrder = salesOrderRepository.save(sOrder);
+             System.out.println(savedSalesOrder.toString());
          }
     }
 
@@ -66,6 +68,7 @@ class SalesOrderRepositoryTest {
     public void updateSalesOrderStateTest(){
         SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(5L);
         salesOrder.setSalesStatus(Status.C);
+        salesOrderRepository.save(salesOrder);
         System.out.println(salesOrder.toString());
     }
 

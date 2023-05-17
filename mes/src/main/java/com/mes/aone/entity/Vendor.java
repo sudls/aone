@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter @Setter @ToString
 
 public class Vendor {
-    // id   auto_increment
+    // id
     @Id
     @Column
     private String vendorId;
