@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Getter
@@ -12,8 +13,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name= "material")
-public class
-Material {
+public class Material implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

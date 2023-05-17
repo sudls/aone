@@ -21,37 +21,56 @@
     }
 </style>
 <body>
-    <h1>허허 원자재 관리 입니더</h1>
+    <h1>허허 자재 관리화면 입니더</h1><br>
+    <h2>원자재 입출고 현황</h2>
     <table>
         <tr>
-            <th>Header 1</th>
-            <th>Header 2</th>
-            <th>Header 3</th>
-            <th>Header 4</th>
+            <th>자재 보관 ID</th>
+            <th>자재명</th>
+            <th>자재 수량</th>
+            <th>입출고 상태</th>
+            <th>입출고 날짜</th>
         </tr>
-        <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
-            <td>Data 3</td>
-            <td>Data 4</td>
+        <tr th:each="materialStorage : ${MaterialStorage}">
+            <td th:text="${materialStorage.materialStorageId}"></td>
+            <td th:text="${materialStorage.materialName.materialName}"></td>
+            <td th:text="${materialStorage.materialQty}"></td>
+            <td th:text="${materialStorage.mStorageState}"></td>
+            <td th:text="${materialStorage.mStorageDate}"></td>
         </tr>
+    </table><br>
+    <h2>원자재 총 수량</h2>
+    <table>
         <tr>
-            <td>Data 5</td>
-            <td>Data 6</td>
-            <td>Data 7</td>
-            <td>Data 8</td>
+            <th>자재명</th>
+            <th>수량</th>
         </tr>
-        <tr>
-            <td>Data 9</td>
-            <td>Data 10</td>
-            <td>Data 11</td>
-            <td>Data 12</td>
+        <tr th:each="material : ${material}">
+            <td th:text="${material.materialName}"></td>
+            <td th:text="${material.currentQuantity}"></td>
         </tr>
+    </table><br>
+
+<h2>원자재 발주 현황</h2>
+    <table>
         <tr>
-            <td>Data 13</td>
-            <td>Data 14</td>
-            <td>Data 15</td>
-            <td>Data 16</td>
+            <th>발주번호</th>
+            <th>거래처명</th>
+            <th>원자재명</th>
+            <th>수량</th>
+            <th>발주일자</th>
+            <th>예상 입고날짜</th>
+            <th>비고</th>
+        </tr>
+
+        <tr th:each="purchaseOrder : ${PurchaseOrder}">
+            <td th:text="${purchaseOrder.purchaseOrderId}"></td>
+            <td th:text="${purchaseOrder.vendorId.vendorName}"></td>
+            <td th:text="${purchaseOrder.materialName.materialName}"></td>
+            <td th:text="${purchaseOrder.purchaseQty}"></td>
+            <td th:text="${purchaseOrder.purchaseDate}"></td>
+            <td th:text="${purchaseOrder.estArrival}"></td>
+            <td></td>
         </tr>
     </table>
 

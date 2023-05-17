@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
 
-    Vendor findByVendorId(String vendorId);
+    Vendor findByVendorId(String vendorId); //원자재 테이블이 참조
 
 }
