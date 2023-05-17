@@ -19,12 +19,11 @@ Material {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long materialId;    // 자재테이블 고유ID
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "material_name", length = 50, nullable = false)
     private String materialName; // 자재명
 
     @Column(nullable = false)
     private Integer materialLeadtime; // 자재별 리드타임(주문준비시간)
-
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")

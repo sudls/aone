@@ -16,7 +16,7 @@ public class Facility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long facilityId;
+    private String facilityId;
 
     @Column(length = 50, nullable = false)
     private String facilityName;

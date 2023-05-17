@@ -22,7 +22,7 @@ class ProductionRepositoryTest {
         Production production = new Production();
         production.setProductionName("생산1");
         production.setProductionQty(100);
-        production.setProcessStage(3);
+//        production.setProcessStage(3);
         production.setLotNumber("1234");
     }
 
