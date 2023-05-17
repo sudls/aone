@@ -1,0 +1,55 @@
+.gridbox2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border:2px solid var(--grey);
+    padding:10px;
+
+}
+
+.flexbox-r{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    border:2px solid var(--grey);
+    justify-content: space-around;
+    align-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+
+.graphBox{
+    height:180px;
+    width:180px;
+    /*border:1px solid blue;*/
+    padding:10px;
+}
+.greenLabel{
+    background-color: var(--green);
+    border-radius: 25px;
+    color: white;
+    padding:5px 30px;
+    display: inline-block;
+    margin:5px 0;
+    font-size: 18px;
+}
+.borderBox{
+    border:2px solid #ccc;
+}
+
+.gridItem{
+    /*border:1px solid #ccc;*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.statusInfo{
+    height: 200px;
+    display: grid;
+    min-width: 100px;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+
+}

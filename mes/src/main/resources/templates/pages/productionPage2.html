@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>aone-생산관리</title>
+    <th:block th:replace="fragments/config::configFragment"></th:block>
+    <!--    <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">-->
+    <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
+</head>
+<body>
+<div th:replace="fragments/nav::nav"></div>
+<!--<div layout:fragment="nav"></div>-->
+<div layout:fragment="content" id="contentStyle">
+
+    <div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-content: center ">
+        <h1 style="display: inline-block">작업 실적</h1>
+        <form action="">
+            <input type="date"> ~ <input type="date">
+            <button>검색</button>
+        </form>
+    </div>
+    <div class="table-container" style="height: 900px">
+    <table>
+        <thead>
+        <tr>
+            <th>작업 지시 ID</th>
+            <th>제품명</th>
+            <th>수량</th>
+            <th>단위</th>
+            <th>작업완료일자</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>0512-1</td>
+            <td>양배추즙(포)</td>
+            <td>20000</td>
+            <td>ea</td>
+            <td>23.06.23</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>aone-재고관리</title>
+    <th:block th:replace="fragments/config::configFragment"></th:block>
+    <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">
+    <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
+</head>
+<body>
+<div th:replace="fragments/nav::nav"></div>
+<div layout:fragment="content" id="contentStyle">
+
+    <div class="titlebox">
+        <h1>원자재 발주 현황</h1>
+        <button class="bg-green" style="float: right"
+                onclick="downloadTablesAsExcel()">Execl 다운로드</button>
+    </div>
+    <hr>
+    <div style="margin-bottom: 20px;">
+        <form action="">
+            <input type="text" placeholder="발주번호">
+            <select name="" id="option1">
+                <option disabled selected>원자재명</option>
+                <option value="">양배추</option>
+                <option value="">흑마늘</option>
+                <option value="">석류액기스</option>
+                <option value="">매실액기스</option>
+                <option value="">콜라겐</option>
+                <option value="">파우치</option>
+                <option value="">스틱파우치</option>
+                <option value="">박스</option>
+            </select>
+            <select name="" id="option2">
+                <option disabled selected>거래처</option>
+                <option value="">에이농장</option>
+                <option value="">OO농협</option>
+                <option value="">OO포장</option>
+            </select>
+
+            <input type="date">~
+            <input type="date">
+
+
+            <button type="submit">검색</button>
+
+        </form>
+    </div>
+    <hr>
+    <div class="table-container" style="height: 900px">
+    <table>
+        <thead>
+        <tr>
+            <th>발주번호</th>
+            <th>원자재명</th>
+            <th>거래처명</th>
+            <th>수량</th>
+            <th>발주일자</th>
+            <th>예상 입고일자</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>123123</td>
+            <td>양배추</td>
+            <td>에이농장</td>
+            <td>222</td>
+            <td>23.12.12</td>
+            <td>23.12.14</td>
+
+        </tr>
+
+        </tbody>
+    </table>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
