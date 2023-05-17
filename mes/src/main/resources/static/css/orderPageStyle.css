@@ -58,3 +58,12 @@
     margin:20px 0;
     padding:10px 20px;
 }
+
+.dateTimeBox{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.dateTimeBox input{
+    width: 125px;
+}

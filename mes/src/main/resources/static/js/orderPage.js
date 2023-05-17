@@ -1,11 +1,14 @@
 // 버튼 클릭 시 모달 창을 띄우는 이벤트 핸들러 추가
 document.getElementById("btnAdd").addEventListener("click", function() {
-    document.getElementById("myModal").style.display = "block";
+    document.getElementById("addOrderModal").style.display = "block";
 });
 
 // 모달 창 닫기 버튼의 이벤트 핸들러 추가
 document.getElementsByClassName("close")[0].addEventListener("click", function() {
-    document.getElementById("myModal").style.display = "none";
+    document.getElementById("addOrderModal").style.display = "none";
+});
+document.getElementById("closeBtn").addEventListener("click", function() {
+    document.getElementById("addOrderModal").style.display = "none";
 });
 
 //모달창의 수주일 날짜를 오늘날짜로 설정
@@ -15,16 +18,20 @@ function getCurrentDateTime() {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
+    const formattedTime = `${hours}:${minutes}`;
 
-    return formattedDate;
+    return { date: formattedDate, time: formattedTime };
 }
 
-// input 요소의 값을 현재 날짜와 시간으로 설정
-document.getElementById("orderDate").value = getCurrentDateTime();
+const currentDateTime = getCurrentDateTime();
+document.getElementById("setOrderDate").value = currentDateTime.date;
+document.getElementById("setOrderTime").value = currentDateTime.time;
 
-// input 요소의 값을 0 미만으로 떨어지지 않도록 유효성 검사
-document.getElementById("orderNum").addEventListener("change", function() {
+// input 요소의 값을 0 미만으로 떨어지지 않도록 유효성 검사 (수량 지정)
+document.getElementById("setOrderNum").addEventListener("change", function() {
     const value = parseInt(this.value); // 입력된 값 파싱
 
     if (value < 0) {

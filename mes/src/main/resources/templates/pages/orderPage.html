@@ -12,7 +12,7 @@
 <body>
 <div th:replace="fragments/nav::nav"></div>
 <!--<div layout:fragment="nav"></div>-->
-<div layout:fragment="content" id="contnet">
+<div layout:fragment="content" id="contentStyle">
     <div class="titlebox">
         <h1 style="display:inline-block">수주관리</h1>
         <div class="btn-box">
@@ -24,7 +24,6 @@
 
     <hr>
     <form action="">
-
         <select name="" id="productname">
             <option disabled selected>제품명</option>
             <option value="">양배추즙</option>
@@ -99,12 +98,12 @@
         </table>
     </div>
 
-    <div id="myModal" class="modal">
+    <div id="addOrderModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <form id="addProductForm">
                 <h1 style="text-align: center">수주 등록</h1>
-                <select name="" id="addProduct">
+                <select name="" id="setProduct">
                     <option disabled selected>제품명</option>
                     <option value="">양배추즙</option>
                     <option value="">흑마늘즙</option>
@@ -112,19 +111,23 @@
                     <option value="">매실젤리스틱</option>
                 </select>
 
-                <select name="" id="addVendor">
+                <select name="" id="setVendor">
                     <option disabled selected>거래처</option>
                     <option value="">쿠팡</option>
                     <option value="">11번가</option>
                 </select>
 
-                <input type="number" value="0" id="orderNum">
+                <input type="number" placeholder="수량" id="setOrderNum">
 
-                <input type="date" id="orderDate" readonly>
+                <div class="dateTimeBox">
+                    <input type="date" id="setOrderDate" disabled>
+                    <input type="time" id="setOrderTime" disabled>
+                </div>
+
 
                 <div class="modalBtn">
-                    <button >취소</button>
-                    <button class="bg-green">확정</button>
+                    <button id="closeBtn">취소</button>
+                    <button class="bg-green" type="submit">확정</button>
                 </div>
 
             </form>
