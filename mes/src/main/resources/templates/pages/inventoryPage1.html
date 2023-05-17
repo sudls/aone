@@ -15,7 +15,6 @@
     <h1>원자재 총 수량</h1>
 
     <table class="justInfo">
-
         <thead>
         <tr>
             <th>자재명</th>
@@ -25,30 +24,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>양배추</td>
-            <td><span>/kg</span></td>
-            <td>콜라겐</td>
-            <td>/kg</td>
+
+        <tr th:each="orderDTO, status: ${materialStorageNumDTOList}" th:if="${status.index % 2 == 0}">
+            <td th:text="${orderDTO.materialName}"></td>
+            <td th:text="${orderDTO.materialQty}"></td>
+            <td th:if="${status.index + 1 < materialStorageNumDTOList.size()}"
+                th:text="${materialStorageNumDTOList[status.index + 1].materialName}"></td>
+            <td th:if="${status.index + 1 < materialStorageNumDTOList.size()}"
+                th:text="${materialStorageNumDTOList[status.index + 1].materialQty}"></td>
+
         </tr>
-        <tr>
-            <td>흑마늘</td>
-            <td>/kg</td>
-            <td>파우치</td>
-            <td>/ea</td>
-        </tr>
-        <tr>
-            <td>석류액기스</td>
-            <td>/kg</td>
-            <td>스틱파우치</td>
-            <td>/ea</td>
-        </tr>
-        <tr>
-            <td>매실액기스</td>
-            <td>/kg</td>
-            <td>박스</td>
-            <td>/ea</td>
-        </tr>
+
         </tbody>
     </table>
 
