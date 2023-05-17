@@ -20,31 +20,13 @@
   border-top-right-radius: 30px;
 }
 
-
-/* 
-html {
-  background-color: ghostwhite;
-}
-.content {
-  margin: 100px;
-  padding: 50px;
-  background-color: white;
-  margin: 20px auto;
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-} */
-
-/*메뉴*/
-
-/* .accordion-menu {
-} */
-
 .accordion-menu li:last-child .dropdown {
   border-bottom: 0;
 }
 
 .accordion-menu li.active .dropdown {
-  color: var(--ivory); /*활성화된 메뉴 배경색*/
+  /*color: var(--ivory); !*활성화된 메뉴 배경색*!*/
+  color:var(--ivory);
 }
 .accordion-menu li.active .dropdown .fa-chevron-down {
   transform: rotate(180deg); /* v아이콘*/
@@ -100,7 +82,6 @@ html {
   color: var(--ivory);
 }
 
-.sub-link.active {
-  background-color: red; /* 선택한 서브 메뉴의 배경색을 변경 */
-  color: #000; /* 선택한 서브 메뉴의 글자색을 변경 */
+.sub-link.active a {
+  color: var(--green);
 }

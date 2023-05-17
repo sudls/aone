@@ -1,6 +1,6 @@
 package com.mes.aone.entity;
 
-import com.mes.aone.constant.StockManamgeState;
+import com.mes.aone.constant.StockManageState;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,7 +29,7 @@ public class StockManage {
     // 입출고상태
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private StockManamgeState stockManamgeState;
+    private StockManageState stockManamgeState;
 
     // 제품명 : 양배추박스, 양배추포
     @ManyToOne(fetch = FetchType.LAZY)

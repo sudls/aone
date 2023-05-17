@@ -17,5 +17,4 @@ public class OrderDTO {
     private SalesStatus salesStatus; //수주 상태
     private Date estDelivery; // 예상납품일
 
-
 }

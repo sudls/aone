@@ -6,15 +6,16 @@
     <title>aone-재고관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
     <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">
-    <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
+
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
-<!--<div layout:fragment="nav"></div>-->
+
 <div layout:fragment="content" id="contentStyle">
     <h1>원자재 총 수량</h1>
 
-    <table style="border: 2px solid #ddd">
+    <table class="justInfo">
+
         <thead>
         <tr>
             <th>자재명</th>
@@ -26,7 +27,7 @@
         <tbody>
         <tr>
             <td>양배추</td>
-            <td>/kg</td>
+            <td><span>/kg</span></td>
             <td>콜라겐</td>
             <td>/kg</td>
         </tr>
@@ -46,7 +47,7 @@
             <td>매실액기스</td>
             <td>/kg</td>
             <td>박스</td>
-            <td>/box</td>
+            <td>/ea</td>
         </tr>
         </tbody>
     </table>
@@ -82,11 +83,11 @@
                     onclick="downloadTablesAsExcel()">Execl 다운로드</button>
         </form>
     </div>
+
     <div class="table-container" style="height: 600px">
         <table>
             <thead>
             <tr>
-                <th>발주번호</th>
                 <th>자재명</th>
                 <th>상태</th>
                 <th>수량</th>
@@ -95,13 +96,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>123123</td>
-                <td>양배추</td>
-                <td>입고</td>
-                <td>222</td>
-                <td>kg</td>
-                <td>23.12.12</td>
+
+            <tr th:each="materialStorageDTO, status: ${materialStorageDTOList}">
+                <td th:text="${materialStorageDTO.materialName}"></td>
+                <td>
+                    <span th:if="${materialStorageDTO.getMStorageState().name()== 'I'}">입고</span>
+                    <span th:if="${materialStorageDTO.getMStorageState().name() == 'O'}">출고</span>
+                </td>
+
+                <td th:text="${materialStorageDTO.materialQty}"></td>
+                <td th:text="${materialStorageDTO.materialUnit}"></td>
+                <td th:text="${#temporals.format(materialStorageDTO.getMStorageDate(), 'yy/MM/dd　hh:mm')}"></td>
             </tr>
 
             </tbody>

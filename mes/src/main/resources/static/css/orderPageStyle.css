@@ -64,6 +64,10 @@
     display: flex;
     justify-content: space-between;
 }
-.dateTimeBox input{
-    width: 125px;
+.dateTimeBox input[type="date"],.dateTimeBox input[type="time"]{
+    width: 160px;
+}
+
+tr:hover{
+    background-color: rgba(4,186,113,0.1);
 }

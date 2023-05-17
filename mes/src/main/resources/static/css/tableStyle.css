@@ -33,6 +33,7 @@ table thead th {
 
 }
 
+
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
@@ -40,6 +41,7 @@ tr:nth-child(even) {
 .highlight {
     background-color: #ffc107;
 }
+
 
 
 /*::-webkit-scrollbar {*/

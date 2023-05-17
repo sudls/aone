@@ -121,6 +121,7 @@ hr{
 /* 기본 스타일 */
 input[type="text"],
 input[type="date"],
+input[type="time"],
 input[type="number"],
 select {
   height: 38px;
@@ -130,18 +131,26 @@ select {
   border: 1px solid #ccc;
   margin-right: 5px;
 }
+/*input, select, option{
+  padding: 5px 10px;
+}*/
 
+input[type="checkbox"]:hover{
+  cursor:pointer;
+}
 input[type="date"]{
   min-width: 135px;
 }
 /* 활성/포커스 상태 스타일 */
-input:focus,
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="number"]:focus,
 select:focus {
   outline: none;
   border-color: var(--green); /* 원하는 포커스 색상으로 설정 */
   box-shadow: 0 0 5px rgba(4, 186, 113, 0.5); /* 원하는 그림자 스타일로 설정 */
 }
-
 
 
 /* 비활성화 상태 스타일 */
