@@ -37,6 +37,7 @@
   padding: 15px 15px 15px 45px;
   font-size: 18px;
   border-bottom: 2px solid var(--navy);
+  font-weight: 600;
   color: var(--navy);
   position: relative;
   transition: all 0.4s ease-out;
