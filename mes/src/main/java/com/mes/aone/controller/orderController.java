@@ -24,7 +24,15 @@ public class orderController {
             orderDTO.setVendorId("ven-nh");
             orderDTO.setSalesDate(LocalDateTime.now());
             orderDTO.setSalesQty(342);
-            orderDTO.setSalesStatus(SalesStatus.A);
+            if(i%5==0){
+                orderDTO.setSalesStatus(SalesStatus.B);
+            }else if (i%7==0){
+                orderDTO.setSalesStatus(SalesStatus.C);
+            }else{
+                    orderDTO.setSalesStatus(SalesStatus.A);
+                }
+
+
 
             orderDTOList.add(orderDTO);
         }

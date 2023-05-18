@@ -2,14 +2,56 @@
 document.getElementById("btnAdd").addEventListener("click", function() {
     document.getElementById("addOrderModal").style.display = "block";
 });
+document.getElementById("btnConfirm").addEventListener("click", function() {
+
+    let selectedValues = getSelectedValues();
+    let table = document.getElementById("selectedInfoTable");
+    let tbody = table.querySelector("tbody");
+
+// 기존의 행을 제거
+    tbody.innerHTML = "";
+
+// 반환된 값들을 테이블에 추가
+    for (let i = 0; i < selectedValues.orderIds.length; i++) {
+        let orderId = selectedValues.orderIds[i];
+        let orderProduct = selectedValues.orderProducts[i];
+        let orderNum = selectedValues.orderNum[i];
+
+        let row = document.createElement("tr");
+        let orderIdCell = document.createElement("td");
+        let orderProductCell = document.createElement("td");
+        let orderNumCell = document.createElement("td");
+
+        orderIdCell.textContent = orderId;
+        orderProductCell.textContent = orderProduct;
+        orderNumCell.textContent = orderNum;
+
+        row.appendChild(orderIdCell);
+        row.appendChild(orderProductCell);
+        row.appendChild(orderNumCell);
+
+        tbody.appendChild(row);
+    }
+    document.getElementById("confirmOrderModal").style.display = "block";
+
+});
 
 // 모달 창 닫기 버튼의 이벤트 핸들러 추가
 document.getElementsByClassName("close")[0].addEventListener("click", function() {
     document.getElementById("addOrderModal").style.display = "none";
 });
-document.getElementById("closeBtn").addEventListener("click", function() {
+document.getElementsByClassName("close")[1].addEventListener("click", function() {
+    document.getElementById("confirmOrderModal").style.display = "none";
+});
+
+// 취소버튼 클릭시 모달 창 닫기
+document.getElementById("closeAddModal").addEventListener("click", function() {
     document.getElementById("addOrderModal").style.display = "none";
 });
+document.getElementById("closeConfirmModal").addEventListener("click", function() {
+    document.getElementById("confirmOrderModal").style.display = "none";
+});
+
 
 //모달창의 수주일 날짜를 오늘날짜로 설정
 // 현재 날짜와 시간을 가져오는 함수
@@ -42,23 +84,41 @@ document.getElementById("setOrderNum").addEventListener("change", function() {
 //---
 //체크박스 선택시 해당 행 값 반환
 function toggleSelectedRow(checkbox) {
-    var row = checkbox.parentNode.parentNode;
+    let row = checkbox.parentNode.parentNode;
     row.classList.toggle("selected");
-    console.log(getSelectedValues());
+
+    //반환값 확인
+    let selectedValues = getSelectedValues();
+    console.log(selectedValues.orderIds);
+    console.log(selectedValues.orderProducts);
+    console.log(selectedValues.orderNum);
 }
 
 function getSelectedValues() {
-    var table = document.querySelector(".table-container table");
-    var selectedValues = [];
+    let table = document.querySelector(".table-container table");
+    let selectedOrderIds = [];
+    let selectedOrderProducts=[];
+    let selectedOrderNum=[];
 
-    var checkboxes = table.querySelectorAll("tbody input[type='checkbox']");
+    let checkboxes = table.querySelectorAll("tbody input[type='checkbox']");
     checkboxes.forEach(function(checkbox) {
-        var row = checkbox.parentNode.parentNode;
+        let row = checkbox.parentNode.parentNode;
         if (checkbox.checked) {
-            var value = row.cells[1].textContent; // 2번째 열의 값을 가져옴 (수주번호)
-            selectedValues.push(value);
+            let value1 = row.cells[1].textContent; // 2번째 열의 값을 가져옴 (수주번호)
+            selectedOrderIds.push(value1);
+
+            let value2 = row.cells[2].textContent; // 3번째 열의 값을 가져옴 (제품명)
+            selectedOrderProducts.push(value2);
+
+            let value3 = row.cells[4].textContent; // 5번째 열의 값을 가져옴 (수량)
+            selectedOrderNum.push(value3);
         }
     });
-    return selectedValues;
+
+    return {
+        orderIds: selectedOrderIds,
+        orderProducts: selectedOrderProducts,
+        orderNum: selectedOrderNum
+    };
 
 }
