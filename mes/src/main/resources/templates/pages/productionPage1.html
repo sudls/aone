@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
-    <!--    <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">-->
-    <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
+    <link th:href="@{/css/productionPage.css}" rel="stylesheet">
+    <script th:src="@{/js/productionPage.js}" defer></script>
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contentStyle">
     <div class="titlebox">
-        <h1 style="display: inline-block">작업 지시현황</h1>
+        <h1 style="display: inline-block">작업지시 현황</h1>
         <button class="bg-green" style="float: right" type="button"
                 onclick="downloadTablesAsExcel()">Execl 다운로드</button>
     </div>
@@ -31,8 +31,11 @@
         </select>
         <br><br>
 
-        <input type="date">~
-        <input type="date">
+        <div class="periodBox">
+            <input type="date">
+            <span>~</span>
+            <input type="date">
+        </div>
 
 
         <select name="" id="option2">
@@ -50,35 +53,34 @@
 
     </form>
     <hr>
-    <div class="table-container">
-        <table>
+    <div class="table-container" style="height: 300px">
+        <table id="workListTable">
             <thead>
             <tr>
+                <th>작업지시 ID</th>
                 <th>제품명</th>
-                <th colspan="2">수량</th>
+                <th>작업지시 수량</th>
+                <th>작업지시 일자</th>
+                <th>공정 단계</th>
+                <th>작업 진행 상태</th>
             </tr>
             </thead>
-
             <tbody>
             <tr>
+                <td>230512-123</td>
                 <td>양배추즙</td>
-                <td>/box</td>
-                <td>/ea</td>
+                <td>2000 /ea</td>
+                <td>2023.05.19</td>
+                <td>충진</td>
+                <td>대기</td>
             </tr>
             <tr>
+                <td>230512-124</td>
                 <td>흑마늘즙</td>
-                <td>/box</td>
-                <td>/ea</td>
-            </tr>
-            <tr>
-                <td>석류젤리스틱</td>
-                <td>/box</td>
-                <td>/ea</td>
-            </tr>
-            <tr>
-                <td>매실젤리스틱</td>
-                <td>/box</td>
-                <td>/ea</td>
+                <td>2000 /ea</td>
+                <td>2023.05.19</td>
+                <td>전처리</td>
+                <td>진행</td>
             </tr>
 
             </tbody>
@@ -87,27 +89,24 @@
     <hr>
 
     <div style="margin:20px 0;">
-        <b>작업 지시 ID : </b><span>230512-123</span>　/　
-        <b>제품명 : </b><span>양배추즙</span>
+        <b>작업 지시 ID : </b><span id="workId" style="min-width: 100px; display: inline-block; margin-right: 50px;" ></span>
+        <b>제품명 : </b><span id="workProduct" style="min-width: 100px; display: inline-block" ></span>
     </div>
 
-    <div class="table-container" style="height: 600px">
-    <table>
+    <div class="table-container" style="height: 500px">
+    <table id="resultTable">
         <thead>
         <tr>
-            <th>제품명</th>
-            <th colspan="2">수량</th>
-            <th>상태</th>
-            <th>날짜</th>
+            <th>수주 ID</th>
+            <th>수주 날짜</th>
+            <th>주문 수량</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>양배추즙</td>
-            <td>25 /box</td>
-            <td>10 /ea</td>
-            <td>입고</td>
-            <td>23.12.12</td>
+            <td>1</td>
+            <td>2023.05.19</td>
+            <td>5000 /ea</td>
         </tr>
 
         </tbody>

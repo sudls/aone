@@ -72,10 +72,12 @@ public class orderController {
     }
 
 
+
     // 수주 확정
     @PostMapping(value="/order/confirm")
     public String confirmOrder(@Valid SalesOrderFormDTO salesOrderFromDTO, Model model) {
         String[] selectedIds = salesOrderFromDTO.getSelectedOrderIdList().split(",");
+
 
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);

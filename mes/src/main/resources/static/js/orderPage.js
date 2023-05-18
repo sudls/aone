@@ -126,6 +126,8 @@ function getSelectedValues() {
 
 }
 
+//수주 확정, 취소, 삭제를 위한 모달창에 체크한 수주 정보 표시
+
 function getCheckInfoData(){
 
     let selectedValues = getSelectedValues();
@@ -156,4 +158,5 @@ function getCheckInfoData(){
 
         tbody.appendChild(row);
     }
+
 }

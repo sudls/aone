@@ -1,5 +1,5 @@
 package com.mes.aone.constant;
 
-public enum StockManamgeState {
+public enum StockManageState {
     I, O            // i: 입고,  o: 출고
 }

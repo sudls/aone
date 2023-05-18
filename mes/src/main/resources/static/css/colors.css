@@ -1,6 +1,6 @@
 :root {
   --green: #04ba71;
-  --darkgreen: #04454d;
+  --darkgreen: rgb(4, 69, 77);
   --ivory: #f5f2eb;
   --yellow: #fdc827;
   --navy: #100e34;
@@ -8,4 +8,5 @@
   --blue:#3196e2;
   --grey:#c0c0c2;
   --lightgrey: #D8D8D8;
+  --red:#ff6b6c;
 }

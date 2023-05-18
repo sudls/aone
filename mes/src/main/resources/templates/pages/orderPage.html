@@ -76,7 +76,8 @@
             <tbody>
             <tr th:each="orderDTO, status: ${orderDTOList}">
                 <td>
-                    <input type="checkbox" onclick="toggleSelectedRow(this)">
+                    <input th:if="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" onclick="toggleSelectedRow(this)">
+                    <input th:unless="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" disabled>
                 </td>
                 <td th:text="${orderDTO.salesOrderId}"></td>
                 <td th:text="${orderDTO.productName}"></td>
@@ -147,10 +148,12 @@
             <span class="close">&times;</span>
 
             <form id="changeProductForm" method="post" th:object="${salesOrderFromDTO}">
+
                 <h1 style="text-align: center" >수주 확정</h1>
                 <div id="selectedInfo">
                     <!--선택한 수주 번호,제품명, 수량-->
                     <h4>선택한 수주 정보는 아래와 같습니다.</h4>
+
                     <input type="hidden" id="selectedOrderIdList" name="selectedOrderIdList" th:value="*{selectedOrderIdList}">
                     <div class="table-container" style="height: 200px">
                         <table id="selectedInfoTable">

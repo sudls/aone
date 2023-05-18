@@ -15,18 +15,7 @@ function downloadTablesAsExcel() {
         });
 
         const worksheet = XLSX.utils.aoa_to_sheet(tableData);
-        // 셀 스타일 적용
-        // Object.keys(worksheet).forEach(function(cellRef) {
-        //     const cell = worksheet[cellRef];
-        //     if (cell.s && cell.s !== 0) {
-        //         cell.s = Object.assign({}, cell.s, {
-        //             ...cell.s,
-        //             ...JSON.parse(cell.s)
-        //         });
-        //     } else {
-        //         cell.s = 0;
-        //     }
-        // });
+
         const headCellStyle = {
             font: { bold: true },
             fill: { fgColor: { rgb: "DDD" } }
