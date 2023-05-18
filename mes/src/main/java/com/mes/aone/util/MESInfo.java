@@ -5,6 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -23,6 +29,25 @@ import lombok.Setter;
     double box = 0;
     double pouch = 0;
     double stickPouch = 0;
+
+    //리드 타임
+    int leadMeasurement = 20;
+    int leadPreProcessing = 20;
+    int leadExtract = 60;
+    int leadMixing = 20;
+    int leadFill = 20;
+    int leadPackaging = 20;
+
+    // 공정 완료 시간
+    LocalDateTime measurement = null;
+
+
+
+
+
+
+
+
 
    public MESInfo() {
 
