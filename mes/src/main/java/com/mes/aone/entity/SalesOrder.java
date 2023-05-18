@@ -1,7 +1,7 @@
 package com.mes.aone.entity;
 
 import com.mes.aone.contant.Status;
-import com.mes.aone.dto.SalesOrderDTO;
+import com.mes.aone.dto.OrderDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,9 +24,8 @@ public class SalesOrder {
     @Column(length = 100, nullable = false)
     private String productName;
 
-    @ManyToOne
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private Vendor vendorId;
+    @Column(length = 10, nullable = false)
+    private String vendorId;
 
     @Column(nullable = false)
     private Integer salesQty;
@@ -44,13 +43,14 @@ public class SalesOrder {
 //    private Date estDelivery;
 
 
-    public static SalesOrder toSalesOrder(SalesOrderDTO dto) {
+    private static ModelMapper modelMapper = new ModelMapper();
+
+    // DTO -> 엔티티
+    public static SalesOrder toSalesOrder(OrderDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(dto, SalesOrder.class);
     }
 
-//    public void updateSalesOrder(SalesOrderDTO salesOrderDTO){      //BoardsFormDTO boardsFormDTO
-//        this.salesStatus = salesOrderDTO.getsalesStatus();
-//    }
+
 
 }
