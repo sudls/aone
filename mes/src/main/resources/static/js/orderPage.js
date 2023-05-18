@@ -1,55 +1,56 @@
-// 버튼 클릭 시 모달 창을 띄우는 이벤트 핸들러 추가
+// 수주 등록
 document.getElementById("btnAdd").addEventListener("click", function() {
-    document.getElementById("addOrderModal").style.display = "block";
+    document.getElementById("addOrderModal").style.display = "block"; //수주 등록 모달
 });
+
+//수주 확정
 document.getElementById("btnConfirm").addEventListener("click", function() {
-
-    let selectedValues = getSelectedValues();
-    let table = document.getElementById("selectedInfoTable");
-    let tbody = table.querySelector("tbody");
-
-// 기존의 행을 제거
-    tbody.innerHTML = "";
-
-// 반환된 값들을 테이블에 추가
-    for (let i = 0; i < selectedValues.orderIds.length; i++) {
-        let orderId = selectedValues.orderIds[i];
-        let orderProduct = selectedValues.orderProducts[i];
-        let orderNum = selectedValues.orderNum[i];
-
-        let row = document.createElement("tr");
-        let orderIdCell = document.createElement("td");
-        let orderProductCell = document.createElement("td");
-        let orderNumCell = document.createElement("td");
-
-        orderIdCell.textContent = orderId;
-        orderProductCell.textContent = orderProduct;
-        orderNumCell.textContent = orderNum;
-
-        row.appendChild(orderIdCell);
-        row.appendChild(orderProductCell);
-        row.appendChild(orderNumCell);
-
-        tbody.appendChild(row);
-    }
-    document.getElementById("confirmOrderModal").style.display = "block";
-
+    // getCheckInfoData();//체크한 수주 정보 테이블로 보여주기
+    // document.getElementById("changeOrderModal").style.display = "block";
+    openModal("수주 확정", "확정", "/order/confirm", "color: #3196e2", "bg-blue");
 });
+
+//수주 취소
+document.getElementById("btnCancel").addEventListener("click", function() {
+    openModal("수주 취소", "취소","/order/cancel", "color: #ff834c", "bg-orange");
+});
+
+//수주 삭제
+document.getElementById("btnDel").addEventListener("click", function() {
+    openModal("수주 삭제", "삭제","/order/delete", "color: #ff6b6c", "bg-red");
+});
+
+//수주 확정, 취소, 삭제 모달창 열기
+function openModal(title, buttonLabel,formAction,  spanStyle, buttonClass) {
+    // 모달 내용 변경
+    document.getElementById("changeOrderModal").querySelector("h1").textContent = title;
+    document.getElementById("changeOrderModal").querySelector("button[type='submit']").textContent = buttonLabel;
+    document.getElementById("changeText").textContent = buttonLabel;
+    document.getElementById("changeProductForm").action = formAction;
+    document.getElementById("selectedInfo").querySelector("span").style = spanStyle;
+    document.getElementById("okChangeModal").className = buttonClass;
+
+    getCheckInfoData();//체크한 수주 정보 테이블로 보여주기
+
+    // 모달 열기
+    document.getElementById("changeOrderModal").style.display = "block";
+}
+
 
 // 모달 창 닫기 버튼의 이벤트 핸들러 추가
 document.getElementsByClassName("close")[0].addEventListener("click", function() {
     document.getElementById("addOrderModal").style.display = "none";
 });
 document.getElementsByClassName("close")[1].addEventListener("click", function() {
-    document.getElementById("confirmOrderModal").style.display = "none";
+    document.getElementById("changeOrderModal").style.display = "none";
 });
 
 // 취소버튼 클릭시 모달 창 닫기
 document.getElementById("closeAddModal").addEventListener("click", function() {
     document.getElementById("addOrderModal").style.display = "none";
 });
-document.getElementById("closeConfirmModal").addEventListener("click", function() {
-    document.getElementById("confirmOrderModal").style.display = "none";
+document.getElementById("closeChangeModal").addEventListener("click", function() {
+    document.getElementById("changeOrderModal").style.display = "none";
 });
 
 
@@ -115,10 +116,45 @@ function getSelectedValues() {
         }
     });
 
+    document.getElementById("selectedOrderIdList").value=selectedOrderIds.toString();
+
     return {
         orderIds: selectedOrderIds,
         orderProducts: selectedOrderProducts,
         orderNum: selectedOrderNum
     };
 
+}
+
+//수주 확정, 취소, 삭제를 위한 모달창에 체크한 수주 정보 표시
+function getCheckInfoData(){
+
+    let selectedValues = getSelectedValues();
+    let table = document.getElementById("selectedInfoTable");
+    let tbody = table.querySelector("tbody");
+
+// 기존의 행을 제거
+    tbody.innerHTML = "";
+
+// 반환된 값들을 테이블에 추가
+    for (let i = 0; i < selectedValues.orderIds.length; i++) {
+        let orderId = selectedValues.orderIds[i];
+        let orderProduct = selectedValues.orderProducts[i];
+        let orderNum = selectedValues.orderNum[i];
+
+        let row = document.createElement("tr");
+        let orderIdCell = document.createElement("td");
+        let orderProductCell = document.createElement("td");
+        let orderNumCell = document.createElement("td");
+
+        orderIdCell.textContent = orderId;
+        orderProductCell.textContent = orderProduct;
+        orderNumCell.textContent = orderNum;
+
+        row.appendChild(orderIdCell);
+        row.appendChild(orderProductCell);
+        row.appendChild(orderNumCell);
+
+        tbody.appendChild(row);
+    }
 }

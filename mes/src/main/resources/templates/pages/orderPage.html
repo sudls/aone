@@ -20,8 +20,6 @@
             <button class="bg-blue" id="btnConfirm">확정</button>
             <button class="bg-orange" id="btnCancel">취소</button>
             <button class="bg-red" id="btnDel">삭제</button>
-
-
         </div>
     </div>
 
@@ -78,7 +76,8 @@
             <tbody>
             <tr th:each="orderDTO, status: ${orderDTOList}">
                 <td>
-                    <input type="checkbox" onclick="toggleSelectedRow(this)">
+                    <input th:if="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" onclick="toggleSelectedRow(this)">
+                    <input th:unless="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" disabled>
                 </td>
                 <td th:text="${orderDTO.salesOrderId}"></td>
                 <td th:text="${orderDTO.productName}"></td>
@@ -140,15 +139,18 @@
         </div>
     </div>
 
-    <div id="confirmOrderModal" class="modal">
+
+
+    <div id="changeOrderModal" class="modal">
         <div class="modal-content w600">
             <span class="close">&times;</span>
 
-            <form id="confirmProductForm">
-                <h1 style="text-align: center">수주 확정</h1>
+            <form id="changeProductForm">
+                <h1 style="text-align: center" >수주 확정</h1>
                 <div id="selectedInfo">
                     <!--선택한 수주 번호,제품명, 수량-->
                     <h4>선택한 수주 정보는 아래와 같습니다.</h4>
+                    <input type="hidden" id="selectedOrderIdList" >
                     <div class="table-container" style="height: 200px">
                         <table id="selectedInfoTable">
                             <thead>
@@ -159,21 +161,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr >
-                                    <td ></td>
-                                    <td ></td>
-                                    <td ></td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
 
-
-                    <h4>선택한 수주를 <span style="color: #3196e2">확정</span>하시겠습니까?</h4>
+                    <h4>선택한 수주를 <span id="changeText">확정</span>하시겠습니까?</h4>
                 </div>
                 <div class="modalBtn ">
-                    <button id="closeConfirmModal" type="reset">취소</button>
-                    <button class="bg-blue" type="submit">확정</button>
+                    <button id="closeChangeModal" type="reset">취소</button>
+                    <button id="okChangeModal" type="submit">확정</button>
                 </div>
 
             </form>
