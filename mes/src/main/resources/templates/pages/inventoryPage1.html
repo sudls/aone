@@ -95,13 +95,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>123123</td>
-                <td>양배추</td>
-                <td>입고</td>
-                <td>222</td>
-                <td>kg</td>
-                <td>23.12.12</td>
+            <tr th:each="materialStorage : ${MaterialStorage}">
+                <td th:text="${materialStorage.materialStorageId}"></td>
+                <td th:text="${materialStorage.materialName.materialName}"></td>
+                <td th:text="${materialStorage.MStorageState}"></td>
+                <td th:text="${materialStorage.materialQty}"></td>
+                <td th:text="${materialStorage.unit}"></td>
+                <td th:text="${materialStorage.MStorageDate}"></td>
             </tr>
 
             </tbody>

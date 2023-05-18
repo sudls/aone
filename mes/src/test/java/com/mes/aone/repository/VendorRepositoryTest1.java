@@ -8,13 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 //@TestPropertySource(locations = "classpath:application-test.properties")
-class VendorRepositoryTest {
+class VendorRepositoryTest1 {
     @Autowired
     VendorRepository venderRepository;
 
     @Test
     @DisplayName("거래처 저장테스트")
-    public void createVenderTest(){
+    public void insertVenderTest(){
         Vendor vendor = new Vendor();
         vendor.setVendorId("ven-po");
         vendor.setVendorName("포장");
