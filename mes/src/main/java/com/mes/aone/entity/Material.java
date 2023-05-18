@@ -19,7 +19,7 @@ Material {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long materialId;    // 자재테이블 고유ID
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, name = "material_name")
     private String materialName; // 자재명
 
     @Column(nullable = false)

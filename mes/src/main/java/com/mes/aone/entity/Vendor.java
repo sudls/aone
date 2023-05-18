@@ -5,19 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 @Getter @Setter @ToString
 
 public class Vendor {
-    // id   auto_increment
+    // id
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
-    private Long vendorId;
+    private String vendorId;
 
     // 업체명
     @Column(nullable = false, length = 50)
@@ -38,4 +37,5 @@ public class Vendor {
     // 비고
     @Column
     private String vendorMemo;
+
 }
