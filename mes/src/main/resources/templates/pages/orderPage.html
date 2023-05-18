@@ -89,8 +89,10 @@
                     <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
                 </td>
                 <td th:text="${orderDTO.salesQty}"></td>
-                <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
-                <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
+                <td></td>
+                <td></td>
+<!--                <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>-->
+<!--                <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>-->
 
                 <td >
                     <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
@@ -106,23 +108,23 @@
     <div id="addOrderModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form id="addProductForm">
+            <form id="addProductForm" method="post" th:object="${orderDTO}" action="/order">>
                 <h1 style="text-align: center">수주 등록</h1>
-                <select name="" id="setProduct">
-                    <option disabled selected>제품명</option>
-                    <option value="">양배추즙</option>
-                    <option value="">흑마늘즙</option>
-                    <option value="">석류젤리스틱</option>
-                    <option value="">매실젤리스틱</option>
+                <select name="productName" th:field="*{productName}" id="setProduct">
+                    <option disabled selected value="제품명">제품명</option>
+                    <option value="양배추즙">양배추즙</option>
+                    <option value="흑마늘즙">흑마늘즙</option>
+                    <option value="석류젤리스틱">석류젤리스틱</option>
+                    <option value="매실젤리스틱">매실젤리스틱</option>
                 </select>
 
-                <select name="" id="setVendor">
-                    <option disabled selected>거래처</option>
-                    <option value="">쿠팡</option>
-                    <option value="">11번가</option>
+                <select name="vendorId" id="setVendor" th:field="*{vendorId}">
+                    <option disabled selected value="거래처">거래처</option>
+                    <option value="ven-cou">쿠팡</option>
+                    <option value="ven-11">11번가</option>
                 </select>
 
-                <input type="number" placeholder="수량" id="setOrderNum">
+                <input type="number" placeholder="수량" id="setOrderNum" name="salesQty" th:field="*{salesQty}">
 
                 <div class="dateTimeBox">
                     <input type="date" id="setOrderDate" disabled>
@@ -145,12 +147,14 @@
         <div class="modal-content w600">
             <span class="close">&times;</span>
 
-            <form id="changeProductForm">
+            <form id="changeProductForm" method="post" th:object="${salesOrderFromDTO}">
+
                 <h1 style="text-align: center" >수주 확정</h1>
                 <div id="selectedInfo">
                     <!--선택한 수주 번호,제품명, 수량-->
                     <h4>선택한 수주 정보는 아래와 같습니다.</h4>
-                    <input type="hidden" id="selectedOrderIdList" >
+
+                    <input type="hidden" id="selectedOrderIdList" name="selectedOrderIdList" th:value="*{selectedOrderIdList}">
                     <div class="table-container" style="height: 200px">
                         <table id="selectedInfoTable">
                             <thead>
