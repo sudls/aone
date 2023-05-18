@@ -15,9 +15,7 @@ public class Vendor {
     // id   auto_increment
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
-    private Long vendorId;
+    private String vendorId;
 
     // 업체명
     @Column(nullable = false, length = 50)
