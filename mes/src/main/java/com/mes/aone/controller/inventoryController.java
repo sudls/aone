@@ -1,45 +1,31 @@
 package com.mes.aone.controller;
 
-import com.mes.aone.service.MaterialService;
-import lombok.AllArgsConstructor;
-
-import com.mes.aone.constant.SalesStatus;
 import com.mes.aone.constant.StockManageState;
-import com.mes.aone.dto.MaterialStorageDTO;
-import com.mes.aone.dto.MaterialStorageNumDTO;
-import com.mes.aone.dto.OrderDTO;
-
 import com.mes.aone.entity.Stock;
 import com.mes.aone.entity.StockManage;
 import com.mes.aone.repository.StockManageRepository;
 import com.mes.aone.repository.StockRepository;
 import com.mes.aone.service.StockManageService;
 import com.mes.aone.service.StockService;
-
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Controller
-@AllArgsConstructor
+//@AllArgsConstructor
 public class inventoryController {
 
-    private final MaterialService materialService;
+//    private final MaterialService materialService;
 
-    @GetMapping(value="/inventory1")
-    public String inventoryPage1(Model model){
-
-        model.addAttribute("MaterialStorage", materialService.getMaterialStorage());
-
-        model.addAttribute("Material", materialService.getMaterial());
+//    @GetMapping(value="/inventory1")
+//    public String inventoryPage1(Model model){
+//
+//        model.addAttribute("MaterialStorage", materialService.getMaterialStorage());
+//
+//        model.addAttribute("Material", materialService.getMaterial());
 
         //원자재 입출고 현황 (더미)
 //         List<MaterialStorageDTO> materialStorageDTOList = new ArrayList<>();
@@ -70,8 +56,8 @@ public class inventoryController {
 //         model.addAttribute("materialStorageNumDTOList",materialStorageNumDTOList);
 
 
-        return"pages/inventoryPage1";
-    }
+//        return"pages/inventoryPage1";
+//    }
     @GetMapping(value="/inventory2")
     public String inventoryPage2(){
         return"pages/inventoryPage2";
