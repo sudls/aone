@@ -14,7 +14,7 @@ public class StockManage {
     //id    auto_increment
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stockManageId;
 
     // 입출고날짜
@@ -29,11 +29,15 @@ public class StockManage {
     // 입출고상태
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private StockManageState stockManamgeState;
+    private StockManageState stockManageState;
 
     // 제품명 : 양배추박스, 양배추포
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_manage_name", referencedColumnName = "stock_name")
-    private Stock stockManageName;
+    @Column(nullable = false, length = 50)
+    private String stockManageName;
+
+    //stock 엔티티와 연결
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "stockId", referencedColumnName = "stockId")
+    private Stock stock;
 
 }
