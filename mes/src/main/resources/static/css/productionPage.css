@@ -1,0 +1,4 @@
+#workListTable tr:hover{
+    background-color: rgba(4,186,113,0.1);
+    cursor:pointer;
+}

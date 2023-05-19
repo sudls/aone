@@ -11,14 +11,15 @@
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
-<!--<div layout:fragment="nav"></div>-->
+
 <div layout:fragment="content" id="contentStyle">
     <div class="titlebox">
-        <h1 style="display:inline-block">수주관리</h1>
+        <h1>수주관리</h1>
         <div class="btn-box">
             <button class="bg-green" id="btnAdd">등록</button>
-            <button class="bg-orange">삭제</button>
-            <button class="bg-blue">확정</button>
+            <button class="bg-blue" id="btnConfirm">확정</button>
+            <button class="bg-orange" id="btnCancel">취소</button>
+            <button class="bg-red" id="btnDel">삭제</button>
         </div>
     </div>
 
@@ -38,8 +39,11 @@
             <option value="">11번가</option>
         </select>
 
-        <input type="date">~
-        <input type="date">
+        <div class="periodBox">
+            <input type="date">
+            <span>~</span>
+            <input type="date">
+        </div>
 
         <select name="" id="state">
             <option disabled selected>주문상태</option>
@@ -72,7 +76,8 @@
             <tbody>
             <tr th:each="orderDTO, status: ${orderDTOList}">
                 <td>
-                    <input type="checkbox" onclick="toggleSelectedRow(this)">
+                    <input th:if="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" onclick="toggleSelectedRow(this)">
+                    <input th:unless="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" disabled>
                 </td>
                 <td th:text="${orderDTO.salesOrderId}"></td>
                 <td th:text="${orderDTO.productName}"></td>
@@ -84,13 +89,15 @@
                     <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
                 </td>
                 <td th:text="${orderDTO.salesQty}"></td>
-                <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
-                <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
+                <td></td>
+                <td></td>
+<!--                <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>-->
+<!--                <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>-->
 
                 <td >
-                    <span th:if="${orderDTO.salesStatus.name() == 'A'}">대기</span>
-                    <span th:if="${orderDTO.salesStatus.name() == 'B'}">확정</span>
-                    <span th:if="${orderDTO.salesStatus.name() == 'C'}">취소</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff834c">취소</span>
                 </td>
             </tr>
 
@@ -101,23 +108,23 @@
     <div id="addOrderModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form id="addProductForm">
+            <form id="addProductForm" method="post" th:object="${orderDTO}" action="/order">>
                 <h1 style="text-align: center">수주 등록</h1>
-                <select name="" id="setProduct">
-                    <option disabled selected>제품명</option>
-                    <option value="">양배추즙</option>
-                    <option value="">흑마늘즙</option>
-                    <option value="">석류젤리스틱</option>
-                    <option value="">매실젤리스틱</option>
+                <select name="productName" th:field="*{productName}" id="setProduct">
+                    <option disabled selected value="제품명">제품명</option>
+                    <option value="양배추즙">양배추즙</option>
+                    <option value="흑마늘즙">흑마늘즙</option>
+                    <option value="석류젤리스틱">석류젤리스틱</option>
+                    <option value="매실젤리스틱">매실젤리스틱</option>
                 </select>
 
-                <select name="" id="setVendor">
-                    <option disabled selected>거래처</option>
-                    <option value="">쿠팡</option>
-                    <option value="">11번가</option>
+                <select name="vendorId" id="setVendor" th:field="*{vendorId}">
+                    <option disabled selected value="거래처">거래처</option>
+                    <option value="ven-cou">쿠팡</option>
+                    <option value="ven-11">11번가</option>
                 </select>
 
-                <input type="number" placeholder="수량" id="setOrderNum">
+                <input type="number" placeholder="수량" id="setOrderNum" name="salesQty" th:field="*{salesQty}">
 
                 <div class="dateTimeBox">
                     <input type="date" id="setOrderDate" disabled>
@@ -126,7 +133,7 @@
 
 
                 <div class="modalBtn">
-                    <button id="closeBtn">취소</button>
+                    <button id="closeAddModal" type="reset">취소</button>
                     <button class="bg-green" type="submit">확정</button>
                 </div>
 
@@ -135,6 +142,45 @@
     </div>
 
 
+
+    <div id="changeOrderModal" class="modal">
+        <div class="modal-content w600">
+            <span class="close">&times;</span>
+
+            <form id="changeProductForm" method="post" th:object="${salesOrderFromDTO}">
+
+                <h1 style="text-align: center" >수주 확정</h1>
+                <div id="selectedInfo">
+                    <!--선택한 수주 번호,제품명, 수량-->
+                    <h4>선택한 수주 정보는 아래와 같습니다.</h4>
+
+                    <input type="hidden" id="selectedOrderIdList" name="selectedOrderIdList" th:value="*{selectedOrderIdList}">
+                    <div class="table-container" style="height: 200px">
+                        <table id="selectedInfoTable">
+                            <thead>
+                            <tr>
+                                <th>수주번호</th>
+                                <th>제품명</th>
+                                <th>수량(box)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>선택한 수주를 <span id="changeText">확정</span>하시겠습니까?</h4>
+                </div>
+                <div class="modalBtn ">
+                    <button id="closeChangeModal" type="reset">취소</button>
+                    <button id="okChangeModal" type="submit">확정</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
 
 
 </div>

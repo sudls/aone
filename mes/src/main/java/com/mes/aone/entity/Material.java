@@ -19,7 +19,9 @@ public class Material implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long materialId;    // 자재테이블 고유ID
 
+
     @Column(name = "material_name", length = 50, nullable = false)
+
     private String materialName; // 자재명
 
     @Column(nullable = false)
