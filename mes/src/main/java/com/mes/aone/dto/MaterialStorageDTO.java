@@ -5,6 +5,7 @@ import com.mes.aone.entity.Stock;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.beans.Transient;
 import java.time.LocalDateTime;
 
 @Getter@Setter

@@ -55,9 +55,4 @@ public class StockManageService {
 
         stockRepository.save(stock); // 변경된 Stock 엔티티 저장
     }
-
-    public List<StockManage> getStockByProductName(String stockManageName) {
-        // productName에 해당하는 stockmanageList를 조회하는 로직을 구현합니다.
-        return stockManageRepository.findByStockManageName(stockManageName);
-    }
 }

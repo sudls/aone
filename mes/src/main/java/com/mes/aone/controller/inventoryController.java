@@ -23,12 +23,12 @@ import java.util.Random;
 
 @Controller
 public class inventoryController {
-    @GetMapping(value="/inventory1")
-    public String inventoryPage1(Model model){
+    @GetMapping(value = "/inventory1")
+    public String inventoryPage1(Model model) {
         //원자재 입출고 현황 (더미)
         List<MaterialStorageDTO> materialStorageDTOList = new ArrayList<>();
 
-        String[] materialNames = {"양배추","콜라겐", "흑마늘", "벌꿀", "석류액기스", "매실액기스", "스틱파우치", "파우치","박스"};
+        String[] materialNames = {"양배추", "콜라겐", "흑마늘", "벌꿀", "석류액기스", "매실액기스", "스틱파우치", "파우치", "박스"};
 
         Random random = new Random();
 
@@ -41,23 +41,24 @@ public class inventoryController {
             materialStorageDTO.setMStorageDate(LocalDateTime.now());
             materialStorageDTOList.add(materialStorageDTO);
         }
-        model.addAttribute("materialStorageDTOList",materialStorageDTOList);
+        model.addAttribute("materialStorageDTOList", materialStorageDTOList);
 
         //원자재 총 수량(더미)
         List<MaterialStorageNumDTO> materialStorageNumDTOList = new ArrayList<>();
-        for (int i=0; i<9; i++){
+        for (int i = 0; i < 9; i++) {
             MaterialStorageNumDTO materialStorageNumDTO = new MaterialStorageNumDTO();
             materialStorageNumDTO.setMaterialName(materialNames[i]);
             materialStorageNumDTO.setMaterialQty(random.nextInt(1000));
             materialStorageNumDTOList.add(materialStorageNumDTO);
         }
-        model.addAttribute("materialStorageNumDTOList",materialStorageNumDTOList);
+        model.addAttribute("materialStorageNumDTOList", materialStorageNumDTOList);
 
-        return"pages/inventoryPage1";
+        return "pages/inventoryPage1";
     }
-    @GetMapping(value="/inventory2")
-    public String inventoryPage2(){
-        return"pages/inventoryPage2";
+
+    @GetMapping(value = "/inventory2")
+    public String inventoryPage2() {
+        return "pages/inventoryPage2";
     }
 
     private final StockRepository stockRepository;
@@ -65,14 +66,15 @@ public class inventoryController {
     private final StockManageRepository stockManageRepository;
 
     private final StockService stockService;
+
     public inventoryController(StockRepository stockRepository, StockManageService stockManageService, StockManageRepository stockManageRepository, StockService stockService) {
         this.stockRepository = stockRepository;
         this.stockManageService = stockManageService;
         this.stockManageRepository = stockManageRepository;
-        this.stockService=stockService;
+        this.stockService = stockService;
     }
     //완제품 총 수량 조회 , 완제품 입출고 내역 조회
-/*    @GetMapping(value="/inventory3")
+    @GetMapping(value="/inventory3")
     public String inventoryPage3(Model model){
         List<Stock> stockList = stockRepository.findAll();
         model.addAttribute("stockList", stockList);
@@ -81,10 +83,10 @@ public class inventoryController {
         model.addAttribute("stockManageList", stockManageList);
 
         return"pages/inventoryPage3";
-    }*/
+    }
 
     //완제품 입출고 내역 조회 및 필터링
-    @GetMapping(value = "/inventory3")
+    @GetMapping(value = "/inventory3/search")
     public String inventoryPage3(
             @RequestParam(value = "searchProduct", required = false) String searchProduct,
             @RequestParam(value = "searchState", required = false) StockManageState searchState,
@@ -107,6 +109,4 @@ public class inventoryController {
 
         return "pages/inventoryPage3";
     }
-
-
 }
