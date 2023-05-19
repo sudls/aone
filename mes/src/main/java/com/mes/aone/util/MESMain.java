@@ -24,8 +24,9 @@ public class MESMain {
 //        System.out.println("입력한 수주량: " + salesAmount);
 //        scanner.nextLine(); // 버퍼 비우기
 //        scanner.close();
+
         String productName = "양배추즙";
-        int salesAmount = 900;
+        int salesAmount = 1500;
 
         mesInfo.setProductName(productName); // 수주제품명
         mesInfo.setSalesQty(salesAmount); // 수주량

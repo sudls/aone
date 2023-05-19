@@ -18,17 +18,17 @@ import java.util.List;
 
     //수주 정보
     String productName = "";
-    double salesQty = 0;
+    int salesQty = 0;
 
     //원자재 발주량
-    double cabbage = 0;
-    double garlic = 0;
-    double pomegranate = 0;
-    double plum = 0;
-    double Collagen = 0;
-    double box = 0;
-    double pouch = 0;
-    double stickPouch = 0;
+    int cabbage = 0;
+    int garlic = 0;
+    int pomegranate = 0;
+    int plum = 0;
+    int Collagen = 0;
+    int box = 0;
+    int pouch = 0;
+    int stickPouch = 0;
 
     //리드 타임
     int leadMeasurement = 20;
@@ -40,6 +40,7 @@ import java.util.List;
 
     // 공정 완료 시간
     LocalDateTime measurement = null;
+    LocalDateTime preProcessing = null;
 
 
 
