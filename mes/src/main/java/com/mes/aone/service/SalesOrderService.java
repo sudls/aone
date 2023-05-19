@@ -5,8 +5,12 @@ import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -55,5 +59,10 @@ public class SalesOrderService {
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
             salesOrderRepository.delete(salesOrder);
         }
+    }
+
+    // 수주 기간 검색
+    public Page<SalesOrder> searchSalesOrder(Pageable pageable, LocalDateTime startDateTime, LocalDateTime endDateTime){
+        return salesOrderRepository.searchAllById(pageable, startDateTime, endDateTime);
     }
 }
