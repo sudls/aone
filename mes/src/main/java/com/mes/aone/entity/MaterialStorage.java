@@ -27,9 +27,14 @@ public class MaterialStorage {
     private Integer materialQty;        // 자재 수량
 
     @Column(nullable = false)
+    private String unit;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private State mStorageState;        // 입출고상태
 
     @Column(nullable = false)
     private Date mStorageDate;          // 입출고 날짜
+
+
 }
