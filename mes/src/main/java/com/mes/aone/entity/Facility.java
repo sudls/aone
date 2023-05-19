@@ -15,6 +15,10 @@ import javax.persistence.*;
 public class Facility {
 
     @Id
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
+
     private String facilityId;
 
     @Column(length = 50, nullable = false)

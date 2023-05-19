@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Getter
@@ -12,19 +13,19 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name= "material")
-public class
-Material {
+public class Material implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long materialId;    // 자재테이블 고유ID
 
-    @Column(length = 50, nullable = false, name = "material_name")
+
+    @Column(name = "material_name", length = 50, nullable = false)
+
     private String materialName; // 자재명
 
     @Column(nullable = false)
     private Integer materialLeadtime; // 자재별 리드타임(주문준비시간)
-
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")

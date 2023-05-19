@@ -86,7 +86,16 @@
             </thead>
             <tbody>
 
-            <tr th:each="materialStorageDTO, status: ${materialStorageDTOList}">
+            <tr th:each="materialStorage : ${MaterialStorage}">
+                <td th:text="${materialStorage.materialStorageId}"></td>
+                <td th:text="${materialStorage.materialName.materialName}"></td>
+                <td th:text="${materialStorage.MStorageState}"></td>
+                <td th:text="${materialStorage.materialQty}"></td>
+                <td th:text="${materialStorage.unit}"></td>
+                <td th:text="${materialStorage.MStorageDate}"></td>
+
+
+<!--             <tr th:each="materialStorageDTO, status: ${materialStorageDTOList}">
                 <td th:text="${materialStorageDTO.materialName}"></td>
                 <td>
                     <span th:if="${materialStorageDTO.getMStorageState().name()== 'I'}">입고</span>
@@ -95,7 +104,8 @@
 
                 <td th:text="${materialStorageDTO.materialQty}"></td>
                 <td th:text="${materialStorageDTO.materialUnit}"></td>
-                <td th:text="${#temporals.format(materialStorageDTO.getMStorageDate(), 'yy/MM/dd　hh:mm')}"></td>
+                <td th:text="${#temporals.format(materialStorageDTO.getMStorageDate(), 'yy/MM/dd　hh:mm')}"></td> -->
+
             </tr>
 
             </tbody>
