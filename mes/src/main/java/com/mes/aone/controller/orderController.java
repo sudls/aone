@@ -1,5 +1,7 @@
 package com.mes.aone.controller;
 
+import com.mes.aone.constant.SalesStatus;
+import com.mes.aone.contant.Status;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
@@ -31,6 +33,7 @@ public class orderController {
     private final SalesOrderRepository salesOrderRepository;
 
 
+    //기본 조회 리스트
     @GetMapping(value="/order")
     public String orderPage(Model model){
 
@@ -42,21 +45,21 @@ public class orderController {
     }
 
     // 수주기간 검색
-    @GetMapping(value="/order/search")
-    public String searchOrder(Pageable pageable, @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-                              @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, Model model){
-        LocalDateTime startDateTime = null;
-        LocalDateTime endDateTime = null;
-        if(startDate != null && endDate != null){
-            startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
-            endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
-        }
+    // @GetMapping(value="/order/search")
+    // public String searchOrder(Pageable pageable, @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+    //                           @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, Model model){
+    //     LocalDateTime startDateTime = null;
+    //     LocalDateTime endDateTime = null;
+    //     if(startDate != null && endDate != null){
+    //         startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
+    //         endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
+    //     }
 
 
-        Page<SalesOrder> searchResults = salesOrderService.searchSalesOrder(pageable, startDateTime, endDateTime);
-        model.addAttribute("searchResults", searchResults);
-        return"pages/orderPage";
-    }
+    //     Page<SalesOrder> searchResults = salesOrderService.searchSalesOrder(pageable, startDateTime, endDateTime);
+    //     model.addAttribute("searchResults", searchResults);
+    //     return"pages/orderPage";
+    // }
 
 
 
@@ -73,6 +76,50 @@ public class orderController {
 //        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
 //        return"pages/orderPage";
 //    }
+
+    //조건 검색
+    @GetMapping(value="/order/search")
+    public String orderPage(
+            @RequestParam(value = "searchProduct", required = false) String searchProduct,
+            @RequestParam(value = "searchVendor", required = false) String searchVendor,
+            @RequestParam(value = "searchState", required = false) Status searchState,
+            Model model){
+
+        List<SalesOrder> salesOrderList;
+
+        if (searchProduct != null && !searchProduct.isEmpty() && searchVendor != null && !searchVendor.isEmpty() && searchState != null) {
+            // 모든 검색 조건이 제공된 경우
+            salesOrderList = salesOrderRepository.findByProductNameAndVendorIdAndSalesStatus(searchProduct, searchVendor, searchState);
+        } else if (searchProduct != null && !searchProduct.isEmpty() && searchVendor != null && !searchVendor.isEmpty()) {
+            // 제품명과 거래처로 검색한 경우
+            salesOrderList = salesOrderRepository.findByProductNameAndVendorId(searchProduct, searchVendor);
+        } else if (searchProduct != null && !searchProduct.isEmpty() && searchState != null) {
+            // 제품명과 수주상태로 검색한 경우
+            salesOrderList = salesOrderRepository.findByProductNameAndSalesStatus(searchProduct, searchState);
+        } else if (searchVendor != null && !searchVendor.isEmpty() && searchState != null) {
+            // 거래처와 수주상태로 검색한 경우
+            salesOrderList = salesOrderRepository.findByVendorIdAndSalesStatus(searchVendor, searchState);
+        } else if (searchProduct != null && !searchProduct.isEmpty()) {
+            // 제품명으로 검색한 경우
+            salesOrderList = salesOrderRepository.findByProductName(searchProduct);
+        } else if (searchVendor != null && !searchVendor.isEmpty()) {
+            // 거래처로 검색한 경우
+            salesOrderList = salesOrderRepository.findByVendorId(searchVendor);
+        } else if (searchState != null) {
+            // 수주상태로 검색한 경우
+            salesOrderList = salesOrderRepository.findBySalesStatus(searchState);
+        } else {
+            // 모든 검색 조건이 제공되지 않은 경우
+            salesOrderList = salesOrderRepository.findAll();
+        }
+
+        model.addAttribute("orderDTOList", salesOrderList);
+        model.addAttribute("orderDTO", new OrderDTO());
+        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
+
+        return "pages/orderPage";
+    }
+
 
     // 수주 등록
     @PostMapping(value="/order")
@@ -131,4 +178,7 @@ public class orderController {
         }
         return "redirect:/order";
     }
+
+    //수주 정보 검색
+
 }

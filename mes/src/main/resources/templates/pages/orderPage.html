@@ -13,7 +13,8 @@
     <body>
     <div th:replace="fragments/nav::nav"></div>
 
-    <div layout:fragment="content" id="contentStyle">
+
+    <!-- <div layout:fragment="content" id="contentStyle">
         <div class="titlebox">
             <h1>수주관리</h1>
             <div class="btn-box">
@@ -32,7 +33,48 @@
 <!--                <option value="흑마늘즙">흑마늘즙</option>-->
 <!--                <option value="석류젤리스틱">석류젤리스틱</option>-->
 <!--                <option value="매실젤리스틱">매실젤리스틱</option>-->
-<!--            </select>-->
+          <!--   </select> -->
+
+<div layout:fragment="content" id="contentStyle">
+    <div class="titlebox">
+        <h1>수주관리</h1>
+        <div class="btn-box">
+            <button class="bg-green" id="btnAdd">등록</button>
+            <button class="bg-blue" id="btnConfirm">확정</button>
+            <button class="bg-orange" id="btnCancel">취소</button>
+            <button class="bg-red" id="btnDel">삭제</button>
+        </div>
+    </div>
+
+    <hr>
+    <form id="searchForm" method="get" action="/order/search">
+        <select name="searchProduct" id="productname">
+            <option disabled selected>제품명</option>
+            <option value="양배추즙">양배추즙</option>
+            <option value="흑마늘즙">흑마늘즙</option>
+            <option value="석류젤리스틱">석류젤리스틱</option>
+            <option value="매실젤리스틱">매실젤리스틱</option>
+        </select>
+
+        <select name="searchVendor" id="vendor">
+            <option disabled selected>거래처</option>
+            <option value="ven-cou">쿠팡</option>
+            <option value="ven-11">11번가</option>
+        </select>
+
+        <div class="periodBox">
+            <input type="date">
+            <span>~</span>
+            <input type="date">
+        </div>
+
+        <select name="searchState" id="state">
+            <option disabled selected>주문상태</option>
+            <option value="A">대기</option>
+            <option value="B">확정</option>
+            <option value="C">취소</option>
+        </select>
+
 
 <!--            <select name="vendor" id="vendor">-->
 <!--                <option disabled selected>거래처</option>-->

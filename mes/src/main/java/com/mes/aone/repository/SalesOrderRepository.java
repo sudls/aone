@@ -1,5 +1,6 @@
 package com.mes.aone.repository;
 
+import com.mes.aone.contant.Status;
 import com.mes.aone.entity.SalesOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,20 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, Long> {
 
     @Query("SELECT s FROM SalesOrder s WHERE s.salesDate BETWEEN :startDate AND :endDate ")
     Page<SalesOrder> searchAllById(Pageable pageable, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+
+    List<SalesOrder> findByProductName(String productName);
+    List<SalesOrder> findByVendorId(String vendorID);
+
+    List<SalesOrder> findBySalesStatus(Status salesStatus );
+
+    List<SalesOrder> findByProductNameAndSalesStatus(String productName, Status salesStatus);
+
+    List<SalesOrder> findByProductNameAndVendorIdAndSalesStatus(String productName, String vendorID, Status salesStatus);
+
+    List<SalesOrder> findByProductNameAndVendorId(String productName, String vendorID);
+
+    List<SalesOrder> findByVendorIdAndSalesStatus(String vendorID,Status salesStatus );
 
 
 }
