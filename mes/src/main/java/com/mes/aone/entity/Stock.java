@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter @ToString
@@ -22,5 +24,9 @@ public class Stock {
     // 수량
     @Column(nullable = false)
     private int stockQty;
+
+    // stockmanage랑 연결
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
+    private List<StockManage> stockManageList = new ArrayList<>();
 
 }

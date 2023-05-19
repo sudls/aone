@@ -42,22 +42,22 @@
 
     <h1>원자재 입출고 현황</h1>
     <div style="margin-bottom: 20px;">
-        <form action="">
-            <select name="" id="option1">
+        <form action="/inventory3/search" method="get">
+            <select name="searchMaterial" id="option1">
                 <option disabled selected>자재명</option>
-                <option value="">양배추</option>
-                <option value="">흑마늘</option>
-                <option value="">석류액기스</option>
-                <option value="">매실액기스</option>
-                <option value="">콜라겐</option>
-                <option value="">파우치</option>
-                <option value="">스틱파우치</option>
-                <option value="">박스</option>
+                <option value="양배추">양배추</option>
+                <option value="흑마늘">흑마늘</option>
+                <option value="석류액기스">석류액기스</option>
+                <option value="매실액기스">매실액기스</option>
+                <option value="콜라겐">콜라겐</option>
+                <option value="파우치">파우치</option>
+                <option value="스틱파우치">스틱파우치</option>
+                <option value="박스">박스</option>
             </select>
-            <select name="" id="option2">
+            <select name="searchState" id="option2">
                 <option disabled selected>입출고 상태</option>
-                <option value="">입고</option>
-                <option value="">출고</option>
+                <option value="I">입고</option>
+                <option value="O">출고</option>
             </select>
 
             <div class="periodBox">
@@ -69,7 +69,7 @@
 
             <button type="submit">검색</button>
             <button class="bg-green" style="float: right" type="button"
-                    onclick="downloadTablesAsExcel()">Execl 다운로드</button>
+                    onclick="downloadTablesAsExcel()">Excel 다운로드</button>
         </form>
     </div>
 

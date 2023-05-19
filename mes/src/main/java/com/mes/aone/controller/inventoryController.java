@@ -9,9 +9,19 @@ import com.mes.aone.dto.MaterialStorageDTO;
 import com.mes.aone.dto.MaterialStorageNumDTO;
 import com.mes.aone.dto.OrderDTO;
 
+import com.mes.aone.entity.Stock;
+import com.mes.aone.entity.StockManage;
+import com.mes.aone.repository.StockManageRepository;
+import com.mes.aone.repository.StockRepository;
+import com.mes.aone.service.StockManageService;
+import com.mes.aone.service.StockService;
+
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,8 +77,53 @@ public class inventoryController {
         return"pages/inventoryPage2";
     }
 
-    @GetMapping(value="/inventory3")
-    public String inventoryPage3(){
-        return"pages/inventoryPage3";
+    private final StockRepository stockRepository;
+    private final StockManageService stockManageService;
+    private final StockManageRepository stockManageRepository;
+
+    private final StockService stockService;
+    public inventoryController(StockRepository stockRepository, StockManageService stockManageService, StockManageRepository stockManageRepository, StockService stockService) {
+        this.stockRepository = stockRepository;
+        this.stockManageService = stockManageService;
+        this.stockManageRepository = stockManageRepository;
+        this.stockService=stockService;
     }
+    //완제품 총 수량 조회 , 완제품 입출고 내역 조회
+/*    @GetMapping(value="/inventory3")
+    public String inventoryPage3(Model model){
+        List<Stock> stockList = stockRepository.findAll();
+        model.addAttribute("stockList", stockList);
+
+        List<StockManage> stockManageList = stockManageService.getAllStockManage();
+        model.addAttribute("stockManageList", stockManageList);
+
+        return"pages/inventoryPage3";
+    }*/
+
+    //완제품 입출고 내역 조회 및 필터링
+    @GetMapping(value = "/inventory3")
+    public String inventoryPage3(
+            @RequestParam(value = "searchProduct", required = false) String searchProduct,
+            @RequestParam(value = "searchState", required = false) StockManageState searchState,
+            Model model
+    ) {
+        List<Stock> stockList = stockRepository.findAll();
+        model.addAttribute("stockList", stockList);
+
+        List<StockManage> stockManageList;
+        if (searchProduct != null && !searchProduct.isEmpty() && searchState != null) {
+            stockManageList = stockManageRepository.findByStockManageNameContainingAndStockManageState(searchProduct, searchState);
+        } else if (searchProduct != null && !searchProduct.isEmpty()) {
+            stockManageList = stockManageRepository.findByStockManageNameContaining(searchProduct);
+        } else if (searchState != null) {
+            stockManageList = stockManageRepository.findByStockManageState(searchState);
+        } else {
+            stockManageList = stockManageRepository.findAll();
+        }
+        model.addAttribute("stockManageList", stockManageList);
+
+        return "pages/inventoryPage3";
+    }
+
+
 }

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
 <head>
   <meta charset="UTF-8">
   <title>aone-재고관리</title>
@@ -8,6 +10,7 @@
   <link th:href="@{/css/inventoryPage.css}" rel="stylesheet">
   <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
 </head>
+
 <body>
 <div th:replace="fragments/nav::nav"></div>
 <!--<div layout:fragment="nav"></div>-->
@@ -23,47 +26,38 @@
     </thead>
 
     <tbody>
-    <tr>
-      <td>양배추즙</td>
-      <td>/box</td>
-      <td>/ea</td>
+    <tr th:each="stock : ${stockList}">
+      <td th:text="${stock.stockName}"></td>
+      <td>
+        <span th:if="${stock.stockName.contains('젤')}" th:text="${stock.stockQty div 25}"></span>
+        <span th:unless="${stock.stockName.contains('젤')}" th:text="${stock.stockQty div 30}"></span>
+      /box</td>
+      <td>
+        <span th:if="${stock.stockName.contains('젤')}" th:text="${stock.stockQty % 25}"></span>
+        <span th:unless="${stock.stockName.contains('젤')}" th:text="${stock.stockQty % 30}"></span>
+        /ea</td>
     </tr>
-    <tr>
-      <td>흑마늘즙</td>
-      <td>/box</td>
-      <td>/ea</td>
-    </tr>
-    <tr>
-      <td>석류젤리스틱</td>
-      <td>/box</td>
-      <td>/ea</td>
-    </tr>
-    <tr>
-      <td>매실젤리스틱</td>
-      <td>/box</td>
-      <td>/ea</td>
-    </tr>
-
     </tbody>
+
   </table>
 
   <hr>
 
   <h1>재고 입출고 현황</h1>
   <div style="margin-bottom: 20px;">
-    <form action="">
-      <select name="" id="option1">
+    <form id="searchForm" method="get">
+      <select name="searchProduct" id="option1">
         <option disabled selected>제품명</option>
-        <option value="">양배추즙</option>
-        <option value="">흑마늘즙</option>
-        <option value="">석류젤리스틱</option>
-        <option value="">매실젤리스틱</option>
+        <option value="양배추즙">양배추즙</option>
+        <option value="흑마늘즙">흑마늘즙</option>
+        <option value="석류젤리스틱">석류젤리스틱</option>
+        <option value="매실젤리스틱">매실젤리스틱</option>
       </select>
 
-      <select name="" id="option2">
+      <select name="searchState" id="option2">
         <option disabled selected>입출고 상태</option>
-        <option value="">입고</option>
-        <option value="">출고</option>
+        <option value="I">입고</option>
+        <option value="O">출고</option>
       </select>
 
       <div class="periodBox">
@@ -71,7 +65,6 @@
         <span>~</span>
         <input type="date">
       </div>
-
 
       <button type="submit">검색</button>
       <button class="bg-green" style="float: right" type="button"
@@ -90,14 +83,24 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>양배추즙</td>
-      <td>25 /box</td>
-      <td>10 /ea</td>
-      <td>입고</td>
-      <td>23.12.12</td>
-    </tr>
+    <tr th:each="stockManage : ${stockManageList}">
+      <td th:text="${stockManage.stockManageName}"></td>
 
+      <td>
+        <span th:if="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty div 25}"></span>
+        <span th:unless="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty div 30}"></span>
+        /box</td>
+      <td>
+        <span th:if="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty % 25}"></span>
+        <span th:unless="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty % 30}"></span>
+        /ea</td>
+
+      <td>
+        <span th:if="${stockManage.stockManageState.name()=='I'}">입고</span>
+        <span th:if="${stockManage.stockManageState.name()=='O'}">출고</span>
+      </td>
+      <td th:text="${#temporals.format(stockManage.stockDate, 'yy/MM/dd')}"></td>
+    </tr>
     </tbody>
   </table>
   </div>
