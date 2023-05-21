@@ -19,30 +19,30 @@
     </div>
     <hr>
     <div style="margin-bottom: 20px;">
-        <form action="">
-            <input type="text" placeholder="발주번호">
-            <select name="" id="option1">
+        <form method="get" action="/inventory2/search">
+            <input type="text" placeholder="발주번호" name="searchPurchaseOrderId">
+            <select name="searchMaterial" id="option1">
                 <option disabled selected>원자재명</option>
-                <option value="">양배추</option>
-                <option value="">흑마늘</option>
-                <option value="">석류액기스</option>
-                <option value="">매실액기스</option>
-                <option value="">콜라겐</option>
-                <option value="">파우치</option>
-                <option value="">스틱파우치</option>
-                <option value="">박스</option>
+                <option value="1">양배추</option>
+                <option value="2">흑마늘</option>
+                <option value="3">석류액기스</option>
+                <option value="4">매실액기스</option>
+                <option value="5">콜라겐</option>
+                <option value="6">파우치</option>
+                <option value="7">스틱파우치</option>
+                <option value="8">박스</option>
             </select>
-            <select name="" id="option2">
+            <select name="searchVendor" id="option2">
                 <option disabled selected>거래처</option>
-                <option value="">에이농장</option>
-                <option value="">OO농협</option>
-                <option value="">OO포장</option>
+                <option value="ven-a">에이농장</option>
+                <option value="ven-nh">OO농협</option>
+                <option value="ven-po">OO포장</option>
             </select>
 
             <div class="periodBox">
-                <input type="date">
+                <input type="date" id="purchaseStartDate" name="purchaseStartDate">
                 <span>~</span>
-                <input type="date">
+                <input type="date" id="purchaseEndDate" name="purchaseEndDate">
             </div>
 
 
@@ -65,15 +65,34 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>123123</td>
-            <td>양배추</td>
-            <td>에이농장</td>
-            <td>222</td>
-            <td>23.12.12</td>
-            <td>23.12.14</td>
+        <tr th:each="purchaseOrderDTO, status: ${purchaseOrderDTOList}">
+            <td th:text="${purchaseOrderDTO.purchaseOrderId}"></td>
+            <td th:text="${purchaseOrderDTO.materialName.materialName}"></td>
+            <td>
+                <span th:if="${purchaseOrderDTO.vendorId == 'ven-11'}">11번가</span>
+                <span th:if="${purchaseOrderDTO.vendorId == 'ven-cou'}">쿠팡</span>
+                <span th:if="${purchaseOrderDTO.vendorId == 'ven-a'}">에이농장</span>
+                <span th:if="${purchaseOrderDTO.vendorId == 'ven-nh'}">○○농협</span>
+                <span th:if="${purchaseOrderDTO.vendorId == 'ven-po'}">○○포장</span>
+            </td>
+            <td th:text="${purchaseOrderDTO.purchaseQty}"></td>
+            <td></td>
+            <td></td>
+<!--            <td>23.12.12</td>-->
+<!--            <td>23.12.14</td>-->
 
         </tr>
+
+
+<!--        <tr>-->
+<!--            <td>123123</td>-->
+<!--            <td>양배추</td>-->
+<!--            <td>에이농장</td>-->
+<!--            <td>222</td>-->
+<!--            <td>23.12.12</td>-->
+<!--            <td>23.12.14</td>-->
+
+<!--        </tr>-->
 
         </tbody>
     </table>
