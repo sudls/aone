@@ -15,10 +15,16 @@ import com.mes.aone.service.MaterialService;
 import com.mes.aone.service.PurchaseOrderService;
 import com.mes.aone.service.StockManageService;
 import com.mes.aone.service.StockService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +36,11 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Controller
+
 @RequiredArgsConstructor
 //@AllArgsConstructor
+
+
 public class inventoryController {
 
 
@@ -89,6 +98,7 @@ public class inventoryController {
     private final StockManageRepository stockManageRepository;
     private final StockService stockService;
 
+
     private final MaterialStorageRepository materialStorageRepository;
 
     @Autowired
@@ -105,6 +115,9 @@ public class inventoryController {
         this.materialStorageRepository = materialStorageRepository;
         this.purchaseOrderService = purchaseOrderService;
         this.purchaseOrderRepository = purchaseOrderRepository;
+        this.materialService = materialService;
+
+
     }
 
 
