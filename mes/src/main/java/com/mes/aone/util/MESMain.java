@@ -25,7 +25,7 @@ public class MESMain {
 //        scanner.nextLine(); // 버퍼 비우기
 //        scanner.close();
 
-        String productName = "양배추즙";
+        String productName = "흑마늘즙";
         int salesAmount = 1500;
 
         mesInfo.setProductName(productName); // 수주제품명
@@ -37,6 +37,8 @@ public class MESMain {
         calculator.measurement(); // 원료계량 메서드 실행
         
         calculator.preProcessing(); // 전처리 메서드 실행
+
+        calculator.extraction(); // 추출 메서드 실행
 
     }
 

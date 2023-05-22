@@ -17,7 +17,7 @@ import com.mes.aone.service.StockManageService;
 import com.mes.aone.service.StockService;
 
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +29,8 @@ import java.util.List;
 import java.util.Random;
 
 @Controller
-@AllArgsConstructor
 public class inventoryController {
 
-    private final MaterialService materialService;
 
     @GetMapping(value="/inventory1")
     public String inventoryPage1(Model model){
@@ -82,11 +80,14 @@ public class inventoryController {
     private final StockManageRepository stockManageRepository;
 
     private final StockService stockService;
-    public inventoryController(StockRepository stockRepository, StockManageService stockManageService, StockManageRepository stockManageRepository, StockService stockService) {
+    private final MaterialService materialService;
+    public inventoryController(StockRepository stockRepository, StockManageService stockManageService, StockManageRepository stockManageRepository, StockService stockService, MaterialService materialService) {
         this.stockRepository = stockRepository;
         this.stockManageService = stockManageService;
         this.stockManageRepository = stockManageRepository;
         this.stockService=stockService;
+        this.materialService = materialService;
+
     }
     //완제품 총 수량 조회 , 완제품 입출고 내역 조회
 /*    @GetMapping(value="/inventory3")
