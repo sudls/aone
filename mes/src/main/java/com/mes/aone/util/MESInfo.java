@@ -48,13 +48,18 @@ import java.util.List;
     LocalDateTime fill = null; // 충진 완료시간
     LocalDateTime packaging = null; // 포장 완료시간
 
+    LocalDateTime pastPreProcessingMachine = LocalDateTime.of(2023,5,19,6,0,0);
+    LocalDateTime pastExtractionMachine1 = LocalDateTime.of(2023,5,23,6,0,0);
+    LocalDateTime pastExtractionMachine2 = LocalDateTime.of(2023,5,23,7,0,0);
+    LocalDateTime pastFillingMachine1 = LocalDateTime.of(2023,5,19,6,0,0);
+    LocalDateTime pastFillingMachine2 = LocalDateTime.of(2023,5,19,6,0,0);
 
-
-
-
-
-
-
+    // 현재 설비별 공정 계획
+    List<LocalDateTime> nowPreProcessingMachine = new ArrayList<>();
+    List<LocalDateTime> nowExtractionMachine1 = new ArrayList<>();
+    List<LocalDateTime> nowExtractionMachine2 = new ArrayList<>();
+    List<LocalDateTime> nowFillingMachine1 = new ArrayList<>();
+    List<LocalDateTime> nowFillingMachine2 = new ArrayList<>();
 
 
    public MESInfo() {

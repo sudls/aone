@@ -1,6 +1,7 @@
 package com.mes.aone.util;
 
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class MESMain {
@@ -8,8 +9,8 @@ public class MESMain {
         MESInfo mesInfo = new MESInfo();
         Calculator calculator = new Calculator(mesInfo);
 
-        String productName = "석류젤리스틱"; // 제품명 입력
-        int salesAmount = 1500; // 제품량 입력
+        String productName = "양배추즙"; // 제품명 입력
+        int salesAmount = 3000; // 제품량 입력
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
@@ -32,6 +33,9 @@ public class MESMain {
             calculator.extraction(); // 추출 메서드 실행
         }
 
+        System.out.println(mesInfo.nowPreProcessingMachine);
+        System.out.println(mesInfo.nowExtractionMachine1);
+        System.out.println(mesInfo.nowExtractionMachine2);
 
     }
 

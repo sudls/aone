@@ -5,6 +5,7 @@ import java.sql.SQLOutput;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 public class Calculator {
@@ -54,14 +55,14 @@ public class Calculator {
 
 
     void measurement(){ // 원료계량
-        LocalDateTime start = LocalDateTime.of(2023,5,19,15,0,0); // 원료계량 시작시간
+        LocalDateTime start = LocalDateTime.of(2023,5,22,16,0,0); // 원료계량 시작시간
         LocalDateTime end = start; // 원료계량 완료시간(변수) 선언;
-        end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
-        end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
+        end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+        end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
         end = end.plusMinutes(mesInfo.leadMeasurement); // 원료계량 리드타임 더하기
 
-        end = lunchAndLeaveTimeStartCheck(end); // 공정 시작 시 비근무 시간 체크(공정 시작시간 리턴)
-        end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(30), end);
+        end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
+        end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(30), end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
         end = end.plusMinutes(30); // 원료계량 작업시간 더하기
 
         mesInfo.setMeasurement(end); // 원료계량 완료시간 set
@@ -80,16 +81,18 @@ public class Calculator {
         LocalDateTime end = start; // 전처리 완료시간(변수) 선언
 
         for(int i = 1; i <= Math.ceil((double) workAmount/1000); i++){ // 작업 반복횟수 만큼 실행 ex) 2500kg 이면 3번 반복
-            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
-            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadPreProcessing), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
+            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadPreProcessing), end); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
             end = end.plusMinutes(mesInfo.leadPreProcessing); // 전처리 리드타임 더하기
 
             if (workAmount - realTimeOutput < 1000){ // 생산량이 1000kg 미만일 때 (전처리 마지막 작업 시)
-                end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
+                end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
                 end = end.plusMinutes((int) Math.ceil(workAmount%1000/1000.0*60));// 전처리 작업시간 더하기
+                mesInfo.nowPreProcessingMachine.add(end);
             }else {
-                end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
+                end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
                 end = end.plusHours(1); // 전처리 작업시간 더하기
+                mesInfo.nowPreProcessingMachine.add(end);
                 realTimeOutput = realTimeOutput + 1000; // 실시간 생산량 추가
             }
         }
@@ -114,38 +117,76 @@ public class Calculator {
         LocalDateTime start = null;
         LocalDateTime end = null;
 
-        // 제품별 공정 시간 계산
-        if (mesInfo.productName.equals("양배추즙")){
-            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
-            end = start; // 추출 완료시간(변수) 선언
+        for (int i = 0; i < mesInfo.nowPreProcessingMachine.size(); i++){ // 전처리 작업 횟수 만큼 반복
+            end = mesInfo.nowPreProcessingMachine.get(i);
+            if(mesInfo.pastExtractionMachine1.isBefore(mesInfo.pastExtractionMachine2)){ // 추출기1이 먼저 끝날 때
+                if (end.isBefore(mesInfo.pastExtractionMachine1)) { // 추출기 1의 공정계획이 있으면
+                    end = mesInfo.pastExtractionMachine1; // 추출기 1의 공정계획이 끝나는 시간에 시작
+                }
+                System.out.println("추출기1 - 추출" + i + "번째 시작시간: " + end);
+                end = lunchAndLeaveTimeStartCheck(end);
+                end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
+                end = end.plusMinutes(mesInfo.leadExtraction);
 
-            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
-            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
-            end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
+                end = lunchAndLeaveTimeStartCheck(end);
+                end = end.plusHours(72);
 
-            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
-            end = end.plusHours(72); // 추출시간 + 가열시간 더하기
-        }else if (mesInfo.productName.equals("흑마늘즙")){
-            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
-            end = start; // 추출 완료시간(변수) 선언
+                mesInfo.nowExtractionMachine1.add(end);
+                mesInfo.setPastExtractionMachine1(end);
 
-            end = lunchAndLeaveTimeStartCheck(end);
-            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
-            end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
+                System.out.println("추출기1 - 추출" + i + "번째 완료시간: " + end);
 
-            end = lunchAndLeaveTimeStartCheck(end);
-            end = end.plusHours(24).plusSeconds(3456/10*workLoad); // 추출시간 + 가열시간 더하기
-        }else { // 젤리스틱
-            start = mesInfo.getMeasurement(); // 원료계량 완료시간을 추출 시작시간으로 설정
-            end = start; // 추출 완료시간(변수) 선언
+            }else { // 추출기2가 먼저 끝날 때
+                if (end.isBefore(mesInfo.pastExtractionMachine2)) { // 추출기 1의 공정계획이 있으면
+                    end = mesInfo.pastExtractionMachine2; // 추출기 2의 공정계획이 끝나는 시간에 시작
+                }
+                System.out.println("추출기2 - 추출" + i + "번째 시작시간: " + end);
+                end = lunchAndLeaveTimeStartCheck(end);
+                end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
+                end = end.plusMinutes(mesInfo.leadExtraction);
 
-            end = lunchAndLeaveTimeStartCheck(end);
-            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMixing), end);
-            end = end.plusMinutes(mesInfo.leadMixing); // 혼합 리드타임 더하기
+                end = lunchAndLeaveTimeStartCheck(end);
+                end = end.plusHours(72);
 
-            end = lunchAndLeaveTimeStartCheck(end);
-            end = end.plusHours(8); // 가열시간 더하기
+                mesInfo.nowExtractionMachine2.add(end);
+                mesInfo.setPastExtractionMachine2(end);
+
+                System.out.println("추출기2 - 추출" + i + "번째 완료시간: " + end);
+            }
         }
+
+        // 제품별 공정 시간 계산
+//        if (mesInfo.productName.equals("양배추즙")){
+//            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
+//            end = start; // 추출 완료시간(변수) 선언
+//
+//            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+//            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
+//            end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
+//
+//            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+//            end = end.plusHours(72); // 추출시간 + 가열시간 더하기
+//        }else if (mesInfo.productName.equals("흑마늘즙")){
+//            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
+//            end = start; // 추출 완료시간(변수) 선언
+//
+//            end = lunchAndLeaveTimeStartCheck(end);
+//            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
+//            end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
+//
+//            end = lunchAndLeaveTimeStartCheck(end);
+//            end = end.plusHours(24).plusSeconds(3456 / 10 * workLoad); // 추출시간 + 가열시간 더하기
+//        }else { // 젤리스틱
+//            start = mesInfo.getMeasurement(); // 원료계량 완료시간을 추출 시작시간으로 설정
+//            end = start; // 혼합 완료시간(변수) 선언
+//
+//            end = lunchAndLeaveTimeStartCheck(end);
+//            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMixing), end);
+//            end = end.plusMinutes(mesInfo.leadMixing); // 혼합 리드타임 더하기
+//
+//            end = lunchAndLeaveTimeStartCheck(end);
+//            end = end.plusHours(8); // 가열시간 더하기
+//        }
 
         mesInfo.setExtraction(end); // 추출 및 혼합 완료시간 set
 
@@ -161,19 +202,30 @@ public class Calculator {
 
     LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
 
+        if(startTime.getDayOfWeek() == DayOfWeek.SATURDAY || startTime.getDayOfWeek() == DayOfWeek.SUNDAY){
+            startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 주말이면 다음주 월요일 09:00 리턴
+        }
+
         if (startTime.getHour() == 12){ // 점심시간 이면
             startTime = startTime.withHour(13).withMinute(0).withSecond(0);
             return startTime; // 점심 끝나는 시간 리턴
         }
-        if(!(9<=startTime.getHour() && startTime.getHour()<=17)){ // 퇴근시간 이면(근무시간이 아니면)
-            if(startTime.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
-                startTime = startTime.plusDays(3).withHour(9).withMinute(0).withSecond(0);
-                return startTime; // 월요일 근무 시작시간 리턴
-            }else {
-                startTime = startTime.plusDays(1).withHour(9);
-                return startTime; // 다음날 근무 시작시간 리턴
+
+        if (startTime.getHour() >= 18) { // 퇴근 시간 이후 당일
+            if (startTime.getDayOfWeek() == DayOfWeek.FRIDAY) { // 금요일인 경우
+                startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+                return startTime; // 다음주 월요일 09:00 리턴
             }
+            startTime = startTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 다음날 09:00 리턴
         }
+
+        if (startTime.getHour() < 9) { // 퇴근 시간 이후 다음날
+            startTime = startTime.withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 당일 09:00 리턴
+        }
+
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
 
@@ -181,19 +233,30 @@ public class Calculator {
 
     LocalDateTime lunchAndLeaveTimeFinishCheck(LocalDateTime finishTime, LocalDateTime startTime){ // 공정 완료 시 점심, 퇴근 시간 체크 메서드
 
+        if(finishTime.getDayOfWeek() == DayOfWeek.SATURDAY || finishTime.getDayOfWeek() == DayOfWeek.SUNDAY){
+            startTime = finishTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 주말이면 다음주 월요일 09:00 리턴
+        }
+
         if (finishTime.getHour() == 12){ // 점심시간 이면
             startTime = finishTime.withHour(13).withMinute(0).withSecond(0);
             return startTime; // 점심 끝나는 시간 리턴
         }
-        if(!(9<=finishTime.getHour() && finishTime.getHour()<=17)){ // 퇴근시간 이면(근무시간이 아니면)
-            if(finishTime.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
-                startTime = finishTime.plusDays(3).withHour(9);
-                return startTime; // 월요일 근무 시작시간 리턴
-            }else {
-                startTime = finishTime.plusDays(1).withHour(9);
-                return startTime; // 다음날 근무 시작시간 리턴
+
+        if (finishTime.getHour() >= 18) { // 퇴근 시간 이후 당일
+            if (finishTime.getDayOfWeek() == DayOfWeek.FRIDAY) { // 금요일인 경우
+                startTime = finishTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+                return startTime; // 다음주 월요일 09:00 리턴
             }
+            startTime = finishTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 다음날 09:00 리턴
         }
+
+        if (finishTime.getHour() < 9) { // 퇴근 시간 이후 다음날
+            startTime = finishTime.withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 당일 09:00 리턴
+        }
+
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
 
