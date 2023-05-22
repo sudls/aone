@@ -33,7 +33,7 @@ public class Calculator {
             mesInfo.setPomegranate((int) Math.ceil( (double) (mesInfo.salesQty * 25/200) / 5 ) * 5);
             mesInfo.setCollagen((int) Math.ceil( (double) (mesInfo.pomegranate * 2 / 5) / 5) * 5);
             mesInfo.setBox((int) Math.ceil( (double) (mesInfo.pomegranate * 200 / 25) / 500) * 500);
-            mesInfo.setPouch((int) Math.ceil( (double) (mesInfo.pomegranate * 200) / 1000) * 1000);
+            mesInfo.setStickPouch((int) Math.ceil( (double) (mesInfo.pomegranate * 200) / 1000) * 1000);
 
             System.out.println("석류액기스: " + mesInfo.pomegranate + " 콜라겐: " + mesInfo.Collagen + " 박스: " + mesInfo.box + " 스틱파우치: " + mesInfo.stickPouch);
 
@@ -96,6 +96,7 @@ public class Calculator {
 
         mesInfo.setPreProcessing(end); // 전처리 완료시간 set
         System.out.println("전처리 시작시간: " + start + "\n전처리 완료시간: " + end);
+
     }
 
     void extraction(){ // 추출 및 혼합
@@ -110,11 +111,14 @@ public class Calculator {
             workLoad = mesInfo.plum;
         }
 
-        LocalDateTime start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
-        LocalDateTime end = start; // 추출 완료시간(변수) 선언
+        LocalDateTime start = null;
+        LocalDateTime end = null;
 
         // 제품별 공정 시간 계산
         if (mesInfo.productName.equals("양배추즙")){
+            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
+            end = start; // 추출 완료시간(변수) 선언
+
             end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
             end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
             end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
@@ -122,6 +126,9 @@ public class Calculator {
             end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
             end = end.plusHours(72); // 추출시간 + 가열시간 더하기
         }else if (mesInfo.productName.equals("흑마늘즙")){
+            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
+            end = start; // 추출 완료시간(변수) 선언
+
             end = lunchAndLeaveTimeStartCheck(end);
             end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
             end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
@@ -129,6 +136,9 @@ public class Calculator {
             end = lunchAndLeaveTimeStartCheck(end);
             end = end.plusHours(24).plusSeconds(3456/10*workLoad); // 추출시간 + 가열시간 더하기
         }else { // 젤리스틱
+            start = mesInfo.getMeasurement(); // 원료계량 완료시간을 추출 시작시간으로 설정
+            end = start; // 추출 완료시간(변수) 선언
+
             end = lunchAndLeaveTimeStartCheck(end);
             end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMixing), end);
             end = end.plusMinutes(mesInfo.leadMixing); // 혼합 리드타임 더하기
