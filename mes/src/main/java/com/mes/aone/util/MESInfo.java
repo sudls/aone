@@ -38,6 +38,7 @@ import java.util.List;
     int leadExtraction = 60; // 추출 리드타임
     int leadMixing = 20; // 혼합 리드타임
     int leadFill = 20; // 충진 리드타임
+    int leadExamination = 10; //검사 리드타임
     int leadPackaging = 20; // 포장 리드타임
 
     // 공정 완료 시간
@@ -46,10 +47,12 @@ import java.util.List;
     LocalDateTime extraction = null; // 추출 완료시간
     LocalDateTime mixing = null; // 혼합 완료시간
     LocalDateTime fill = null; // 충진 완료시간
+    LocalDateTime examination=null; //검사 완료시간
     LocalDateTime packaging = null; // 포장 완료시간
 
 
-
+    //추출혼합 작업 완료량
+    int extractionOutput=1600;
 
 
 

@@ -54,7 +54,8 @@ public class Calculator {
 
 
     void measurement(){ // 원료계량
-        LocalDateTime start = LocalDateTime.of(2023,5,19,15,0,0); // 원료계량 시작시간
+//        LocalDateTime start = LocalDateTime.of(2023,5,19,15,0,0); // 원료계량 시작시간
+        LocalDateTime start = LocalDateTime.of(2023,4,5,10,20,0); // 원료계량 시작시간
         LocalDateTime end = start; // 원료계량 완료시간(변수) 선언;
         end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
         end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
@@ -152,13 +153,38 @@ public class Calculator {
         System.out.println("추출 및 혼합 시작시간: " + start + "\n추출 및 혼합 완료시간: " + end);
     }
 
+    //충진
+    void fill(){
+        LocalDateTime start = mesInfo.getExtraction(); // 액제조제 시스템 완료시간
+        LocalDateTime end = lunchAndLeaveTimeStartCheck(start.plusMinutes(mesInfo.getLeadFill())); // 시작 시간이 근무시간이 맞는지 확인, 리드타임 더함
+
+        int output = 0; // 추출액, 혼합액 총량
+        int hour_capacity = 0; // 시간당 생산가능량
+
+        output=mesInfo.extractionOutput;
+        hour_capacity = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 1750 : 1500;
+
+        double totalPackages = (double) output / ((mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 0.08 : 0.015); // 혼합액 양으로 만들 수 있는 포 수 (총)
+        int totalHours = (int) Math.floor(totalPackages / hour_capacity); // 총 소요 시간 계산
+        int remainingPackages = (int) Math.floor((totalPackages % hour_capacity) * (60.0 / hour_capacity)); // 남은 포장 개수 계산
+
+        System.out.println("총 시간 : "+totalHours);
+        System.out.println("총 분 : "+remainingPackages);
+
+
+        end = end.plusHours(totalHours); // 작업 끝나는 시간 계산
+        end = end.plusMinutes(remainingPackages); // 남은 포장 개수에 대한 분 단위 계산
+
+        mesInfo.setFill(end); // 충진 완료시간 저장
+        System.out.println("충진 시작시간: " + start + "\n충진 완료시간: " + end);
+    }
+
+//검사
+    
 
 
 
-
-
-
-
+//---
     LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
 
         if (startTime.getHour() == 12){ // 점심시간 이면
