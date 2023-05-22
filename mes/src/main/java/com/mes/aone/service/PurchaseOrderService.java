@@ -18,7 +18,7 @@ public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
 
-    // 수주 기간 검색
+    // 수주 다중 검색
     public List<PurchaseOrder> searchPurchaseOrder(Long searchOrderId, Material searchMaterial, String searchVendor, LocalDateTime purchaseStartDateTime, LocalDateTime purchaseEndDateTime, Sort sort){
 
         if (searchOrderId != null && searchMaterial != null && searchVendor != null && !searchVendor.isEmpty() && purchaseStartDateTime != null && purchaseEndDateTime!= null) {

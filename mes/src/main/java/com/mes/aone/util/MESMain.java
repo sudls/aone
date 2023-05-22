@@ -1,8 +1,6 @@
 package com.mes.aone.util;
 
 
-import java.util.Scanner;
-
 public class MESMain {
     public static void main(String[] args) {
         MESInfo mesInfo = new MESInfo();

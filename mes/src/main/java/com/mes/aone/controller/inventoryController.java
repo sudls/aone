@@ -1,11 +1,22 @@
 package com.mes.aone.controller;
 
+import com.mes.aone.constant.StockManageState;
 import com.mes.aone.dto.PurchaseOrderDTO;
+import com.mes.aone.dto.StockManageDTO;
 import com.mes.aone.entity.Material;
 import com.mes.aone.entity.PurchaseOrder;
+import com.mes.aone.entity.Stock;
+import com.mes.aone.entity.StockManage;
+import com.mes.aone.repository.MaterialStorageRepository;
 import com.mes.aone.repository.PurchaseOrderRepository;
+import com.mes.aone.repository.StockManageRepository;
+import com.mes.aone.repository.StockRepository;
+import com.mes.aone.service.MaterialService;
 import com.mes.aone.service.PurchaseOrderService;
+import com.mes.aone.service.StockManageService;
+import com.mes.aone.service.StockService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -72,14 +83,46 @@ public class inventoryController {
 
     private final PurchaseOrderService purchaseOrderService;
     private final PurchaseOrderRepository purchaseOrderRepository;
+    private final MaterialService materialService;
+    private final StockRepository stockRepository;
+    private final StockManageService stockManageService;
+    private final StockManageRepository stockManageRepository;
+    private final StockService stockService;
+
+    private final MaterialStorageRepository materialStorageRepository;
+
+    @Autowired
+    public inventoryController(MaterialService materialService, StockRepository stockRepository,
+                               StockManageService stockManageService, StockManageRepository stockManageRepository,
+                               StockService stockService, MaterialStorageRepository materialStorageRepository,
+                               PurchaseOrderService purchaseOrderService,
+                               PurchaseOrderRepository purchaseOrderRepository) {
+        this.materialService = materialService;
+        this.stockRepository = stockRepository;
+        this.stockManageService = stockManageService;
+        this.stockManageRepository = stockManageRepository;
+        this.stockService=stockService;
+        this.materialStorageRepository = materialStorageRepository;
+        this.purchaseOrderService = purchaseOrderService;
+        this.purchaseOrderRepository = purchaseOrderRepository;
+    }
+
+
+
+
+
+
+
+
+
+
 
     // 원자재 발주 조회 리스트
     @GetMapping(value="/inventory2")
     public String inventoryPage2(Model model){
         List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "purchaseOrderId"));       // 내림차순
-        model.addAttribute("purchaseorderDTOList",purchaseOrderList);
+        model.addAttribute("purchaseOrderDTOList",purchaseOrderList);
         model.addAttribute("purchaseorderDTO", new PurchaseOrderDTO());
-//        model.addAttribute("purchaseOrderFromDTO", new PurchaseOrderFormDTO());
 
         return"pages/inventoryPage2";
     }
@@ -110,15 +153,76 @@ public class inventoryController {
 
         model.addAttribute("purchaseOrderDTOList", purchaseOrderList);
         model.addAttribute("purchaseOrderDTO", new PurchaseOrderDTO());
-//        model.addAttribute("purchaseOrderFromDTO", new PurchaseOrderFormDTO());
 
         return "pages/inventoryPage2";
     }
 
+
+    // 생성자 확인하기 -------------------------------------------------
+//
+
+
+    //완제품 총 수량 조회 , 완제품 입출고 내역 조회
+    @GetMapping(value="/inventory3")
+    public String inventoryPage3(Model model){
+        List<Stock> stockList = stockRepository.findAll();
+        model.addAttribute("stockList", stockList);
+
+        List<StockManage> stockManageList = stockManageService.getAllStockManage();
+        model.addAttribute("stockManageList", stockManageList);
+        model.addAttribute("stockManageDTO", new StockManageDTO());
+
+
+        return"pages/inventoryPage3";
+    }
+
+    //완제품 입출고 내역 조회 및 필터링
+    @GetMapping(value = "/inventory3/search")
+    public String inventoryPage3(
+            @RequestParam(value = "searchProduct", required = false) String searchProduct,
+            @RequestParam(value = "searchState", required = false) StockManageState searchState,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate stockStartDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate stockEndDate,
+            Model model) {
+
+        // 날짜 변환
+        LocalDateTime stockStartDateTime = null;
+        LocalDateTime stockEndDateTime = null;
+        if(stockStartDate != null && stockEndDate != null){
+            stockStartDateTime =  LocalDateTime.of(stockStartDate, LocalTime.MIN);
+            stockEndDateTime =  LocalDateTime.of(stockEndDate, LocalTime.MAX);
+        }
+
+        // 정렬 설정
+        Sort sort = Sort.by(Sort.Direction.DESC, "stockManageId");
+
+        List<StockManage> stockManageList = stockManageService.searchStockManage(searchProduct, searchState, stockStartDateTime, stockEndDateTime, sort);
+
+        model.addAttribute("stockManageList", stockManageList);
+        model.addAttribute("stockManageDTO", new StockManageDTO());
+
+        return "pages/inventoryPage3";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //
 
     // 생성자 확인하기 -------------------------------------------------
-
+//
 //    private final StockRepository stockRepository;
 //    private final StockManageService stockManageService;
 //    private final StockManageRepository stockManageRepository;
