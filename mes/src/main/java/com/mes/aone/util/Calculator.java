@@ -55,20 +55,23 @@ public class Calculator {
 
 
     void measurement(){ // 원료계량
-        LocalDateTime start = LocalDateTime.of(2023,5,22,16,0,0); // 원료계량 시작시간
-        LocalDateTime end = start; // 원료계량 완료시간(변수) 선언;
-        end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-        end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
-        end = end.plusMinutes(mesInfo.leadMeasurement); // 원료계량 리드타임 더하기
+        LocalDateTime currentTime = LocalDateTime.of(2023,5,23,9,0,0); // 원료계량 시작시간
+        currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+        currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadMeasurement), currentTime); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
+        System.out.println("원료계량 시작시간: " + currentTime);
+        currentTime = currentTime.plusMinutes(mesInfo.leadMeasurement); // 원료계량 리드타임 더하기
 
-        end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
-        end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(30), end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-        end = end.plusMinutes(30); // 원료계량 작업시간 더하기
+        currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
+        currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(30), currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+        currentTime = currentTime.plusMinutes(30); // 원료계량 작업시간 더하기
+        System.out.println("원료계량 완료시간: " + currentTime);
 
-        mesInfo.setMeasurement(end); // 원료계량 완료시간 set
-        System.out.println("원료계량 시작시간: " + start + "\n원료계량 완료시간: " + end);
+        mesInfo.setMeasurement(currentTime); // 원료계량 완료시간 set
     }
     void preProcessing(){ // 전처리
+        LocalDateTime currentTime = mesInfo.getMeasurement(); // 원료계량 완료시간을 전처리 시작시간으로 설정
+
+
         int workAmount = 0; // 작업량
         int realTimeOutput = 0; // 실시간 생산완료된 양
         if (mesInfo.productName.equals("양배추즙")){
@@ -77,127 +80,174 @@ public class Calculator {
             workAmount = mesInfo.garlic;
         }
 
-        LocalDateTime start = mesInfo.getMeasurement(); // 원료계량 완료시간을 전처리 시작시간으로 설정
-        LocalDateTime end = start; // 전처리 완료시간(변수) 선언
-
-        for(int i = 1; i <= Math.ceil((double) workAmount/1000); i++){ // 작업 반복횟수 만큼 실행 ex) 2500kg 이면 3번 반복
-            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadPreProcessing), end); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
-            end = end.plusMinutes(mesInfo.leadPreProcessing); // 전처리 리드타임 더하기
+        for(int i = 0; i < Math.ceil((double) workAmount/1000); i++){ // 작업 반복횟수 만큼 실행 ex) 2500kg 이면 3번 반복
+            currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+            currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadPreProcessing), currentTime); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
+            System.out.println("전처리 " + (i+1) + " 시작시간: " + currentTime);
+            currentTime = currentTime.plusMinutes(mesInfo.leadPreProcessing); // 전처리 리드타임 더하기
 
             if (workAmount - realTimeOutput < 1000){ // 생산량이 1000kg 미만일 때 (전처리 마지막 작업 시)
-                end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-                end = end.plusMinutes((int) Math.ceil(workAmount%1000/1000.0*60));// 전처리 작업시간 더하기
-                mesInfo.nowPreProcessingMachine.add(end);
+                currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+                currentTime = currentTime.plusMinutes((int) Math.ceil(workAmount%1000/1000.0*60));// 전처리 작업시간 더하기
+                System.out.println("전처리 " + (i+1) + " 완료시간: " + currentTime);
+                mesInfo.nowPreProcessingMachine.add(currentTime);
             }else {
-                end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-                end = end.plusHours(1); // 전처리 작업시간 더하기
-                mesInfo.nowPreProcessingMachine.add(end);
+                currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
+                currentTime = currentTime.plusHours(1); // 전처리 작업시간 더하기
+                System.out.println("전처리 " + (i+1) + " 완료시간: " + currentTime);
+                mesInfo.nowPreProcessingMachine.add(currentTime);
                 realTimeOutput = realTimeOutput + 1000; // 실시간 생산량 추가
             }
         }
 
-        mesInfo.setPreProcessing(end); // 전처리 완료시간 set
-        System.out.println("전처리 시작시간: " + start + "\n전처리 완료시간: " + end);
+        mesInfo.setPreProcessing(currentTime); // 전처리 완료시간 set
 
     }
 
     void extraction(){ // 추출 및 혼합
-        int workLoad = 0; // 작업량
+        LocalDateTime currentTime = null; // 추출 시간 변수 선언
+
+        int workAmount = 0; // 작업량
         if (mesInfo.productName.equals("양배추즙")){
-            workLoad = mesInfo.cabbage;
+            workAmount = mesInfo.cabbage;
         } else if (mesInfo.productName.equals("흑마늘즙")){
-            workLoad = mesInfo.garlic;
+            workAmount = mesInfo.garlic;
         } else if (mesInfo.productName.equals("석류젤리스틱")){
-            workLoad = mesInfo.pomegranate;
+            workAmount = mesInfo.pomegranate;
         } else {
-            workLoad = mesInfo.plum;
+            workAmount = mesInfo.plum;
         }
 
-        LocalDateTime start = null;
-        LocalDateTime end = null;
+        if(mesInfo.productName.equals("양배추즙")){ // 양배추 추출 공정
+            for (int i = 0; i < mesInfo.nowPreProcessingMachine.size(); i++){ // 전처리 작업 횟수 만큼 반복
+                currentTime = mesInfo.nowPreProcessingMachine.get(i);
+                if(mesInfo.pastExtractionMachine1.isBefore(mesInfo.pastExtractionMachine2)){ // 추출기1이 먼저 끝날 때
+                    if (currentTime.isBefore(mesInfo.pastExtractionMachine1)) { // 추출기 1의 공정계획이 있으면
+                        currentTime = mesInfo.pastExtractionMachine1; // 추출기 1의 공정계획이 끝나는 시간에 시작
+                    }
+                    currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                    currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadExtraction), currentTime);
+                    System.out.println("추출기1 - 추출" + (i+1) + "번째 시작시간: " + currentTime);
+                    currentTime = currentTime.plusMinutes(mesInfo.leadExtraction);
 
-        for (int i = 0; i < mesInfo.nowPreProcessingMachine.size(); i++){ // 전처리 작업 횟수 만큼 반복
-            end = mesInfo.nowPreProcessingMachine.get(i);
+                    currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                    currentTime = currentTime.plusHours(72);
+
+                    mesInfo.nowExtractionMachine1.add(currentTime);
+                    mesInfo.setPastExtractionMachine1(currentTime);
+
+                    System.out.println("추출기1 - 추출" + (i+1) + "번째 완료시간: " + currentTime);
+
+                }else { // 추출기2가 먼저 끝날 때
+                    if (currentTime.isBefore(mesInfo.pastExtractionMachine2)) { // 추출기 1의 공정계획이 있으면
+                        currentTime = mesInfo.pastExtractionMachine2; // 추출기 2의 공정계획이 끝나는 시간에 시작
+                    }
+                    currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                    currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadExtraction), currentTime);
+                    System.out.println("추출기2 - 추출" + (i+1) + "번째 시작시간: " + currentTime);
+                    currentTime = currentTime.plusMinutes(mesInfo.leadExtraction);
+
+                    currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                    currentTime = currentTime.plusHours(72);
+
+                    mesInfo.nowExtractionMachine2.add(currentTime);
+                    mesInfo.setPastExtractionMachine2(currentTime);
+
+                    System.out.println("추출기2 - 추출" + (i+1) + "번째 완료시간: " + currentTime);
+                }
+            }
+        } else if(mesInfo.productName.equals("흑마늘즙")){
+            for (int i = 0 ; i < Math.ceil(mesInfo.garlic/500.0) ; i++){
+                currentTime = mesInfo.nowPreProcessingMachine.get((int) Math.floor(i/2.0));
+                if(mesInfo.pastExtractionMachine1.isBefore(mesInfo.pastExtractionMachine2)){ // 추출기1이 먼저 끝날 때
+                    if (currentTime.isBefore(mesInfo.pastExtractionMachine1)) { // 추출기 1의 공정계획이 있으면
+                        currentTime = mesInfo.pastExtractionMachine1; // 추출기 1의 공정계획이 끝나는 시간에 시작
+                    }
+                    currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                    currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadExtraction), currentTime);
+                    System.out.println("추출기1 - 추출" + (i+1) + "번째 시작시간: " + currentTime);
+                    currentTime = currentTime.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
+
+                    if (i == Math.ceil(mesInfo.garlic/500.0)-1){ // 마지막 추출 공정시
+                        if (workAmount % 500 == 0){ // 흑마늘이 500kg로 나누어 떨어지면
+                            currentTime = currentTime.plusHours(72); // 추출시간 + 가열시간 더하기
+                        }else{ // 흑마늘이 500kg 미만 일 시
+                            currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                            currentTime = currentTime.plusHours(24).plusSeconds(3456 / 10 * (workAmount%500)); // 추출시간 + 가열시간 더하기
+                        }
+                    }else {
+                        currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                        currentTime = currentTime.plusHours(72); // 추출시간 + 가열시간 더하기
+                    }
+
+                    mesInfo.nowExtractionMachine1.add(currentTime); // 추출기 1 공정계획 추가
+                    mesInfo.setPastExtractionMachine1(currentTime); // 추출기 1의 마지막 공정시간 set
+                    System.out.println("추출기1 - 추출" + (i+1) + "번째 완료시간: " + currentTime);
+
+                }else { // 추출기2가 먼저 끝날 때
+                    if (currentTime.isBefore(mesInfo.pastExtractionMachine2)) { // 추출기 2의 공정계획이 있으면
+                        currentTime = mesInfo.pastExtractionMachine2; // 추출기 2의 공정계획이 끝나는 시간에 시작
+                    }
+                    currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                    currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadExtraction), currentTime);
+                    System.out.println("추출기2 - 추출" + (i+1) + "번째 시작시간: " + currentTime);
+                    currentTime = currentTime.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
+
+                    if (i == Math.ceil(mesInfo.garlic/500.0)-1){
+                        if (workAmount % 500 == 0){
+                            currentTime = currentTime.plusHours(72); // 추출시간 + 가열시간 더하기
+                        }else {
+                            currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                            currentTime = currentTime.plusHours(24).plusSeconds(3456 / 10 * (workAmount%500)); // 추출시간 + 가열시간 더하기
+                        }
+                    }else {
+                        currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                        currentTime = currentTime.plusHours(72); // 추출시간 + 가열시간 더하기
+                    }
+
+                    mesInfo.nowExtractionMachine2.add(currentTime); // 추출기2 공정계획 추가
+                    mesInfo.setPastExtractionMachine2(currentTime); // 추출기2의 마지막 공정시간 set
+                    System.out.println("추출기2 - 추출" + (i+1) + "번째 완료시간: " + currentTime);
+                }
+            }
+        }  else {
+            currentTime = mesInfo.getMeasurement(); // 원료계량 완료시간을 추출 시작시간으로 설정
+
             if(mesInfo.pastExtractionMachine1.isBefore(mesInfo.pastExtractionMachine2)){ // 추출기1이 먼저 끝날 때
-                if (end.isBefore(mesInfo.pastExtractionMachine1)) { // 추출기 1의 공정계획이 있으면
-                    end = mesInfo.pastExtractionMachine1; // 추출기 1의 공정계획이 끝나는 시간에 시작
+                if (currentTime.isBefore(mesInfo.pastExtractionMachine1)) { // 추출기 1의 공정계획이 있으면
+                    currentTime = mesInfo.pastExtractionMachine1; // 추출기 1의 공정계획이 끝나는 시간에 시작
                 }
-                System.out.println("추출기1 - 추출" + i + "번째 시작시간: " + end);
-                end = lunchAndLeaveTimeStartCheck(end);
-                end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
-                end = end.plusMinutes(mesInfo.leadExtraction);
+                currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadMixing), currentTime);
+                System.out.println("추출기1 시작시간: " + currentTime);
+                currentTime = currentTime.plusMinutes(mesInfo.leadMixing); // 혼합 리드타임 더하기
 
-                end = lunchAndLeaveTimeStartCheck(end);
-                end = end.plusHours(72);
+                currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                currentTime = currentTime.plusHours(8); // 가열시간 더하기
 
-                mesInfo.nowExtractionMachine1.add(end);
-                mesInfo.setPastExtractionMachine1(end);
-
-                System.out.println("추출기1 - 추출" + i + "번째 완료시간: " + end);
-
+                System.out.println("추출기1 완료시간: " + currentTime);
+                mesInfo.nowExtractionMachine1.add(currentTime); // 추출기1 공정계획 추가
+                mesInfo.setPastExtractionMachine1(currentTime); // 추출기1의 마지막 공정시간 set
             }else { // 추출기2가 먼저 끝날 때
-                if (end.isBefore(mesInfo.pastExtractionMachine2)) { // 추출기 1의 공정계획이 있으면
-                    end = mesInfo.pastExtractionMachine2; // 추출기 2의 공정계획이 끝나는 시간에 시작
+                if (currentTime.isBefore(mesInfo.pastExtractionMachine2)) { // 추출기 2의 공정계획이 있으면
+                    currentTime = mesInfo.pastExtractionMachine2; // 추출기 2의 공정계획이 끝나는 시간에 시작
                 }
-                System.out.println("추출기2 - 추출" + i + "번째 시작시간: " + end);
-                end = lunchAndLeaveTimeStartCheck(end);
-                end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
-                end = end.plusMinutes(mesInfo.leadExtraction);
+                currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadMixing), currentTime);
+                System.out.println("추출기1 시작시간: " + currentTime);
+                currentTime = currentTime.plusMinutes(mesInfo.leadMixing); // 혼합 리드타임 더하기
 
-                end = lunchAndLeaveTimeStartCheck(end);
-                end = end.plusHours(72);
+                currentTime = lunchAndLeaveTimeStartCheck(currentTime);
+                currentTime = currentTime.plusHours(8); // 가열시간 더하기
 
-                mesInfo.nowExtractionMachine2.add(end);
-                mesInfo.setPastExtractionMachine2(end);
+                System.out.println("추출기2 완료시간: " + currentTime);
 
-                System.out.println("추출기2 - 추출" + i + "번째 완료시간: " + end);
+                mesInfo.nowExtractionMachine2.add(currentTime); // 추출기2 공정계획 추가
+                mesInfo.setPastExtractionMachine2(currentTime); // 추출기2의 마지막 공정시간 set
             }
         }
-
-        // 제품별 공정 시간 계산
-//        if (mesInfo.productName.equals("양배추즙")){
-//            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
-//            end = start; // 추출 완료시간(변수) 선언
-//
-//            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-//            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
-//            end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
-//
-//            end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
-//            end = end.plusHours(72); // 추출시간 + 가열시간 더하기
-//        }else if (mesInfo.productName.equals("흑마늘즙")){
-//            start = mesInfo.getPreProcessing(); // 전처리 완료시간을 추출 시작시간으로 설정
-//            end = start; // 추출 완료시간(변수) 선언
-//
-//            end = lunchAndLeaveTimeStartCheck(end);
-//            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadExtraction), end);
-//            end = end.plusMinutes(mesInfo.leadExtraction); // 추출 리드타임 더하기
-//
-//            end = lunchAndLeaveTimeStartCheck(end);
-//            end = end.plusHours(24).plusSeconds(3456 / 10 * workLoad); // 추출시간 + 가열시간 더하기
-//        }else { // 젤리스틱
-//            start = mesInfo.getMeasurement(); // 원료계량 완료시간을 추출 시작시간으로 설정
-//            end = start; // 혼합 완료시간(변수) 선언
-//
-//            end = lunchAndLeaveTimeStartCheck(end);
-//            end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMixing), end);
-//            end = end.plusMinutes(mesInfo.leadMixing); // 혼합 리드타임 더하기
-//
-//            end = lunchAndLeaveTimeStartCheck(end);
-//            end = end.plusHours(8); // 가열시간 더하기
-//        }
-
-        mesInfo.setExtraction(end); // 추출 및 혼합 완료시간 set
-
-        System.out.println("추출 및 혼합 시작시간: " + start + "\n추출 및 혼합 완료시간: " + end);
+        mesInfo.setExtraction(currentTime); // 추출 및 혼합 완료시간 set
     }
-
-
-
-
-
-
 
 
     LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
@@ -228,8 +278,6 @@ public class Calculator {
 
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
-
-
 
     LocalDateTime lunchAndLeaveTimeFinishCheck(LocalDateTime finishTime, LocalDateTime startTime){ // 공정 완료 시 점심, 퇴근 시간 체크 메서드
 
