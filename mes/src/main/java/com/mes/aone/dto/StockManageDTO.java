@@ -7,23 +7,18 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 public class StockManageDTO {
 
     private Long stockManageId;
-
-    // 입출고날짜
-    private LocalDateTime stockDate;
-
-    // 수량
-    private Integer stockManageQty;
-
-    // 입출고상태
-    private StockManageState stockManageState;
-
-    // 제품명 : 양배추즙, 석류젤리스틱
-    private String stockManageName;
+    private LocalDateTime stockDate;            // 입출고날짜
+    private int stockManageQty;                 // 수량
+    private StockManageState stockManageState;  // 입출고상태
+    private String stockManageName;             // 제품명 : 양배추박스, 양배추포
+    private Stock stock;                        //stock 엔티티와 연결
 }

@@ -2,6 +2,7 @@ package com.mes.aone.repository;
 
 import com.mes.aone.contant.Status;
 import com.mes.aone.entity.SalesOrder;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,41 +20,40 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, Long> {
 
 
     // 제품명, 거래처, 수주상태, 기간 검색
-    List<SalesOrder>  findByProductNameAndVendorIdAndSalesStatusAndSalesDateBetween(String productName, String vendorID, Status salesStatus, LocalDateTime startDate, LocalDateTime endDate);
+    List<SalesOrder>  findByProductNameAndVendorIdAndSalesStatusAndSalesDateBetween(String productName, String vendorID, Status salesStatus, LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
     // 제품명, 거래처, 수주상태 검색
-    List<SalesOrder> findByProductNameAndVendorIdAndSalesStatus(String productName, String vendorID, Status salesStatus);
+    List<SalesOrder> findByProductNameAndVendorIdAndSalesStatus(String productName, String vendorID, Status salesStatus, Sort sort);
 
     // 제품명, 거래처, 기간 검색
-    List<SalesOrder> findByProductNameAndVendorIdAndSalesDateBetween(String productName, String vendorID, LocalDateTime startDate, LocalDateTime endDate);
+    List<SalesOrder> findByProductNameAndVendorIdAndSalesDateBetween(String productName, String vendorID, LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
     // 제품명, 수주상태, 기간 검색
-    List<SalesOrder> findByProductNameAndSalesStatusAndSalesDateBetween(String productName, Status salesStatus, LocalDateTime startDate, LocalDateTime endDate);
+    List<SalesOrder> findByProductNameAndSalesStatusAndSalesDateBetween(String productName, Status salesStatus, LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
     // 제품명, 거래처 검색
-    List<SalesOrder> findByProductNameAndVendorId(String productName, String vendorID);
+    List<SalesOrder> findByProductNameAndVendorId(String productName, String vendorID, Sort sort);
 
     // 제품명, 수주상태 검색
-    List<SalesOrder> findByProductNameAndSalesStatus(String productName, Status salesStatus);
+    List<SalesOrder> findByProductNameAndSalesStatus(String productName, Status salesStatus, Sort sort);
 
     // 제품명, 기간 검색
-    List<SalesOrder> findByProductNameAndSalesDateBetween(String productName, LocalDateTime startDate, LocalDateTime endDate);
+    List<SalesOrder> findByProductNameAndSalesDateBetween(String productName, LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
     // 거래처명, 수주상태 검색
-    List<SalesOrder> findByVendorIdAndSalesStatus(String vendorID,Status salesStatus );
+    List<SalesOrder> findByVendorIdAndSalesStatus(String vendorID,Status salesStatus, Sort sort);
 
     // 제품명 검색
-    List<SalesOrder> findByProductName(String productName);
+    List<SalesOrder> findByProductName(String productName, Sort sort);
 
     // 거래처 검색
-    List<SalesOrder> findByVendorId(String vendorID);
+    List<SalesOrder> findByVendorId(String vendorID, Sort sort);
 
     // 수주상태 검색
-    List<SalesOrder> findBySalesStatus(Status salesStatus );
+    List<SalesOrder> findBySalesStatus(Status salesStatus, Sort sort);
 
     // 기간 검색
-    List<SalesOrder> findBySalesDateBetween(LocalDateTime startDate, LocalDateTime endDate);
-
+    List<SalesOrder> findBySalesDateBetween(LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
 
 
