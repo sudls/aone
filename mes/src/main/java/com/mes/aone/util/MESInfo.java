@@ -5,11 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -48,13 +44,12 @@ import java.util.List;
     LocalDateTime fill = null; // 충진 완료시간
     LocalDateTime packaging = null; // 포장 완료시간
 
+    // 충진 후 set
+   int fillOutPut = 3600;          // 충진 후 낱개 팩 수
 
-
-
-
-
-
-
+    // 포장 후 set
+   long packagingeBox = 0;         // 포장 된 박스
+   long packagingEa = 0;           // 포장 후 남은 낱개
 
 
    public MESInfo() {

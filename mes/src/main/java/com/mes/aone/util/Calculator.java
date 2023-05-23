@@ -2,7 +2,10 @@ package com.mes.aone.util;
 
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 
 public class Calculator {
     private MESInfo mesInfo;
@@ -51,7 +54,7 @@ public class Calculator {
 
 
     void measurement(){ // 원료계량
-        LocalDateTime start = LocalDateTime.of(2023,5,19,15,0,0); // 원료계량 시작시간
+        LocalDateTime start = LocalDateTime.of(2023,5,15,18,0,0); // 원료계량 시작시간
         LocalDateTime end = start; // 원료계량 완료시간(변수) 선언;
         end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
         end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
@@ -151,29 +154,114 @@ public class Calculator {
 
 
 
-
     // 포장
     void packaging(){
+        int inputEa = 0;                                  // inputEa          : 충진/식힘 후 포장할 전체 낱개(ea) 수
+        long outputBox = 0;                                // 총 만들어질 box 수 : inputEa / 30(양배추, 흑마늘)   inputEa / 25(석류젤리스틱, 매실젤리스틱)
+        int outputEa = 0;                                 // 남은 ea 수        : inputEa % 30(양배추, 흑마늘)   inputEa % 25(석류젤리스틱, 매실젤리스틱)
+        double packagingTime = 0;                           // 포장시간 (분)
+        // 포장 관련 상수 정의
+        int packagingTimePerBoxSeconds = 18;             // 1박스당 포장 시간 (초)
 
+        if (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")){  // 양배추즙, 흑마늘즙이면
+            inputEa = mesInfo.fillOutPut;
+            outputBox = inputEa / 30;
+            outputEa = inputEa % 30;
+
+        } else {                                                                            // 젤리스틱이면
+            inputEa = mesInfo.fillOutPut;
+            outputBox = inputEa / 25;
+            outputEa = inputEa % 25;
+        }
+
+        mesInfo.setPackagingeBox(outputBox);                                // 포장된 박스 수
+        mesInfo.setPackagingEa(outputEa);                                   // 포장 후 남은 낱개
+        packagingTime = outputBox * packagingTimePerBoxSeconds / 60;        // 포장시간
+        System.out.println("포장시간: " + packagingTime + "분");
+
+
+        // 근무 시간 및 점심 시간 설정
+        LocalTime startWorkTime = LocalTime.of(9, 0);    // 근무 시작 시간
+        LocalTime endWorkTime = LocalTime.of(18, 0);     // 근무 종료 시간
+        LocalTime lunchStartTime = LocalTime.of(12, 0);  // 점심 시작 시간
+        LocalTime lunchEndTime = LocalTime.of(13, 0);    // 점심 종료 시간
+
+        LocalDateTime leadTimeStart = mesInfo.getExtraction();         // 리드타임 시작
+        LocalDateTime leadTimeEnd = null;                              // 리드타임 끝
+
+        leadTimeStart = lunchAndLeaveTimeStartCheck(leadTimeStart);     // 포장 리드타임 시작 전 시작 시간 비근무 시간 체크(공정 시작시간 리턴)
+        leadTimeEnd = lunchAndLeaveTimeStartCheck(leadTimeStart);       // 포장 리드타임 시작 전 끝나는 시간 비근무 시간 체크(공정 시작시간 리턴)
+        leadTimeEnd = lunchAndLeaveTimeFinishCheck(leadTimeStart.plusMinutes(mesInfo.leadPackaging), leadTimeEnd); // 포장리드타임 완료 시 비근무 시간 체크(포장 시작시간 리턴)
+        leadTimeEnd = leadTimeEnd.plusMinutes(mesInfo.leadPackaging);    // 원료계량 리드타임 더하기
+        System.out.println("포장 리드타임 시작 : " + leadTimeStart );
+        System.out.println("포장 리드타임 끝 : " + leadTimeEnd);
+
+        LocalDateTime packingStart = leadTimeEnd;                                   // 포장 시작 시간
+        LocalDateTime packingEnd = packingStart.plusMinutes((long)packagingTime);   // 포장 종료 시간
+
+        System.out.println("포장 시작시간 : " + packingStart);
+
+        if (packingEnd.getHour() >= lunchStartTime.getHour() && packingEnd.getHour()<=lunchEndTime.getHour()) {    // 포장끝나는시간 점심시간, 시작시간 점심시간->리드타임에서 거름
+            Duration availableTime = Duration.between(packingStart.toLocalTime(), lunchStartTime);
+            long nowPackingBox = availableTime.toSeconds() / 18;                     // 지금 작업한 박스
+            outputBox = outputBox - nowPackingBox;                                   // 남은 박스 : 오후 작업할 박스
+            packagingTime = packagingTime-availableTime.toMinutes();                 // 남은 포장 시간
+            packingStart = packingStart.withHour(13).withMinute(0).withSecond(0);    // 1시부터 다시 시작
+            packingEnd = packingStart.plusMinutes((long)packagingTime);              // 포장 끝나는시간
+
+        }
+
+        if(packingEnd.getHour() >= endWorkTime.getHour()){                      // 포장 끝나는 시간이 근무끝시간(18시)보다 뒤이거나 같으면
+            Duration availableTime = Duration.between(packingStart.toLocalTime(), endWorkTime);
+            long todayPackingBox = availableTime.toSeconds() / 18;              // 오늘 작업한 박스
+              outputBox = outputBox - todayPackingBox;                          // 남은 박스 : 익일 작업할 박스
+
+            if(packingStart.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
+                packingStart = packingStart.plusDays(3).withHour(9).withMinute(0).withSecond(0);
+
+            }else {
+                packingStart = packingStart.plusDays(1).with(startWorkTime);
+            }
+
+            packagingTime = packagingTime-availableTime.toMinutes();            // 남은 포장 시간
+            packingEnd = packingStart.plusMinutes((long)packagingTime);
+        }
+
+        System.out.println("포장 완료시간 : " + packingEnd);
+        System.out.println("포장된 박스 수: " + outputBox + "box");
+        System.out.println("포장 후 남은 낱개: " + outputEa + "ea");
+        mesInfo.setPackaging(packingEnd); // 포장 완료시간 set
 
     }
 
-    LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
 
+
+
+    LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
+        if(startTime.getDayOfWeek() == DayOfWeek.SATURDAY || startTime.getDayOfWeek() == DayOfWeek.SUNDAY){
+            startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 주말이면 다음주 월요일 09:00 리턴
+        }
 
         if (startTime.getHour() == 12){ // 점심시간 이면
             startTime = startTime.withHour(13).withMinute(0).withSecond(0);
             return startTime; // 점심 끝나는 시간 리턴
         }
-        if(!(9<=startTime.getHour() && startTime.getHour()<=17)){ // 퇴근시간 이면(근무시간이 아니면)
-            if(startTime.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
-                startTime = startTime.plusDays(3).withHour(9).withMinute(0).withSecond(0);
-                return startTime; // 월요일 근무 시작시간 리턴
-            }else {
-                startTime = startTime.plusDays(1).withHour(9);
-                return startTime; // 다음날 근무 시작시간 리턴
+
+        if (startTime.getHour() >= 18) { // 퇴근 시간 이후 당일
+            if (startTime.getDayOfWeek() == DayOfWeek.FRIDAY) { // 금요일인 경우
+                startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+                return startTime; // 다음주 월요일 09:00 리턴
             }
+            startTime = startTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 다음날 09:00 리턴
         }
+
+        if (startTime.getHour() < 9) { // 퇴근 시간 이후 다음날
+            startTime = startTime.withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 당일 09:00 리턴
+        }
+
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
 
@@ -181,21 +269,81 @@ public class Calculator {
 
     LocalDateTime lunchAndLeaveTimeFinishCheck(LocalDateTime finishTime, LocalDateTime startTime){ // 공정 완료 시 점심, 퇴근 시간 체크 메서드
 
+        if(finishTime.getDayOfWeek() == DayOfWeek.SATURDAY || finishTime.getDayOfWeek() == DayOfWeek.SUNDAY){
+            startTime = finishTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 주말이면 다음주 월요일 09:00 리턴
+        }
+
         if (finishTime.getHour() == 12){ // 점심시간 이면
             startTime = finishTime.withHour(13).withMinute(0).withSecond(0);
             return startTime; // 점심 끝나는 시간 리턴
         }
-        if(!(9<=finishTime.getHour() && finishTime.getHour()<=17)){ // 퇴근시간 이면(근무시간이 아니면)
-            if(finishTime.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
-                startTime = finishTime.plusDays(3).withHour(9);
-                return startTime; // 월요일 근무 시작시간 리턴
-            }else {
-                startTime = finishTime.plusDays(1).withHour(9);
-                return startTime; // 다음날 근무 시작시간 리턴
+
+        if (finishTime.getHour() >= 18) { // 퇴근 시간 이후 당일
+            if (finishTime.getDayOfWeek() == DayOfWeek.FRIDAY) { // 금요일인 경우
+                startTime = finishTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+                return startTime; // 다음주 월요일 09:00 리턴
             }
+            startTime = finishTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 다음날 09:00 리턴
         }
+
+        if (finishTime.getHour() < 9) { // 퇴근 시간 이후 다음날
+            startTime = finishTime.withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 당일 09:00 리턴
+        }
+
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
+
+
+
+
+
+
+
+
+
+
+
+//    LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
+//
+//
+//        if (startTime.getHour() == 12){ // 점심시간 이면
+//            startTime = startTime.withHour(13).withMinute(0).withSecond(0);
+//            return startTime; // 점심 끝나는 시간 리턴
+//        }
+//        if(!(9<=startTime.getHour() && startTime.getHour()<=17)){ // 퇴근시간 이면(근무시간이 아니면)
+//            if(startTime.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
+//                startTime = startTime.plusDays(3).withHour(9).withMinute(0).withSecond(0);
+//                return startTime; // 월요일 근무 시작시간 리턴
+//            }else {
+//                startTime = startTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+//                return startTime; // 다음날 근무 시작시간 리턴
+//            }
+//        }
+//        return startTime; // 근무 시간 안걸리면 그대로 리턴
+//    }
+//
+//
+//
+//    LocalDateTime lunchAndLeaveTimeFinishCheck(LocalDateTime finishTime, LocalDateTime startTime){ // 공정 완료 시 점심, 퇴근 시간 체크 메서드
+//
+//        if (finishTime.getHour() == 12){ // 점심시간 이면
+//            startTime = finishTime.withHour(13).withMinute(0).withSecond(0);
+//            return startTime; // 점심 끝나는 시간 리턴
+//        }
+//        if(!(9<=finishTime.getHour() && finishTime.getHour()<=17)){ // 퇴근시간이면(근무시간이 아니면)
+//            if(finishTime.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
+//                startTime = finishTime.plusDays(3).withHour(9).withMinute(0).withSecond(0);
+//                return startTime; // 월요일 근무 시작시간 리턴
+//            }else {
+//                startTime = finishTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+//                return startTime; // 다음날 근무 시작시간 리턴
+//            }
+//        }
+//        return startTime; // 근무 시간 안걸리면 그대로 리턴
+//    }
 
 
 

@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", function () {
     var href = subLink.querySelector("a").getAttribute("href");
 
     // 현재 URL과 sub-link의 href 속성이 일치하는지 확인
-    if (currentURL.endsWith(href)) {
+    if (currentURL.includes(href)) {
       // sub-link에 active 클래스 추가
       subLink.classList.add("active");
 
