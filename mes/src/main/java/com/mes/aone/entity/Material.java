@@ -16,9 +16,8 @@ import java.io.Serializable;
 public class Material implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long materialId;    // 자재테이블 고유ID
-
 
     @Column(name = "material_name", length = 50, nullable = false)
     private String materialName; // 자재명
@@ -29,4 +28,5 @@ public class Material implements Serializable {
     @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendorId;         // 거래처 고유ID
+
 }

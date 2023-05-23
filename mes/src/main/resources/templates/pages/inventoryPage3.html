@@ -26,15 +26,15 @@
     </thead>
 
     <tbody>
-    <tr th:each="stock : ${stockList}">
-      <td th:text="${stock.stockName}"></td>
+    <tr th:each="stockDTO : ${Stock}">
+      <td th:text="${stockDTO.stockName}"></td>
       <td>
-        <span th:if="${stock.stockName.contains('젤')}" th:text="${stock.stockQty div 25}"></span>
-        <span th:unless="${stock.stockName.contains('젤')}" th:text="${stock.stockQty div 30}"></span>
+        <span th:if="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty div 25}"></span>
+        <span th:unless="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty div 30}"></span>
       /box</td>
       <td>
-        <span th:if="${stock.stockName.contains('젤')}" th:text="${stock.stockQty % 25}"></span>
-        <span th:unless="${stock.stockName.contains('젤')}" th:text="${stock.stockQty % 30}"></span>
+        <span th:if="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty % 25}"></span>
+        <span th:unless="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty % 30}"></span>
         /ea</td>
     </tr>
     </tbody>

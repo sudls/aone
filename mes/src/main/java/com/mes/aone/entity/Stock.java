@@ -1,5 +1,6 @@
 package com.mes.aone.entity;
 
+import com.mes.aone.dto.StockDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,4 +30,10 @@ public class Stock {
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<StockManage> stockManageList = new ArrayList<>();
 
+
+    //stockQty 값 업데이트
+/*    public void updateStockQty(StockDTO stockDTO){
+        this.stockName = stockDTO.getStockName();
+        this.stockQty = (int) stockDTO.getCurrentStockQty();
+    }*/
 }
