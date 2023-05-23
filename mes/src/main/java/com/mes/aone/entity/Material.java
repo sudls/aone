@@ -21,7 +21,6 @@ public class Material implements Serializable {
 
 
     @Column(name = "material_name", length = 50, nullable = false)
-
     private String materialName; // 자재명
 
     @Column(nullable = false)
