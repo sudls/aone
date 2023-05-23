@@ -99,18 +99,6 @@ document.getElementById("setOrderNum").addEventListener("change", function() {
     }
 });
 
-//---
-//체크박스 선택시 해당 행 값 반환
-// function toggleSelectedRow(checkbox) {
-//     let row = checkbox.parentNode.parentNode;
-//     row.classList.toggle("selected");
-//
-//     //반환값 확인
-//     let selectedValues = getSelectedValues();
-//     console.log(selectedValues.orderIds);
-//     console.log(selectedValues.orderProducts);
-//     console.log(selectedValues.orderNum);
-// }
 
 function getSelectedValues() {
     let table = document.querySelector(".table-container table");
