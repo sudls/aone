@@ -18,7 +18,7 @@ class StockRepositoryTest{
     public void createStockTest(){
         Stock stock = new Stock();
         stock.setStockName("양배추박스");
-        stock.setStockQty(0);
+        stock.setStockQty(0L);
 
         Stock savedStock = stockRepository.save(stock);
         System.out.println(savedStock.toString());
