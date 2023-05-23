@@ -55,7 +55,7 @@ import java.util.List;
     //추출혼합 작업 완료량
     int extractionOutput=1600;// 양배추 1ton기준 (추출액 : 1600L)
    //충진 완료량
-    int fillOutPut= 20000;//양배추 1ton기준 (20000포 충진)
+    int fillOutPut=0;
 
 
 
