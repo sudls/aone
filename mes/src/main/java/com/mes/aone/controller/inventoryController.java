@@ -1,6 +1,8 @@
 package com.mes.aone.controller;
 
 import com.mes.aone.constant.StockManageState;
+import com.mes.aone.dto.MaterialStorageDTO;
+import com.mes.aone.dto.MaterialStorageNumDTO;
 import com.mes.aone.dto.PurchaseOrderDTO;
 import com.mes.aone.dto.StockManageDTO;
 import com.mes.aone.entity.Material;
@@ -27,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 
@@ -40,44 +44,44 @@ public class inventoryController {
 
 //    private final MaterialService materialService;
 
-//    @GetMapping(value="/inventory1")
-//    public String inventoryPage1(Model model){
-//
-//        model.addAttribute("MaterialStorage", materialService.getMaterialStorage());
-//
-//        model.addAttribute("Material", materialService.getMaterial());
+    @GetMapping(value="/inventory1")
+    public String inventoryPage1(Model model){
 
-        //원자재 입출고 현황 (더미)
-//         List<MaterialStorageDTO> materialStorageDTOList = new ArrayList<>();
+        model.addAttribute("MaterialStorage", materialService.getMaterialStorage());
 
-//         String[] materialNames = {"양배추","콜라겐", "흑마늘", "벌꿀", "석류액기스", "매실액기스", "스틱파우치", "파우치","박스"};
+        model.addAttribute("Material", materialService.getMaterial());
 
-//         Random random = new Random();
+//        원자재 입출고 현황 (더미)
+         List<MaterialStorageDTO> materialStorageDTOList = new ArrayList<>();
 
-//         for (int i = 1; i <= 30; i++) {
-//             MaterialStorageDTO materialStorageDTO = new MaterialStorageDTO();
-//             materialStorageDTO.setMaterialName(materialNames[random.nextInt(materialNames.length)]);
-//             materialStorageDTO.setMStorageState(StockManageState.I);
-//             materialStorageDTO.setMaterialQty(random.nextInt(1000));
-//             materialStorageDTO.setMaterialUnit("kg");
-//             materialStorageDTO.setMStorageDate(LocalDateTime.now());
-//             materialStorageDTOList.add(materialStorageDTO);
-//         }
-//         model.addAttribute("materialStorageDTOList",materialStorageDTOList);
+         String[] materialNames = {"양배추","콜라겐", "흑마늘", "벌꿀", "석류액기스", "매실액기스", "스틱파우치", "파우치","박스"};
 
-//         //원자재 총 수량(더미)
-//         List<MaterialStorageNumDTO> materialStorageNumDTOList = new ArrayList<>();
-//         for (int i=0; i<9; i++){
-//             MaterialStorageNumDTO materialStorageNumDTO = new MaterialStorageNumDTO();
-//             materialStorageNumDTO.setMaterialName(materialNames[i]);
-//             materialStorageNumDTO.setMaterialQty(random.nextInt(1000));
-//             materialStorageNumDTOList.add(materialStorageNumDTO);
-//         }
-//         model.addAttribute("materialStorageNumDTOList",materialStorageNumDTOList);
+         Random random = new Random();
+
+         for (int i = 1; i <= 30; i++) {
+             MaterialStorageDTO materialStorageDTO = new MaterialStorageDTO();
+             materialStorageDTO.setMaterialName(materialNames[random.nextInt(materialNames.length)]);
+             materialStorageDTO.setMStorageState(StockManageState.I);
+             materialStorageDTO.setMaterialQty(random.nextInt(1000));
+             materialStorageDTO.setMaterialUnit("kg");
+             materialStorageDTO.setMStorageDate(LocalDateTime.now());
+             materialStorageDTOList.add(materialStorageDTO);
+         }
+         model.addAttribute("materialStorageDTOList",materialStorageDTOList);
+
+         //원자재 총 수량(더미)
+         List<MaterialStorageNumDTO> materialStorageNumDTOList = new ArrayList<>();
+         for (int i=0; i<9; i++){
+             MaterialStorageNumDTO materialStorageNumDTO = new MaterialStorageNumDTO();
+             materialStorageNumDTO.setMaterialName(materialNames[i]);
+             materialStorageNumDTO.setMaterialQty(random.nextInt(1000));
+             materialStorageNumDTOList.add(materialStorageNumDTO);
+         }
+         model.addAttribute("materialStorageNumDTOList",materialStorageNumDTOList);
 
 
-//        return"pages/inventoryPage1";
-//    }
+        return"pages/inventoryPage1";
+    }
 
 
 

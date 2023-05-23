@@ -5,14 +5,64 @@
     <meta charset="UTF-8">
     <title>메인페이지</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
-    <!--    <th:block layout:fragment="script"></th:block>-->
-    <!--    <th:block layout:fragment="css"></th:block>-->
+
+    <!--    <script th:src="@{/js/currentTime.js}" defer></script>-->
+    <script th:src="@{/js/calender.js}" defer></script>
+    <link th:href="@{/css/calender.css}" rel="stylesheet">
+
 </head>
 <body>
 <header th:replace="fragments/nav::nav"></header>
-<!--<div layout:fragment="nav"></div>-->
-<div layout:fragment="content" id="contentStyle">
 
+<div layout:fragment="content" id="contentStyle">
+    <div class="innerContent">
+        <h2 id="current-time"></h2>
+        <!--        <h1 id="currentTime"></h1>-->
+        <div id="calendar"></div>
+
+        <hr>
+
+        <div class="titlebox">
+            <h2>오늘 등록된 수주</h2>
+            <a href="/order" class="bg-green">수주관리 페이지 이동</a>
+        </div>
+
+        <div class="table-container" style="height: 250px">
+            <table>
+                <thead>
+                <tr>
+                    <th>수주번호</th>
+                    <th>제품명</th>
+                    <th>거래처</th>
+                    <th>수량(box)</th>
+                    <th>주문상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderDTO, status: ${orderDTOList}">
+
+                    <td th:text="${orderDTO.salesOrderId}"></td>
+                    <td th:text="${orderDTO.productName}"></td>
+                    <td>
+                        <span th:if="${orderDTO.vendorId == 'ven-11'}">11번가</span>
+                        <span th:if="${orderDTO.vendorId == 'ven-cou'}">쿠팡</span>
+                        <span th:if="${orderDTO.vendorId == 'ven-a'}">에이농장</span>
+                        <span th:if="${orderDTO.vendorId == 'ven-nh'}">○○농협</span>
+                        <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
+                    </td>
+                    <td th:text="${orderDTO.salesQty}"></td>
+
+                    <td>
+                        <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
+                        <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
+                        <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff834c">취소</span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>
