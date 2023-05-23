@@ -1,6 +1,10 @@
 package com.mes.aone.util;
 
 
+
+import java.time.LocalDateTime;
+import java.util.Scanner;
+
 public class MESMain {
     public static void main(String[] args) {
         MESInfo mesInfo = new MESInfo();
@@ -8,7 +12,6 @@ public class MESMain {
 
         String productName = "양배추즙"; // 제품명 입력
         int salesAmount = 384; // 제품량 입력
-
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
@@ -49,6 +52,10 @@ public class MESMain {
            calculator.packaging(); // 포장 메서드 실행
 
         }
+
+        System.out.println("전처리 공정계획 리스트: " + mesInfo.nowPreProcessingMachine);
+        System.out.println("추출기1 공정계획 리스트: " + mesInfo.nowExtractionMachine1);
+        System.out.println("추출기2 공정계획 리스트: " + mesInfo.nowExtractionMachine2);
 
 
     }
