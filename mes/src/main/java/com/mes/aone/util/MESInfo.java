@@ -5,11 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -52,12 +48,17 @@ import java.util.List;
     LocalDateTime packaging = null; // 포장 완료시간
 
 
+
+
+
     //추출혼합 작업 완료량
     int extractionOutput=1600;// 양배추 1ton기준 (추출액 : 1600L)
    //충진 완료량
     int fillOutPut=0;
 
-
+    // 포장 후 set
+   long packagingeBox = 0;         // 포장 된 박스
+   long packagingEa = 0;           // 포장 후 남은 낱개
 
 
 

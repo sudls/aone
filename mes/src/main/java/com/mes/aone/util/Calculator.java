@@ -1,12 +1,14 @@
 package com.mes.aone.util;
 
 
-import java.sql.SQLOutput;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
+
+import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+
 
 public class Calculator {
     private MESInfo mesInfo;
@@ -55,8 +57,9 @@ public class Calculator {
 
 
     void measurement(){ // 원료계량
-//        LocalDateTime start = LocalDateTime.of(2023,5,19,15,0,0); // 원료계량 시작시간
+
         LocalDateTime start = LocalDateTime.of(2023,4,5,10,20,0); // 원료계량 시작시간
+
         LocalDateTime end = start; // 원료계량 완료시간(변수) 선언;
         end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
         end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
@@ -162,19 +165,18 @@ public class Calculator {
         int output = 0; // 추출액, 혼합액 총량
         int hour_capacity = 0; // 시간당 생산가능량
 
-        output=mesInfo.extractionOutput;//추출/혼합 완료량
+      output=mesInfo.extractionOutput;//추출/혼합 완료량
 //        hour_capacity = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 1750 : 1500; // 충진시 기계를 1개씩만 사용하면
         hour_capacity = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 1750*2 : 1500*2; // 충진시 기계 2개를 동시에 돌리면
 
         double totalPackages = (double) output / ((mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 0.08 : 0.015); // 혼합액 양으로 만들 수 있는 포 수 (총)
         mesInfo.setFillOutPut((int)totalPackages);//총 포 수 저장
-
+      
         int totalHours = (int) Math.floor(totalPackages / hour_capacity); // 총 소요 시간 계산
         int remainingPackages = (int) Math.floor((totalPackages % hour_capacity) * (60.0 / hour_capacity)); // 남은 포장 개수 계산
 
 //        System.out.println("총 시간 : "+totalHours);
 //        System.out.println("총 분 : "+remainingPackages);
-
 
         end = end.plusHours(totalHours); // 작업 끝나는 시간 계산
         end = end.plusMinutes(remainingPackages); // 남은 포장 개수에 대한 분 단위 계산
@@ -219,6 +221,93 @@ public class Calculator {
         System.out.println("열교환 시작시간: " + start + "\n열교환 완료시간: " + end);
     }
 
+      
+      
+
+    // 포장
+    void packaging(){
+        int inputEa = 0;                                  // inputEa          : 충진/식힘 후 포장할 전체 낱개(ea) 수
+        long outputBox = 0;                                // 총 만들어질 box 수 : inputEa / 30(양배추, 흑마늘)   inputEa / 25(석류젤리스틱, 매실젤리스틱)
+        int outputEa = 0;                                 // 남은 ea 수        : inputEa % 30(양배추, 흑마늘)   inputEa % 25(석류젤리스틱, 매실젤리스틱)
+        double packagingTime = 0;                           // 포장시간 (분)
+        // 포장 관련 상수 정의
+        int packagingTimePerBoxSeconds = 18;             // 1박스당 포장 시간 (초)
+
+        if (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")){  // 양배추즙, 흑마늘즙이면
+            inputEa = mesInfo.fillOutPut;
+            outputBox = inputEa / 30;
+            outputEa = inputEa % 30;
+
+        } else {                                                                            // 젤리스틱이면
+            inputEa = mesInfo.fillOutPut;
+            outputBox = inputEa / 25;
+            outputEa = inputEa % 25;
+        }
+
+        mesInfo.setPackagingeBox(outputBox);                                // 포장된 박스 수
+        mesInfo.setPackagingEa(outputEa);                                   // 포장 후 남은 낱개
+        packagingTime = outputBox * packagingTimePerBoxSeconds / 60;        // 포장시간
+        System.out.println("포장시간: " + packagingTime + "분");
+
+
+        // 근무 시간 및 점심 시간 설정
+        LocalTime startWorkTime = LocalTime.of(9, 0);    // 근무 시작 시간
+        LocalTime endWorkTime = LocalTime.of(18, 0);     // 근무 종료 시간
+        LocalTime lunchStartTime = LocalTime.of(12, 0);  // 점심 시작 시간
+        LocalTime lunchEndTime = LocalTime.of(13, 0);    // 점심 종료 시간
+
+        LocalDateTime leadTimeStart = mesInfo.getExtraction();         // 리드타임 시작
+        LocalDateTime leadTimeEnd = null;                              // 리드타임 끝
+
+        leadTimeStart = lunchAndLeaveTimeStartCheck(leadTimeStart);     // 포장 리드타임 시작 전 시작 시간 비근무 시간 체크(공정 시작시간 리턴)
+        leadTimeEnd = lunchAndLeaveTimeStartCheck(leadTimeStart);       // 포장 리드타임 시작 전 끝나는 시간 비근무 시간 체크(공정 시작시간 리턴)
+        leadTimeEnd = lunchAndLeaveTimeFinishCheck(leadTimeStart.plusMinutes(mesInfo.leadPackaging), leadTimeEnd); // 포장리드타임 완료 시 비근무 시간 체크(포장 시작시간 리턴)
+        leadTimeEnd = leadTimeEnd.plusMinutes(mesInfo.leadPackaging);    // 원료계량 리드타임 더하기
+        System.out.println("포장 리드타임 시작 : " + leadTimeStart );
+        System.out.println("포장 리드타임 끝 : " + leadTimeEnd);
+
+        LocalDateTime packingStart = leadTimeEnd;                                   // 포장 시작 시간
+        LocalDateTime packingEnd = packingStart.plusMinutes((long)packagingTime);   // 포장 종료 시간
+
+        System.out.println("포장 시작시간 : " + packingStart);
+
+        if (packingEnd.getHour() >= lunchStartTime.getHour() && packingEnd.getHour()<=lunchEndTime.getHour()) {    // 포장끝나는시간 점심시간, 시작시간 점심시간->리드타임에서 거름
+            Duration availableTime = Duration.between(packingStart.toLocalTime(), lunchStartTime);
+            long nowPackingBox = availableTime.toSeconds() / 18;                     // 지금 작업한 박스
+            outputBox = outputBox - nowPackingBox;                                   // 남은 박스 : 오후 작업할 박스
+            packagingTime = packagingTime-availableTime.toMinutes();                 // 남은 포장 시간
+            packingStart = packingStart.withHour(13).withMinute(0).withSecond(0);    // 1시부터 다시 시작
+            packingEnd = packingStart.plusMinutes((long)packagingTime);              // 포장 끝나는시간
+
+        }
+
+        if(packingEnd.getHour() >= endWorkTime.getHour()){                      // 포장 끝나는 시간이 근무끝시간(18시)보다 뒤이거나 같으면
+            Duration availableTime = Duration.between(packingStart.toLocalTime(), endWorkTime);
+            long todayPackingBox = availableTime.toSeconds() / 18;              // 오늘 작업한 박스
+              outputBox = outputBox - todayPackingBox;                          // 남은 박스 : 익일 작업할 박스
+
+            if(packingStart.getDayOfWeek() == DayOfWeek.FRIDAY){ // 금요일 이면
+                packingStart = packingStart.plusDays(3).withHour(9).withMinute(0).withSecond(0);
+
+            }else {
+                packingStart = packingStart.plusDays(1).with(startWorkTime);
+            }
+
+            packagingTime = packagingTime-availableTime.toMinutes();            // 남은 포장 시간
+            packingEnd = packingStart.plusMinutes((long)packagingTime);
+        }
+
+        System.out.println("포장 완료시간 : " + packingEnd);
+        System.out.println("포장된 박스 수: " + outputBox + "box");
+        System.out.println("포장 후 남은 낱개: " + outputEa + "ea");
+        mesInfo.setPackaging(packingEnd); // 포장 완료시간 set
+
+    }
+
+
+      
+
+     
 
 //---
 LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
@@ -271,6 +360,7 @@ LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 �
             }
             startTime = finishTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
             return startTime; // 다음날 09:00 리턴
+
         }
 
         if (finishTime.getHour() < 9) { // 퇴근 시간 이후 다음날
@@ -280,6 +370,8 @@ LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 �
 
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
+
+
 
 
 

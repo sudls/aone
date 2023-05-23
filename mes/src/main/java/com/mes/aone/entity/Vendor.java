@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class Vendor {
     // id
     @Id
-    @Column
+    @Column(nullable = false)
     private String vendorId;
 
     // 업체명
@@ -32,7 +32,7 @@ public class Vendor {
 
     // 사업자등록번호
     @Column(nullable = false, length = 15)
-    private String vendorNumber;
+    private String registration_Number;
 
     // 비고
     @Column

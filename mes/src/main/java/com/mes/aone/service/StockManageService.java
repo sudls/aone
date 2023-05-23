@@ -5,10 +5,11 @@ import com.mes.aone.entity.Stock;
 import com.mes.aone.entity.StockManage;
 import com.mes.aone.repository.StockManageRepository;
 import com.mes.aone.repository.StockRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -59,5 +60,36 @@ public class StockManageService {
     public List<StockManage> getStockByProductName(String stockManageName) {
         // productName에 해당하는 stockmanageList를 조회하는 로직을 구현합니다.
         return stockManageRepository.findByStockManageName(stockManageName);
+    }
+
+    // 완제품 입출고 다중 검색
+    public List<StockManage> searchStockManage(String searchProduct, StockManageState searchState, LocalDateTime stockStartDateTime, LocalDateTime stockEndDateTime, Sort sort) {
+
+        if (searchProduct != null && !searchProduct.isEmpty() && searchState != null && stockStartDateTime != null && stockEndDateTime != null) {
+            // 제품명, 입출고상태, 기간
+            return stockManageRepository.findByStockManageNameAndStockManageStateAndStockDateBetween(searchProduct, searchState, stockStartDateTime, stockEndDateTime, sort);
+        } else if (searchProduct != null && !searchProduct.isEmpty() && searchState != null) {
+            // 제품명, 입출고상태
+            return stockManageRepository.findByStockManageNameAndStockManageState(searchProduct, searchState, sort);
+        } else if (searchProduct != null && !searchProduct.isEmpty() && stockStartDateTime != null && stockEndDateTime != null) {
+            // 제품명, 기간
+            return stockManageRepository.findByStockManageNameAndStockDateBetween(searchProduct, stockStartDateTime, stockEndDateTime, sort);
+        } else if (searchState != null && stockStartDateTime != null && stockEndDateTime != null) {
+            // 입출고상태, 기간
+            return stockManageRepository.findByStockManageStateAndStockDateBetween(searchState, stockStartDateTime, stockEndDateTime, sort);
+        } else if (searchProduct != null && !searchProduct.isEmpty()) {
+            // 제품명
+            return stockManageRepository.findByStockManageName(searchProduct, sort);
+        } else if (searchState != null) {
+            // 입출고상태
+            return stockManageRepository.findByStockManageState(searchState, sort);
+        } else if (stockStartDateTime != null && stockEndDateTime != null) {
+            // 기간
+            return stockManageRepository.findByStockDateBetween(stockStartDateTime, stockEndDateTime, sort);
+        } else {
+            // 모든 검색 조건이 제공되지 않은 경우
+            return stockManageRepository.findAll(Sort.by(Sort.Direction.DESC, "purchaseOrderId"));
+        }
+
     }
 }

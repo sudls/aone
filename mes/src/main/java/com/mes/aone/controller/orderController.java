@@ -41,24 +41,6 @@ public class orderController {
         return"pages/orderPage";
     }
 
-    // 수주기간 검색
-    // @GetMapping(value="/order/search")
-    // public String searchOrder(Pageable pageable, @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-    //                           @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, Model model){
-    //     LocalDateTime startDateTime = null;
-    //     LocalDateTime endDateTime = null;
-    //     if(startDate != null && endDate != null){
-    //         startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
-    //         endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
-    //     }
-
-
-    //     Page<SalesOrder> searchResults = salesOrderService.searchSalesOrder(pageable, startDateTime, endDateTime);
-    //     model.addAttribute("searchResults", searchResults);
-    //     return"pages/orderPage";
-    // }
-
-
 
     //조건 검색
     @GetMapping(value="/order/search")
@@ -70,6 +52,7 @@ public class orderController {
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
             Model model){
 
+        // 날짜 변환
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
         if(startDate != null && endDate != null){
@@ -77,7 +60,12 @@ public class orderController {
             endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
         }
 
-        List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(searchProduct, searchVendor, searchState, startDateTime, endDateTime);
+        // 정렬 설정
+        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
+
+        // 검색결과
+        List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(searchProduct, searchVendor, searchState, startDateTime, endDateTime, sort);
+
 
         model.addAttribute("orderDTOList", salesOrderList);
         model.addAttribute("orderDTO", new OrderDTO());
@@ -87,55 +75,6 @@ public class orderController {
     }
 
 
-
-
-
-
-
-
-
-    //조건 검색
-//    @GetMapping(value="/order/search")
-//    public String orderPage(
-//            @RequestParam(value = "searchProduct", required = false) String searchProduct,
-//            @RequestParam(value = "searchVendor", required = false) String searchVendor,
-//            @RequestParam(value = "searchState", required = false) Status searchState,
-//            Model model){
-//
-//        List<SalesOrder> salesOrderList;
-//
-//        if (searchProduct != null && !searchProduct.isEmpty() && searchVendor != null && !searchVendor.isEmpty() && searchState != null) {
-//            // 모든 검색 조건이 제공된 경우
-//            salesOrderList = salesOrderRepository.findByProductNameAndVendorIdAndSalesStatus(searchProduct, searchVendor, searchState);
-//        } else if (searchProduct != null && !searchProduct.isEmpty() && searchVendor != null && !searchVendor.isEmpty()) {
-//            // 제품명과 거래처로 검색한 경우
-//            salesOrderList = salesOrderRepository.findByProductNameAndVendorId(searchProduct, searchVendor);
-//        } else if (searchProduct != null && !searchProduct.isEmpty() && searchState != null) {
-//            // 제품명과 수주상태로 검색한 경우
-//            salesOrderList = salesOrderRepository.findByProductNameAndSalesStatus(searchProduct, searchState);
-//        } else if (searchVendor != null && !searchVendor.isEmpty() && searchState != null) {
-//            // 거래처와 수주상태로 검색한 경우
-//            salesOrderList = salesOrderRepository.findByVendorIdAndSalesStatus(searchVendor, searchState);
-//        } else if (searchProduct != null && !searchProduct.isEmpty()) {
-//            // 제품명으로 검색한 경우
-//            salesOrderList = salesOrderRepository.findByProductName(searchProduct);
-//        } else if (searchVendor != null && !searchVendor.isEmpty()) {
-//            // 거래처로 검색한 경우
-//            salesOrderList = salesOrderRepository.findByVendorId(searchVendor);
-//        } else if (searchState != null) {
-//            // 수주상태로 검색한 경우
-//            salesOrderList = salesOrderRepository.findBySalesStatus(searchState);
-//        } else {
-//            // 모든 검색 조건이 제공되지 않은 경우
-//            salesOrderList = salesOrderRepository.findAll();
-//        }
-//
-//        model.addAttribute("orderDTOList", salesOrderList);
-//        model.addAttribute("orderDTO", new OrderDTO());
-//        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
-//
-//        return "pages/orderPage";
-//    }
 
 
     // 수주 등록

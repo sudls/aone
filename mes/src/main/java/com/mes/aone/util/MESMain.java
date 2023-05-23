@@ -1,8 +1,6 @@
 package com.mes.aone.util;
 
 
-import java.util.Scanner;
-
 public class MESMain {
     public static void main(String[] args) {
         MESInfo mesInfo = new MESInfo();
@@ -11,8 +9,12 @@ public class MESMain {
         String productName = "양배추즙"; // 제품명 입력
         int salesAmount = 384; // 제품량 입력
 
+
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
+
+
+
 
         System.out.println("원자재 발주량");
 
@@ -29,6 +31,9 @@ public class MESMain {
 
             calculator.examination();//검사 메서드 실행
             calculator.cooling();//열교환 메서드 실행
+          
+             calculator.packaging(); // 포장 메서드 실행
+
 
 
         }else { // 젤리스틱 공정
@@ -37,11 +42,12 @@ public class MESMain {
             calculator.measurement(); // 원료계량 메서드 실행
 
             calculator.extraction(); // 추출 메서드 실행
-
             calculator.fill();//충진 메서드 실행
 
             calculator.examination();//검사 메서드 실행
             calculator.cooling();//열교환 메서드 실행
+           calculator.packaging(); // 포장 메서드 실행
+
         }
 
 

@@ -45,7 +45,7 @@
 
   <h1>재고 입출고 현황</h1>
   <div style="margin-bottom: 20px;">
-    <form id="searchForm" method="get">
+    <form id="searchForm" method="get" action="/inventory3/search">
       <select name="searchProduct" id="option1">
         <option disabled selected>제품명</option>
         <option value="양배추즙">양배추즙</option>
@@ -61,9 +61,9 @@
       </select>
 
       <div class="periodBox">
-        <input type="date">
+        <input type="date" id="stockStartDate" name="stockStartDate">
         <span>~</span>
-        <input type="date">
+        <input type="date" id="stockEndDate" name="stockEndDate">
       </div>
 
       <button type="submit">검색</button>
@@ -83,7 +83,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="stockManage : ${stockManageList}">
+    <tr th:each="stockManage, status: ${stockManageList}">
       <td th:text="${stockManage.stockManageName}"></td>
 
       <td>
