@@ -4,8 +4,11 @@ package com.mes.aone.util;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+
 
 public class Calculator {
     private MESInfo mesInfo;
@@ -54,7 +57,9 @@ public class Calculator {
 
 
     void measurement(){ // 원료계량
-        LocalDateTime start = LocalDateTime.of(2023,5,15,18,0,0); // 원료계량 시작시간
+
+        LocalDateTime start = LocalDateTime.of(2023,4,5,10,20,0); // 원료계량 시작시간
+
         LocalDateTime end = start; // 원료계량 완료시간(변수) 선언;
         end = lunchAndLeaveTimeStartCheck(end); // 작업 시작 시 비근무 시간 체크(공정 시작시간 리턴)
         end = lunchAndLeaveTimeFinishCheck(end.plusMinutes(mesInfo.leadMeasurement), end); // 작업 완료 시 비근무 시간 체크(공정 시작시간 리턴)
@@ -152,7 +157,72 @@ public class Calculator {
         System.out.println("추출 및 혼합 시작시간: " + start + "\n추출 및 혼합 완료시간: " + end);
     }
 
+    //충진
+    void fill(){
+        LocalDateTime start = lunchAndLeaveTimeStartCheck(mesInfo.getExtraction());  // 액제조제 시스템 완료시간
+        LocalDateTime end = lunchAndLeaveTimeStartCheck(start.plusMinutes(mesInfo.getLeadFill())); // 시작 시간이 근무시간이 맞는지 확인, 리드타임 더함
 
+        int output = 0; // 추출액, 혼합액 총량
+        int hour_capacity = 0; // 시간당 생산가능량
+
+      output=mesInfo.extractionOutput;//추출/혼합 완료량
+//        hour_capacity = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 1750 : 1500; // 충진시 기계를 1개씩만 사용하면
+        hour_capacity = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 1750*2 : 1500*2; // 충진시 기계 2개를 동시에 돌리면
+
+        double totalPackages = (double) output / ((mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 0.08 : 0.015); // 혼합액 양으로 만들 수 있는 포 수 (총)
+        mesInfo.setFillOutPut((int)totalPackages);//총 포 수 저장
+      
+        int totalHours = (int) Math.floor(totalPackages / hour_capacity); // 총 소요 시간 계산
+        int remainingPackages = (int) Math.floor((totalPackages % hour_capacity) * (60.0 / hour_capacity)); // 남은 포장 개수 계산
+
+//        System.out.println("총 시간 : "+totalHours);
+//        System.out.println("총 분 : "+remainingPackages);
+
+        end = end.plusHours(totalHours); // 작업 끝나는 시간 계산
+        end = end.plusMinutes(remainingPackages); // 남은 포장 개수에 대한 분 단위 계산
+
+
+        mesInfo.setFill(end); // 충진 완료시간 저장
+        System.out.println("충진 시작시간: " + start + "\n충진 완료시간: " + end);
+    }
+
+//검사
+    void examination(){
+        LocalDateTime start = lunchAndLeaveTimeStartCheck(mesInfo.getFill()); // 액제조제 시스템 완료시간
+        LocalDateTime end = lunchAndLeaveTimeStartCheck(start.plusMinutes(mesInfo.getLeadExamination())); // 시작 시간이 근무시간이 맞는지 확인, 리드타임 더함
+
+        int output = 0; // 추출액, 혼합액 총량
+        int hour_capacity = 0; // 시간당 생산가능량
+
+        output=mesInfo.fillOutPut; //충진된 개수
+        System.out.println(output);
+        hour_capacity = 5000; //1시간당 5000개 검사가능
+
+        //double totalPackages = (double) output / ((mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? 0.08 : 0.015); // 혼합액 양으로 만들 수 있는 포 수 (총)
+        int totalHours = (int) Math.floor((double)output / hour_capacity); // 총 소요 시간 계산
+        int remainingExam = (int) Math.floor(((double)output  % hour_capacity) * (60.0 / hour_capacity)); // 남은 포장 개수 계산
+
+//         System.out.println("총 시간 : "+totalHours);
+//         System.out.println("총 분 : "+remainingExam);
+
+
+        end = end.plusHours(totalHours); // 작업 끝나는 시간 계산
+        end = end.plusMinutes(remainingExam); // 남은 포장 개수에 대한 분 단위 계산
+
+        mesInfo.setExamination(end); // 검사 완료시간 저장
+        System.out.println("검사 시작시간: " + start + "\n검사 완료시간: " + end);
+    }
+
+//열교환(식힘)
+    void cooling(){
+        LocalDateTime start = mesInfo.getExamination(); // 검사완료 시간
+        LocalDateTime end = start.plusDays(1).withHour(9).withMinute(0).withSecond(0); //다음날 오전 종료
+        mesInfo.setCooling(end); // 검사 완료시간 저장
+        System.out.println("열교환 시작시간: " + start + "\n열교환 완료시간: " + end);
+    }
+
+      
+      
 
     // 포장
     void packaging(){
@@ -235,35 +305,39 @@ public class Calculator {
     }
 
 
+      
 
+     
 
-    LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
-        if(startTime.getDayOfWeek() == DayOfWeek.SATURDAY || startTime.getDayOfWeek() == DayOfWeek.SUNDAY){
-            startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
-            return startTime; // 주말이면 다음주 월요일 09:00 리턴
-        }
+//---
+LocalDateTime lunchAndLeaveTimeStartCheck(LocalDateTime startTime){ // 공정 시작 시 점심, 퇴근 시간 체크 메서드
 
-        if (startTime.getHour() == 12){ // 점심시간 이면
-            startTime = startTime.withHour(13).withMinute(0).withSecond(0);
-            return startTime; // 점심 끝나는 시간 리턴
-        }
-
-        if (startTime.getHour() >= 18) { // 퇴근 시간 이후 당일
-            if (startTime.getDayOfWeek() == DayOfWeek.FRIDAY) { // 금요일인 경우
-                startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
-                return startTime; // 다음주 월요일 09:00 리턴
-            }
-            startTime = startTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
-            return startTime; // 다음날 09:00 리턴
-        }
-
-        if (startTime.getHour() < 9) { // 퇴근 시간 이후 다음날
-            startTime = startTime.withHour(9).withMinute(0).withSecond(0);
-            return startTime; // 당일 09:00 리턴
-        }
-
-        return startTime; // 근무 시간 안걸리면 그대로 리턴
+    if(startTime.getDayOfWeek() == DayOfWeek.SATURDAY || startTime.getDayOfWeek() == DayOfWeek.SUNDAY){
+        startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+        return startTime; // 주말이면 다음주 월요일 09:00 리턴
     }
+
+    if (startTime.getHour() == 12){ // 점심시간 이면
+        startTime = startTime.withHour(13).withMinute(0).withSecond(0);
+        return startTime; // 점심 끝나는 시간 리턴
+    }
+
+    if (startTime.getHour() >= 18) { // 퇴근 시간 이후 당일
+        if (startTime.getDayOfWeek() == DayOfWeek.FRIDAY) { // 금요일인 경우
+            startTime = startTime.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).withHour(9).withMinute(0).withSecond(0);
+            return startTime; // 다음주 월요일 09:00 리턴
+        }
+        startTime = startTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+        return startTime; // 다음날 09:00 리턴
+    }
+
+    if (startTime.getHour() < 9) { // 퇴근 시간 이후 다음날
+        startTime = startTime.withHour(9).withMinute(0).withSecond(0);
+        return startTime; // 당일 09:00 리턴
+    }
+
+    return startTime; // 근무 시간 안걸리면 그대로 리턴
+}
 
 
 
@@ -286,6 +360,7 @@ public class Calculator {
             }
             startTime = finishTime.plusDays(1).withHour(9).withMinute(0).withSecond(0);
             return startTime; // 다음날 09:00 리턴
+
         }
 
         if (finishTime.getHour() < 9) { // 퇴근 시간 이후 다음날
