@@ -26,6 +26,11 @@ public class MESMain {
             calculator.extraction(); // 추출 메서드 실행
 
             calculator.fill();//충진 메서드 실행
+
+            calculator.examination();//검사 메서드 실행
+            calculator.cooling();//열교환 메서드 실행
+
+
         }else { // 젤리스틱 공정
             calculator.purChaseAmount(); // 발주량 계산 메서드 실행
 
@@ -34,6 +39,9 @@ public class MESMain {
             calculator.extraction(); // 추출 메서드 실행
 
             calculator.fill();//충진 메서드 실행
+
+            calculator.examination();//검사 메서드 실행
+            calculator.cooling();//열교환 메서드 실행
         }
 
 

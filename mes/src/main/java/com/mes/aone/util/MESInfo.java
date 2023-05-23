@@ -48,11 +48,15 @@ import java.util.List;
     LocalDateTime mixing = null; // 혼합 완료시간
     LocalDateTime fill = null; // 충진 완료시간
     LocalDateTime examination=null; //검사 완료시간
+    LocalDateTime cooling=null; //열교환 완료시간
     LocalDateTime packaging = null; // 포장 완료시간
 
 
     //추출혼합 작업 완료량
-    int extractionOutput=1600;
+    int extractionOutput=1600;// 양배추 1ton기준 (추출액 : 1600L)
+   //충진 완료량
+    int fillOutPut= 20000;//양배추 1ton기준 (20000포 충진)
+
 
 
 
