@@ -40,7 +40,7 @@ public class ProcessPlan {
 
     @ManyToOne
     @JoinColumn(name = "facility_id")
-    private Facility facility_id;
+    private Facility facilityId;
 
 //    @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
 //    private List<Facility> facilityIdList = new ArrayList<>();
