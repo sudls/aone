@@ -5,17 +5,11 @@ import com.mes.aone.entity.BOM;
 import com.mes.aone.entity.Facility;
 import com.mes.aone.entity.Material;
 import com.mes.aone.entity.Vendor;
-import com.mes.aone.repository.BOMRepository;
-import com.mes.aone.repository.FacilityRepository;
-import com.mes.aone.repository.MaterialRepository;
-import com.mes.aone.repository.VendorRepository;
+import com.mes.aone.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 
 @Component
@@ -80,9 +74,6 @@ public class DataLoader implements CommandLineRunner {
         Facility facility12 = new Facility("inspection","금속검출기",5000,10, Status.N);
 
         facilityRepository.saveAll(Arrays.asList(facility1,facility2,facility3,facility4,facility5,facility6,facility7,facility8,facility9,facility10,facility11,facility12));
-
-
-
 
 
     }
