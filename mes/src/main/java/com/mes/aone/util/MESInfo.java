@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -16,6 +18,11 @@ import java.time.LocalDateTime;
     String productName = ""; // 제품명
     int salesQty = 0; // 수주량(박스)
 
+    // 창고 원자재량
+    int stockCollagen = 60; // 콜라겐
+    int stockBox = 15; // 박스
+    int stockPouch = 8300; // 파우치(즙)
+    int stockStickPouch = 3800; // 파우치(스틱)
 
 
     //원자재 발주량
@@ -23,10 +30,12 @@ import java.time.LocalDateTime;
     int garlic = 0; // 흑마늘즙
     int pomegranate = 0; // 석류젤리스틱
     int plum = 0; // 매실젤리스틱
-    int Collagen = 0; // 콜라겐
+    int collagen = 0; // 콜라겐
     int box = 0; // 박스
     int pouch = 0; // 파우치(즙)
     int stickPouch = 0; // 파우치(스틱)
+
+
 
     //리드 타임
     int leadMeasurement = 20; // 원료계랑 리드타임
@@ -66,13 +75,15 @@ import java.time.LocalDateTime;
 
 
     //추출혼합 작업 완료량
-    int extractionOutput=1600;// 양배추 1ton기준 (추출액 : 1600L)
+    int measurementOutput = 0;
+    int preProcessingOutput = 0;
+    int extractionOutput=0;// 양배추 1ton기준 (추출액 : 1600L)
    //충진 완료량
-    int fillOutPut=0;
-
+    int fillOutPut=0;              // 충진 후 낱개
+    int examinationOutput = 0;
     // 포장 후 set
-   long packagingeBox = 0;         // 포장 된 박스
-   long packagingEa = 0;           // 포장 후 남은 낱개
+    long packagingBoxOutput = 0;         // 포장 된 박스
+    long packagingEaOutput = 0;           // 포장 후 남은 낱개
 
 
 
