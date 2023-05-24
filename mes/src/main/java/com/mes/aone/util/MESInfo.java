@@ -57,26 +57,34 @@ public class MESInfo {
    LocalDateTime pastExtractionMachine1 = LocalDateTime.of(2023,5,23,6,0,0);
    LocalDateTime pastExtractionMachine2 = LocalDateTime.of(2023,5,23,7,0,0);
    LocalDateTime pastFillingLiquidMachine = LocalDateTime.of(2023,5,19,6,0,0);
-   LocalDateTime pastJellyMachine = LocalDateTime.of(2023,5,19,6,0,0);
+   LocalDateTime pastFillingJellyMachine = LocalDateTime.of(2023,5,19,6,0,0);
+   LocalDateTime pastExaminationMachine = LocalDateTime.of(2023,5,19,6,0,0);
+   LocalDateTime pastPackagingTime = LocalDateTime.of(2023,5,19,6,0,0);
 
-   // 현재 설비별 공정 계획
+   // 설비별 실시간 공정 계획
    List<LocalDateTime> nowPreProcessingMachine = new ArrayList<>(); // 전처리
    List<LocalDateTime> nowExtractionMachine1 = new ArrayList<>(); // 추출기1
    List<LocalDateTime> nowExtractionMachine2 = new ArrayList<>(); // 추출기2
    List<LocalDateTime> nowFillingLiquidMachine = new ArrayList<>(); // 충진기(즙)
    List<LocalDateTime> nowFillingJellyMachine = new ArrayList<>(); // 충진기(젤리)
 
-   // 현재 공정별 공정 계획
+   // 공정별 실시간 공정 계획
    List<LocalDateTime> nowPreProcessing = new ArrayList<>();
    List<LocalDateTime> nowExtraction = new ArrayList<>();
    List<LocalDateTime> nowFilling = new ArrayList<>();
-   
-   // 현재 공정별 생산량
+   List<LocalDateTime> nowExamination = new ArrayList<>();
+   List<LocalDateTime> nowCooling = new ArrayList<>();
+   List<LocalDateTime> nowPackaging = new ArrayList<>();
+
+
+   // 공정별 실시간 생산량
    int nowMeasurementOutput = 0; // 원료계량
    List<Integer> nowPreProcessingOutput = new ArrayList<>(); // 전처리 생산량
    List<Integer> nowExtractionOutput = new ArrayList<>(); // 추출 생산량
    List<Integer> nowFillingOutput = new ArrayList<>(); // 충진 생산량
-
+   List<Integer> nowExaminationOutput = new ArrayList<>(); // 충진 생산량
+   List<Integer> nowCoolingOutput = new ArrayList<>(); // 충진 생산량
+   List<Integer> nowPackagingOutput = new ArrayList<>(); // 충진 생산량
 
 
    //추출혼합 작업 완료량
