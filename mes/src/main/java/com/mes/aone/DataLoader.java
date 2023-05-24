@@ -1,7 +1,9 @@
 package com.mes.aone;
 
+import com.mes.aone.entity.BOM;
 import com.mes.aone.entity.Material;
 import com.mes.aone.entity.Vendor;
+import com.mes.aone.repository.BOMRepository;
 import com.mes.aone.repository.MaterialRepository;
 import com.mes.aone.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,11 @@ import java.util.Arrays;
 public class DataLoader implements CommandLineRunner {
     @Autowired
     private VendorRepository vendorRepository;
-
     @Autowired
     private MaterialRepository materialRepository;
+    @Autowired
+    private BOMRepository bomRepository;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,8 +48,19 @@ public class DataLoader implements CommandLineRunner {
 
         materialRepository.saveAll(Arrays.asList(material1, material2, material3, material4, material5, material6, material7, material8));
 
+        //BOM 생성
+        BOM bom1 = new BOM("양배추즙", "양배추",40,"정제수",40,"",0);
+        BOM bom2 = new BOM("흑마늘즙", "흑마늘추출액",20,"정제수",60,"",0);
+        BOM bom3 = new BOM("석류젤리스틱", "석류농축액",5,"콜라겐",2,"정제수",8);
+        BOM bom4 = new BOM("매실젤리스틱", "매실농축액",5,"콜라겐",2,"정제수",8);
+
+        bomRepository.saveAll(Arrays.asList(bom1,bom2,bom3,bom4));
+
+
+
+
     }
-    
+
 
 
 }
