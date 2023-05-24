@@ -16,7 +16,7 @@ public class Calculator {
         this.mesInfo = mesInfo;
     }
 
-    void purChaseAmount() { // 발주량 계산
+    public void purChaseAmount() { // 발주량 계산
         if (mesInfo.getProductName().equals("양배추즙")) {
             mesInfo.setCabbage((int) (Math.ceil((double) (mesInfo.salesQty * 30 / 20) / 1000) * 1000));
             mesInfo.setBox((int) (Math.ceil((double) (mesInfo.cabbage * 20 / 30) / 500) * 500));
@@ -50,13 +50,14 @@ public class Calculator {
         }
     }
 
-    void materialArrived() { // 발주 원자재 도착 시간
+    public void materialArrived() { // 발주 원자재 도착 시간
 
     }
 
 
-    void measurement() { // 원료계량
-        LocalDateTime currentTime = LocalDateTime.of(2023, 5, 23, 9, 0, 0); // 원료계량 시작시간
+    public void measurement() { // 원료계량
+        System.out.println("수주일: " + mesInfo.salesDay);
+        LocalDateTime currentTime = mesInfo.salesDay; // 원료계량 시작시간
 
         int workAmount = 0;
 
@@ -85,7 +86,7 @@ public class Calculator {
 
     }
 
-    void preProcessing() { // 전처리
+    public void preProcessing() { // 전처리
         LocalDateTime currentTime = mesInfo.getMeasurement(); // 원료계량 완료시간을 전처리 시작시간으로 설정
 
         int workAmount = mesInfo.nowMeasurementOutput; // 작업량
@@ -118,7 +119,7 @@ public class Calculator {
 
     }
 
-    void extraction() { // 추출 및 혼합
+    public void extraction() { // 추출 및 혼합
         LocalDateTime currentTime = null; // 추출 시간 변수 선언
 
         int output = 0; // 생산량
@@ -268,7 +269,7 @@ public class Calculator {
     }
 
     //충진
-    void fill() {
+    public void fill() {
         LocalDateTime currentTime = null; // 충진 시간 변수 선언
         List<LocalDateTime> extractionTimeList = mesInfo.nowExtraction; // 추출/혼합 완료시간 리스트
         LocalDateTime beforeFillingTime = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙")) ? mesInfo.pastFillingLiquidMachine : mesInfo.pastFillingJellyMachine; // 이전 충진 공정 완료시간
@@ -315,7 +316,7 @@ public class Calculator {
     }
 
     //검사
-    void examination() {
+    public void examination() {
         LocalDateTime currentTime = null; // 검사 시간 변수 선언
         List<LocalDateTime> fillingTimeList = mesInfo.nowFilling; // 충진 완료시간 리스트
         LocalDateTime beforeExaminationTime = mesInfo.pastExaminationMachine; // 이전 검사 공정 완료시간
@@ -355,7 +356,7 @@ public class Calculator {
     }
 
     //열교환(식힘)
-    void cooling() {
+    public void cooling() {
         LocalDateTime currentTime = null; // 검사 시간 변수 선언
         List<LocalDateTime> examinationTimeList = mesInfo.nowExamination; // 검사 완료시간 리스트
 
@@ -374,7 +375,7 @@ public class Calculator {
 
 
     // 포장
-    void packaging() {
+    public void packaging() {
         LocalDateTime currentTime = null; // 충진 시간 변수 선언
         List<LocalDateTime> coolingTimeList = mesInfo.nowCooling; // 냉각 완료시간 리스트
         LocalDateTime beforePackagingTime = mesInfo.pastPackagingTime; // 이전 포장 공정 완료시간
@@ -414,6 +415,7 @@ public class Calculator {
             mesInfo.nowPackaging.add(currentTime);
             mesInfo.nowPackagingOutput.add(box);
         }
+        mesInfo.setEstDelivery(currentTime);
     }
 
     //---

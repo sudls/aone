@@ -21,27 +21,27 @@ public class purchaseOrderTest {
     @Autowired
     VendorRepository vendorRepository;
 
-    @Test // 발주 더미 (인설트)
-    public void insertPurchaseOrder(){
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
-
-        Material material = materialRepository.findByMaterialName("매실액기스");
-        purchaseOrder.setMaterialName(material);
-
-        Vendor vendor = vendorRepository.findByVendorId("ven-nh");
-        purchaseOrder.setVendorId(vendor);
-
-        purchaseOrder.setPurchaseQty(55);
-        purchaseOrder.setPurchaseDate(new Date());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(purchaseOrder.getPurchaseDate());
-        calendar.add(Calendar.DAY_OF_MONTH, 3);
-        Date newDate = calendar.getTime();
-
-        purchaseOrder.setEstArrival(newDate);
-
-        purchaseOrderRepository.save(purchaseOrder);
-    }
+//    @Test // 발주 더미 (인설트)
+//    public void insertPurchaseOrder(){
+//        PurchaseOrder purchaseOrder = new PurchaseOrder();
+//
+//        Material material = materialRepository.findByMaterialName("매실액기스");
+//        purchaseOrder.setMaterialName(material);
+//
+//        Vendor vendor = vendorRepository.findByVendorId("ven-nh");
+//        purchaseOrder.setVendorId(vendor);
+//
+//        purchaseOrder.setPurchaseQty(55);
+//        purchaseOrder.setPurchaseDate(new Date());
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(purchaseOrder.getPurchaseDate());
+//        calendar.add(Calendar.DAY_OF_MONTH, 3);
+//        Date newDate = calendar.getTime();
+//
+//        purchaseOrder.setEstArrival(newDate);
+//
+//        purchaseOrderRepository.save(purchaseOrder);
+//    }
 
 }

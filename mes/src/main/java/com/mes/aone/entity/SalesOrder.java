@@ -38,9 +38,9 @@ public class SalesOrder {
     @Enumerated(EnumType.STRING)
     private Status salesStatus = Status.A;          // 입력시 기본값 A:대기
 
-    // 예상납품일
-//    @Column(nullable = false)
-//    private Date estDelivery;
+//     예상납품일
+    @Column(nullable = false)
+    private LocalDateTime estDelivery;
 
 
     private static ModelMapper modelMapper = new ModelMapper();

@@ -19,7 +19,7 @@ public class OrderDTO {
     private Integer salesQty; //수량
     private LocalDateTime salesDate; //수주일
     private SalesStatus salesStatus = SalesStatus.A;  //수주 상태
-//    private Date estDelivery; // 예상납품일
+    private LocalDateTime estDelivery; // 예상납품일
 
 
 

@@ -17,6 +17,7 @@ public class MESInfo {
    //수주 정보
    String productName = ""; // 제품명
    int salesQty = 0; // 수주량(박스)
+   LocalDateTime salesDay = null;
 
 
 
@@ -97,6 +98,7 @@ public class MESInfo {
    // 포장 후 set
    long packagingBoxOutput = 0;         // 포장 된 박스
    long packagingEaOutput = 0;           // 포장 후 남은 낱개
+   LocalDateTime estDelivery = null; // 예상 납품일
 
 
 
