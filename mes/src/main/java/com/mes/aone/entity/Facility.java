@@ -15,17 +15,13 @@ import javax.persistence.*;
 public class Facility {
 
     @Id
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
-
     private String facilityId;
 
     @Column(length = 50, nullable = false)
     private String facilityName;
 
-    @Column(nullable = false)
-    private Integer facilityVolume;
+//    @Column(nullable = false)
+//    private Integer facilityVolume;
 
     @Column(nullable = false)
     private Integer facilityCapacity;
@@ -36,4 +32,13 @@ public class Facility {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status facilityStatus;
+
+    public Facility(){}
+    public Facility(String facilityId,String facilityName,  Integer facilityCapacity, Integer facilityReadyTime, Status facilityStatus){
+        this.facilityId = facilityId;
+        this.facilityName = facilityName;
+        this.facilityCapacity = facilityCapacity;
+        this.facilityReadyTime = facilityReadyTime;
+        this.facilityStatus = facilityStatus;
+    }
 }
