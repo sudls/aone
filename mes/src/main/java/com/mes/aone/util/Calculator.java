@@ -403,7 +403,7 @@ public class Calculator {
 
     public void measurement() { // 원료계량
         System.out.println("수주일: " + mesInfo.salesDay);
-        LocalDateTime currentTime = mesInfo.salesDay; // 원료계량 시작시간
+        LocalDateTime currentTime = mesInfo.lastStockInDate; // 원료계량 시작시간
 
         int workAmount = 0;
 

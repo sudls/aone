@@ -18,7 +18,7 @@ public class MESInfo {
    //수주 정보
    String productName = ""; // 제품명
    int salesQty = 0; // 수주량(박스)
-   LocalDateTime salesDay = LocalDateTime.of(2023,5,25,9,0,0);
+   LocalDateTime salesDay = LocalDateTime.now();
 
 
   // 창고 원자재량(--)
@@ -26,10 +26,10 @@ public class MESInfo {
     int stockGarlic = 0;         // 흑마늘
     int stockPomegranate = 0;    // 석류농축액
     int stockPlum = 0;           // 매실농축액
-    int stockCollagen = 6000; // 콜라겐
-    int stockBox = 30; // 박스
-    int stockPouch = 6060; // 파우치(즙)
-    int stockStickPouch = 10; // 파우치(스틱)
+    int stockCollagen = 0; // 콜라겐
+    int stockBox = 0; // 박스
+    int stockPouch = 0; // 파우치(즙)
+    int stockStickPouch = 0; // 파우치(스틱)
 
 
 
@@ -86,13 +86,13 @@ public class MESInfo {
 
 
    // 설비/공정별 마지막 공정시간
-   LocalDateTime pastPreProcessingMachine = LocalDateTime.of(2023,5,19,6,0,0);
-   LocalDateTime pastExtractionMachine1 = LocalDateTime.of(2023,5,23,6,0,0);
-   LocalDateTime pastExtractionMachine2 = LocalDateTime.of(2023,5,23,7,0,0);
-   LocalDateTime pastFillingLiquidMachine = LocalDateTime.of(2023,5,19,6,0,0);
-   LocalDateTime pastFillingJellyMachine = LocalDateTime.of(2023,5,19,6,0,0);
-   LocalDateTime pastExaminationMachine = LocalDateTime.of(2023,5,19,6,0,0);
-   LocalDateTime pastPackagingTime = LocalDateTime.of(2023,5,19,6,0,0);
+   LocalDateTime pastPreProcessingMachine = LocalDateTime.of(2023,3,19,6,0,0);
+   LocalDateTime pastExtractionMachine1 = LocalDateTime.of(2023,3,23,6,0,0);
+   LocalDateTime pastExtractionMachine2 = LocalDateTime.of(2023,3,23,7,0,0);
+   LocalDateTime pastFillingLiquidMachine = LocalDateTime.of(2023,3,19,6,0,0);
+   LocalDateTime pastFillingJellyMachine = LocalDateTime.of(2023,3,19,6,0,0);
+   LocalDateTime pastExaminationMachine = LocalDateTime.of(2023,3,19,6,0,0);
+   LocalDateTime pastPackagingTime = LocalDateTime.of(2023,3,19,6,0,0);
 
    // 설비별 실시간 공정 계획(시작 시간)
    List<LocalDateTime> startExtractionMachine1 = new ArrayList<>(); // 추출기1
