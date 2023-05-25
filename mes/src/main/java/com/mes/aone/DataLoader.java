@@ -1,6 +1,6 @@
 package com.mes.aone;
 
-import com.mes.aone.contant.Status;
+import com.mes.aone.constant.Status;
 import com.mes.aone.entity.BOM;
 import com.mes.aone.entity.Facility;
 import com.mes.aone.entity.Material;
@@ -8,11 +8,14 @@ import com.mes.aone.entity.Vendor;
 import com.mes.aone.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component
+@ConditionalOnProperty(name = "spring.jpa.hibernate.ddl-auto", havingValue = "create")
+
 public class DataLoader implements CommandLineRunner {
     @Autowired
     private VendorRepository vendorRepository;
