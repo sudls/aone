@@ -108,7 +108,7 @@ window.onload = function() {
             jobId: '12349',
             productName: '제품 E',
             startTime: new Date('2023-05-25T11:00:00'), // 수정: 11시로 변경
-            endTime: new Date('2023-05-25T15:00:00') // 수정: 15시로 변경
+            endTime: new Date('2023-05-25T16:00:00') // 수정: 15시로 변경
         },
         {
             jobId: '12345',
@@ -120,7 +120,7 @@ window.onload = function() {
             jobId: '12346',
             productName: '제품 B',
             startTime: new Date('2023-05-25T10:00:00'), // 수정: 10시로 변경
-            endTime: new Date('2023-05-25T14:00:00')
+            endTime: new Date('2023-05-26T14:00:00')
         },
         {
             jobId: '12347', // 수정: 고유한 jobId 값으로 변경
@@ -138,7 +138,7 @@ window.onload = function() {
             jobId: '12349',
             productName: '제품 E',
             startTime: new Date('2023-05-25T11:00:00'), // 수정: 11시로 변경
-            endTime: new Date('2023-05-25T15:00:00') // 수정: 15시로 변경
+            endTime: new Date('2023-05-26T15:00:00') // 수정: 15시로 변경
         },
         // 다른 데이터 객체들...
     ];
