@@ -89,8 +89,10 @@
                         <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
                     </td>
                     <td th:text="${orderDTO.salesQty}"></td>
-                    <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd')}"></td>
-                    <td></td>
+
+                    <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
+                    <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
+
 
                 <td >
                     <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>

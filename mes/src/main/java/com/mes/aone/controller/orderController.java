@@ -6,6 +6,8 @@ import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.service.SalesOrderService;
+import com.mes.aone.util.Calculator;
+import com.mes.aone.util.MESInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +22,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -86,6 +89,33 @@ public class orderController {
             }
 
             try {
+                MESInfo mesInfo = new MESInfo();
+                Calculator calculator = new Calculator(mesInfo);
+                mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명
+                mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
+                mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
+
+                if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
+                    calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    calculator.measurement(); // 원료계량 메서드 실행
+                    calculator.preProcessing(); // 전처리 메서드 실행
+                    calculator.extraction(); // 추출 메서드 실행
+                    calculator.fill();//충진 메서드 실행
+                    calculator.examination();//검사 메서드 실행
+                    calculator.cooling();//열교환 메서드 실행
+                    calculator.packaging(); // 포장 메서드 실행
+                }else { // 젤리스틱 공정
+                    calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    calculator.measurement(); // 원료계량 메서드 실행
+                    calculator.extraction(); // 추출 메서드 실행
+                    calculator.fill();//충진 메서드 실행
+                    calculator.examination();//검사 메서드 실행
+                    calculator.cooling();//열교환 메서드 실행
+                    calculator.packaging(); // 포장 메서드 실행
+                }
+                orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+
+
                 salesOrderService.createSalesOrder(orderDTO);
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");

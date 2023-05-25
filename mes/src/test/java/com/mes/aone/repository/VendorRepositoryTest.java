@@ -1,3 +1,4 @@
+
 package com.mes.aone.repository;
 
 import com.mes.aone.entity.Vendor;
@@ -14,3 +15,4 @@ class VendorRepositoryTest {
 
 
 }
+
