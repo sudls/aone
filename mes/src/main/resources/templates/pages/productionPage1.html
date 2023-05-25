@@ -32,21 +32,26 @@
         <br><br>
 
         <div class="periodBox">
-            <input type="date">
+            <input type="date" id="startDate">
             <span>~</span>
-            <input type="date">
+            <input type="date" id="endDate">
         </div>
 
 
         <select name="" id="option2">
             <option disabled selected>공정 단계</option>
-            <option value="">...</option>
+            <option value="">전처리</option>
+            <option value="">추출</option>
+            <option value="">혼합</option>
+            <option value="">충진</option>
+            <option value="">검사</option>
+            <option value="">포장</option>
         </select>
 
         <select name="" id="option3">
             <option disabled selected>작업진행 상태</option>
-            <option value="">입고</option>
-            <option value="">출고</option>
+            <option value="A">대기</option>
+            <option value="B">진행</option>
         </select>
 
         <button type="submit">검색</button>

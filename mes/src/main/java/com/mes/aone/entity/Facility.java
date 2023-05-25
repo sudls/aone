@@ -20,6 +20,7 @@ public class Facility {
     @Column(length = 50)
     private String facilityName;
 
+
     @Column
     private Integer facilityCapacity;
 
@@ -42,4 +43,6 @@ public class Facility {
         this.facilityStatus = facilityStatus;
         this.processName = processName;
     }
+
 }
+
