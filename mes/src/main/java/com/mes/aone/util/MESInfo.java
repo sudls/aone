@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class MESInfo {
    //수주 정보
    String productName = ""; // 제품명
    int salesQty = 0; // 수주량(박스)
-   LocalDateTime salesDay = null;
+   LocalDateTime salesDay = LocalDateTime.of(2023,5,25,9,0,0);
 
 
 
@@ -43,7 +44,7 @@ public class MESInfo {
    int leadPackaging = 20; // 포장 리드타임
 
    // 공정 완료 시간
-   LocalDateTime measurement = null; // 원료계량 완료시간
+//   LocalDateTime measurement = null; // 원료계량 완료시간
    LocalDateTime preProcessing = null; // 전처리 완료시간
    LocalDateTime extraction = null; // 추출 완료시간
    LocalDateTime mixing = null; // 혼합 완료시간
@@ -53,7 +54,7 @@ public class MESInfo {
    LocalDateTime packaging = null; // 포장 완료시간
 
 
-   // 설비별 마지막 공정시간
+   // 설비/공정별 마지막 공정시간
    LocalDateTime pastPreProcessingMachine = LocalDateTime.of(2023,5,19,6,0,0);
    LocalDateTime pastExtractionMachine1 = LocalDateTime.of(2023,5,23,6,0,0);
    LocalDateTime pastExtractionMachine2 = LocalDateTime.of(2023,5,23,7,0,0);
@@ -62,22 +63,44 @@ public class MESInfo {
    LocalDateTime pastExaminationMachine = LocalDateTime.of(2023,5,19,6,0,0);
    LocalDateTime pastPackagingTime = LocalDateTime.of(2023,5,19,6,0,0);
 
-   // 설비별 실시간 공정 계획
-   List<LocalDateTime> nowPreProcessingMachine = new ArrayList<>(); // 전처리
-   List<LocalDateTime> nowExtractionMachine1 = new ArrayList<>(); // 추출기1
-   List<LocalDateTime> nowExtractionMachine2 = new ArrayList<>(); // 추출기2
-   List<LocalDateTime> nowFillingLiquidMachine = new ArrayList<>(); // 충진기(즙)
-   List<LocalDateTime> nowFillingJellyMachine = new ArrayList<>(); // 충진기(젤리)
+   // 설비별 실시간 공정 계획(시작 시간)
+   List<LocalDateTime> startExtractionMachine1 = new ArrayList<>(); // 추출기1
+   List<LocalDateTime> startExtractionMachine2 = new ArrayList<>(); // 추출기2
+   List<LocalDateTime> startFillingLiquidMachine = new ArrayList<>(); // 충진기(즙)
+   List<LocalDateTime> startFillingJellyMachine = new ArrayList<>(); // 충진기(젤리)
 
-   // 공정별 실시간 공정 계획
-   List<LocalDateTime> nowPreProcessing = new ArrayList<>();
-   List<LocalDateTime> nowExtraction = new ArrayList<>();
-   List<LocalDateTime> nowFilling = new ArrayList<>();
-   List<LocalDateTime> nowExamination = new ArrayList<>();
-   List<LocalDateTime> nowCooling = new ArrayList<>();
-   List<LocalDateTime> nowPackaging = new ArrayList<>();
+   // 설비별 실시간 공정 계획(완료 시간)
+   List<LocalDateTime> finishExtractionMachine1 = new ArrayList<>(); // 추출기1
+   List<LocalDateTime> finishExtractionMachine2 = new ArrayList<>(); // 추출기2
+   List<LocalDateTime> finishFillingLiquidMachine = new ArrayList<>(); // 충진기(즙)
+   List<LocalDateTime> finishFillingJellyMachine = new ArrayList<>(); // 충진기(젤리)
+
+   // 공정별 실시간 공정 계획(시작시간)
+   LocalDateTime startMeasurement = null; // 원료계량 완료시간
+   List<LocalDateTime> startPreProcessing = new ArrayList<>(); // 전처리
+   List<LocalDateTime> startExtraction = new ArrayList<>(); // 추출 및 혼합
+   List<LocalDateTime> startFilling = new ArrayList<>(); // 충진
+   List<LocalDateTime> startExamination = new ArrayList<>(); // 검사
+   List<LocalDateTime> startCooling = new ArrayList<>(); // 열교환
+   List<LocalDateTime> startPackaging = new ArrayList<>(); // 포장
+
+   // 공정별 실시간 공정 계획(완료시간)
+   LocalDateTime finishMeasurement = null; // 원료계량 완료시간
+   List<LocalDateTime> finishPreProcessing = new ArrayList<>(); // 전처리
+   List<LocalDateTime> finishExtraction = new ArrayList<>(); // 추출 및 혼합
+   List<LocalDateTime> finishFilling = new ArrayList<>(); // 충진
+   List<LocalDateTime> finishExamination = new ArrayList<>(); // 검사
+   List<LocalDateTime> finishCooling = new ArrayList<>(); // 열교환
+   List<LocalDateTime> finishPackaging = new ArrayList<>(); // 포장
 
 
+
+   // 설비별 실시간 생산량
+   List<Integer> nowExtractionMachine1Output = new ArrayList<>(); // 추출기1
+   List<Integer> nowExtractionMachine2Output = new ArrayList<>(); // 추출기2
+   List<Integer> nowFillingLiquidMachineOutput = new ArrayList<>(); // 충진기(즙)
+   List<Integer> nowFillingJellyMachineOutput = new ArrayList<>(); // 충진기(젤리)
+   
    // 공정별 실시간 생산량
    int nowMeasurementOutput = 0; // 원료계량
    List<Integer> nowPreProcessingOutput = new ArrayList<>(); // 전처리 생산량
@@ -98,6 +121,7 @@ public class MESInfo {
    // 포장 후 set
    long packagingBoxOutput = 0;         // 포장 된 박스
    long packagingEaOutput = 0;           // 포장 후 남은 낱개
+
    LocalDateTime estDelivery = null; // 예상 납품일
 
 
