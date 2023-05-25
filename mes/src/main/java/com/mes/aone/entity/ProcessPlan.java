@@ -33,10 +33,10 @@ public class ProcessPlan {
 
     @ManyToOne
     @JoinColumn(name = "sales_order_id")
-    private PurchaseOrder salesOrderId;
+    private SalesOrder salesOrderId;
 
     @NotNull
-    private Integer processStage;
+    private String processStage;
 
     @ManyToOne
     @JoinColumn(name = "facility_id")

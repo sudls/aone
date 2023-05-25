@@ -1,12 +1,15 @@
 const startDateInput = document.getElementById('startDate');
 const endDateInput = document.getElementById('endDate');
-
+if(startDateInput !==null){
 startDateInput.addEventListener('change', function() {
-    const startDateValue = startDateInput.value;
 
-    if (startDateValue !== '') {
-        endDateInput.value = startDateValue;
-    }
+        const startDateValue = startDateInput.value;
+
+        if (startDateValue !== '') {
+            endDateInput.value = startDateValue;
+        }
+
+
 });
 
 endDateInput.addEventListener('change', function() {
@@ -19,3 +22,4 @@ endDateInput.addEventListener('change', function() {
         endDateInput.value = startDateInput.value;
     }
 });
+}
