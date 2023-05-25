@@ -1,6 +1,6 @@
 package com.mes.aone.entity;
 
-import com.mes.aone.contant.Status;
+import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,9 +38,13 @@ public class SalesOrder {
     @Enumerated(EnumType.STRING)
     private Status salesStatus = Status.A;          // 입력시 기본값 A:대기
 
+
 //     예상납품일
     @Column(nullable = false)
     private LocalDateTime estDelivery;
+
+
+
 
 
     private static ModelMapper modelMapper = new ModelMapper();

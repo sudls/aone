@@ -37,4 +37,15 @@ public class BOM {
     @Column(name = "amount_3")
     private Integer amount3;
 
+    public BOM(){}
+    public BOM( String bomProduct, String material1, Integer amount1,String material2, Integer amount2,String material3, Integer amount3 ){
+        this.bomProduct = bomProduct;
+        this.material1 = material1;
+        this.amount1 = amount1;
+        this.material2 = material2;
+        this.amount2 = amount2;
+        this.material3 = material3;
+        this.amount3 = amount3;
+    }
+
 }

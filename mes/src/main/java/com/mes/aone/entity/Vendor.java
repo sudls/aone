@@ -38,4 +38,20 @@ public class Vendor {
     @Column
     private String vendorMemo;
 
+
+    //생성자
+    public Vendor(){
+
+    }
+
+    public Vendor(String vendorId,String registration_Number, String vendorAddr, String vendorMemo, String vendorName,String vendorTel){
+        this.vendorId = vendorId;
+        this.registration_Number = registration_Number;
+        this.vendorAddr = vendorAddr;
+        this.vendorMemo = vendorMemo;
+        this.vendorName = vendorName;
+        this.vendorTel = vendorTel;
+    }
+
 }
+

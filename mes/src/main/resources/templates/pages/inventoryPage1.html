@@ -25,14 +25,11 @@
         </thead>
         <tbody>
 
-        <tr th:each="orderDTO, status: ${materialStorageNumDTOList}" th:if="${status.index % 2 == 0}">
-            <td th:text="${orderDTO.materialName}"></td>
-            <td th:text="${orderDTO.materialQty}"></td>
-            <td th:if="${status.index + 1 < materialStorageNumDTOList.size()}"
-                th:text="${materialStorageNumDTOList[status.index + 1].materialName}"></td>
-            <td th:if="${status.index + 1 < materialStorageNumDTOList.size()}"
-                th:text="${materialStorageNumDTOList[status.index + 1].materialQty}"></td>
-
+        <tr th:each="materialDTO, status: ${Material}" th:if="${status.index % 2 == 0}">
+            <td th:text="${materialDTO.materialName}"></td>
+            <td th:text="${materialDTO.currentQuantity}"></td>
+            <td th:if="${status.index + 1 &lt; Material.size()}" th:text="${Material[status.index + 1].materialName}"></td>
+            <td th:if="${status.index + 1 &lt; Material.size()}" th:text="${Material[status.index + 1].currentQuantity}"></td>
         </tr>
 
         </tbody>
@@ -42,7 +39,7 @@
 
     <h1>원자재 입출고 현황</h1>
     <div style="margin-bottom: 20px;">
-        <form action="/inventory3/search" method="get">
+        <form  method="get" action="/inventory1/search">
             <select name="searchMaterial" id="option1">
                 <option disabled selected>자재명</option>
                 <option value="양배추">양배추</option>
@@ -54,16 +51,19 @@
                 <option value="스틱파우치">스틱파우치</option>
                 <option value="박스">박스</option>
             </select>
-            <select name="searchState" id="option2">
+
+            <select name="searchMState" id="option2">
                 <option disabled selected>입출고 상태</option>
                 <option value="I">입고</option>
                 <option value="O">출고</option>
             </select>
 
             <div class="periodBox">
-                <input type="date">
+                <input type="date" id="startDate" name="matStartDate">
                 <span>~</span>
-                <input type="date">
+                <input type="date" id="endDate" name="matEndDate">
+
+
             </div>
 
 
@@ -86,27 +86,18 @@
             </thead>
             <tbody>
 
-            <tr th:each="materialStorage : ${MaterialStorage}">
-                <td th:text="${materialStorage.materialStorageId}"></td>
+            <tr th:each="materialStorage : ${materialStorageList}">
                 <td th:text="${materialStorage.materialName.materialName}"></td>
-                <td th:text="${materialStorage.MStorageState}"></td>
-                <td th:text="${materialStorage.materialQty}"></td>
-                <td th:text="${materialStorage.unit}"></td>
-                <td th:text="${materialStorage.MStorageDate}"></td>
-
-
-<!--             <tr th:each="materialStorageDTO, status: ${materialStorageDTOList}">
-                <td th:text="${materialStorageDTO.materialName}"></td>
                 <td>
-                    <span th:if="${materialStorageDTO.getMStorageState().name()== 'I'}">입고</span>
-                    <span th:if="${materialStorageDTO.getMStorageState().name() == 'O'}">출고</span>
+                    <span th:if="${materialStorage.materialStorageState.name()=='I'}">입고</span>
+                    <span th:if="${materialStorage.materialStorageState.name()=='O'}">출고</span>
                 </td>
 
-                <td th:text="${materialStorageDTO.materialQty}"></td>
-                <td th:text="${materialStorageDTO.materialUnit}"></td>
-                <td th:text="${#temporals.format(materialStorageDTO.getMStorageDate(), 'yy/MM/dd　hh:mm')}"></td> -->
-
+                <td th:text="${materialStorage.materialQty}"></td>
+                <td th:text="${materialStorage.unit}"></td>
+                <td th:text="${materialStorage.materialStorageDate}"></td>
             </tr>
+
 
             </tbody>
         </table>

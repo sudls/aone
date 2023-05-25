@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 public class MaterialController {
 
-    private final MaterialService materialService;
+/*    private final MaterialService materialService;
 
     @GetMapping("/test")
     public String test(Model model){
@@ -27,6 +27,6 @@ public class MaterialController {
 
         return "/material/test";
 
-    }
+    }*/
 
 }
