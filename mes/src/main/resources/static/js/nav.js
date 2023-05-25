@@ -58,6 +58,9 @@ links.forEach(function (link) {
       var href = subLink.querySelector("a").getAttribute("href");
       if (currentURL.endsWith(href)) {
         subLink.classList.add("active");
+
+        // 현재 클릭한 sub-link가 속한 link에도 active 클래스 추가
+        link.classList.add("active");
       }
     });
   });

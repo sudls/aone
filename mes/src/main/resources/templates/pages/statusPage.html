@@ -7,27 +7,38 @@
     <th:block th:replace="fragments/config::configFragment"></th:block>
     <link th:href="@{/css/statusPage.css}" rel="stylesheet">
     <link th:href="@{/css/progressbar.css}" rel="stylesheet">
-    <!--  <script th:src="@{/js/orderPage.js}" defer></script>-->
+    <script th:src="@{/js/statusPage.js}" defer></script>
 
 
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
-<!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contentStyle">
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <div>
-        <h1 style="display: inline-block">수주 진척도 조회</h1>
-    </div>
+
+        <h1 style="display: inline-block; margin-bottom: 0px;">수주 진척도 조회</h1>
+        <p style="text-align: right; margin-bottom: 10px">
+            <i class="fa-solid fa-check" style="color:var(--navy)"></i>　완료　　
+            <i><span style="font-size:30px; font-weight: 500; color:var(--grey)">-</span> </i>　미해당　　
+            <i class="fas fa-spinner" style="color:var(--green)"></i>　진행중　
+        </p>
 
     <div class="table-container" style="height: 300px">
     <table>
+        <colgroup>
+            <col style="width: 19%">
+            <col style="width: 15%">
+            <col style="width: 11%">
+            <col style="width: 11%">
+            <col style="width: 11%">
+            <col style="width: 11%">
+            <col style="width: 11%">
+            <col style="width: 11%">
+
+        </colgroup>
         <thead>
         <tr>
             <th>수주 ID</th>
-            <th>입고</th>
+            <th>제품명</th>
             <th>전처리</th>
             <th>추출</th>
             <th>혼합</th>
@@ -39,7 +50,7 @@
         <tbody>
         <tr>
             <td>000-001</td>
-            <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+            <td>젤리스틱</td>
             <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
             <td><span style="font-size:30px; font-weight: 500; color:var(--grey)">-</span></td>
             <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
@@ -53,6 +64,8 @@
     </table>
     </div>
     <hr>
+
+
     <h1>설비별 공정 현황</h1>
     <ul>
         <li>
@@ -62,8 +75,8 @@
                     <h4>액상 추출기1</h4>
                     <div class="gridItem">
                         <div class="graphBox">
-                            <div class="progress-circle over50 p66">
-                                <span>66%</span>
+                            <div class="progress-circle">
+                                <span class="p0">0%</span>
                                 <div class="left-half-clipper">
                                     <div class="first50-bar"></div>
                                     <div class="value-bar"></div>
@@ -71,11 +84,10 @@
                             </div>
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
-
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
                         </div>
                     </div>
 
@@ -95,11 +107,10 @@
 
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
-
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
                         </div>
                     </div>
                 </div>
@@ -121,10 +132,10 @@
                             </div>
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
 
                         </div>
                     </div>
@@ -145,10 +156,10 @@
 
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
 
                         </div>
                     </div>
@@ -172,10 +183,10 @@
                             </div>
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
 
                         </div>
                     </div>
@@ -196,10 +207,10 @@
 
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
 
                         </div>
                     </div>
@@ -219,10 +230,10 @@
                             </div>
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
 
                         </div>
                     </div>
@@ -243,11 +254,10 @@
 
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
-
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
                         </div>
                     </div>
                 </div>
@@ -270,10 +280,10 @@
                             </div>
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span></span></p>
-                            <p><b>제품명:</b><br><span></span></p>
-                            <p><b>시작 시간:</b><br><span></span></p>
-                            <p><b>종료 시간:</b><br><span></span></p>
+                            <p><b>작업 ID:</b><br><span class="jobId"></span></p>
+                            <p><b>제품명:</b><br><span class="productName"></span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime"></span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime"></span></p>
 
                         </div>
                     </div>
@@ -294,12 +304,10 @@
 
                         </div>
                         <div class="statusInfo">
-                            <p><b>작업 ID:</b><br><span>000-001</span></p>
-                            <p><b>제품명:</b><br><span>양배추즙</span></p>
-                            <p><b>시작 시간:</b><br><span>23.00.00 12:15</span></p>
-                            <p><b>종료 시간:</b><br><span>23.00.00 12:15</span></p>
-
-
+                            <p><b>작업 ID:</b><br><span class="jobId">000-001</span></p>
+                            <p><b>제품명:</b><br><span class="productName">양배추즙</span></p>
+                            <p><b>시작 시간:</b><br><span class="startTime">23.00.00 12:15</span></p>
+                            <p><b>종료 시간:</b><br><span class="endTime">23.00.00 12:15</span></p>
                         </div>
                     </div>
                 </div>

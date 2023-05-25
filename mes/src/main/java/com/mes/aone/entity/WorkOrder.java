@@ -1,13 +1,12 @@
 package com.mes.aone.entity;
 
-
-import com.mes.aone.contant.State;
-import com.sun.istack.NotNull;
+import com.mes.aone.constant.Status;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +16,7 @@ public class WorkOrder {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long workOrderId;
+    private Long workOrderId;   //수주
 
     @Column(nullable = false)
     private Date workOrderDate;
@@ -27,13 +26,13 @@ public class WorkOrder {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private State workStatus;
+    private Status workStatus;
 
     @ManyToOne
     @JoinColumn(name = "process_plan_id")
-    private ProcessPlan productionPlanId;
+    private ProcessPlan processPlan;
 
     @ManyToOne
     @JoinColumn(name = "sales_order_id")
-    private SalesOrder salesOrderId;
+    private SalesOrder salesOrder;
 }

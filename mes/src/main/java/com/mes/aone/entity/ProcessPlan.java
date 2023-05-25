@@ -6,7 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,9 +21,9 @@ public class ProcessPlan {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long processPlanId;
 
-    @ManyToOne
-    @JoinColumn(name = "process_id")
-    private Process processId;
+//    @ManyToOne
+//    @JoinColumn(name = "process_id")
+//    private Process processId;
 
     @NotNull
     private Date startTime;
@@ -31,8 +33,16 @@ public class ProcessPlan {
 
     @ManyToOne
     @JoinColumn(name = "sales_order_id")
-    private PurchaseOrder salesOrderId;
+    private SalesOrder salesOrderId;
 
     @NotNull
-    private Integer processStage;
+    private String processStage;
+
+    @ManyToOne
+    @JoinColumn(name = "facility_id")
+    private Facility facilityId;
+
+//    @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
+//    private List<Facility> facilityIdList = new ArrayList<>();
 }
+

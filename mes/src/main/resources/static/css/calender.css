@@ -1,0 +1,48 @@
+@import url(colors.css);
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-top: 20px;
+    border-collapse: collapse;
+
+
+}
+
+
+
+
+
+.calendar-header {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    grid-column: 1 / -1;
+
+}
+
+.calendar-day {
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    width: calc(100% / 7);
+    box-sizing: border-box;
+}
+
+.prev-month,
+.next-month {
+    color: #999;
+}
+
+.today {
+    background-color: var(--yellow);
+}
+
+.week-row:nth-child(2n) .calendar-day {
+    background-color: #f2f2f2;
+}
+
+.calendar-days{
+    background-color: #f2f2f2;
+    font-weight: bold;
+}

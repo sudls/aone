@@ -57,10 +57,12 @@
 }
 
 #addProductForm input, #addProductForm select,#addProductForm select option{
-    margin:20px 0;
+    margin:10px 0 25px 0;
     padding:10px 20px;
 }
-
+#addProductForm label{
+    font-weight: bold;
+}
 .dateTimeBox{
     width: 100%;
     display: flex;

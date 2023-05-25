@@ -4,8 +4,10 @@ import com.mes.aone.constant.StockManageState;
 import com.mes.aone.entity.Stock;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
+import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Getter

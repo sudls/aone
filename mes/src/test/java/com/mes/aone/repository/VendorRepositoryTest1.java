@@ -12,16 +12,5 @@ class VendorRepositoryTest1 {
     @Autowired
     VendorRepository venderRepository;
 
-    @Test
-    @DisplayName("거래처 저장테스트")
-    public void insertVenderTest(){
-        Vendor vendor = new Vendor();
-        vendor.setVendorId("ven-po");
-        vendor.setVendorName("포장");
-        vendor.setVendorTel("010-0000-0004");
-        vendor.setVendorAddr("포장 주소");
-        vendor.setVendorNumber("xxx-xx-xxxxx");
-        vendor.setVendorMemo("포장 비고");
-        venderRepository.save(vendor);
-    }
+
 }
