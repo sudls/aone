@@ -39,7 +39,7 @@
 
     <h1>원자재 입출고 현황</h1>
     <div style="margin-bottom: 20px;">
-        <form  method="get">
+        <form  method="get" action="/inventory1/search">
             <select name="searchMaterial" id="option1">
                 <option disabled selected>자재명</option>
                 <option value="양배추">양배추</option>
@@ -59,9 +59,11 @@
             </select>
 
             <div class="periodBox">
-                <input type="date" id="startDate">
+                <input type="date" id="startDate" name="matStartDate">
                 <span>~</span>
-                <input type="date" id="endDate">
+                <input type="date" id="endDate" name="matEndDate">
+
+
             </div>
 
 
@@ -93,7 +95,7 @@
 
                 <td th:text="${materialStorage.materialQty}"></td>
                 <td th:text="${materialStorage.unit}"></td>
-                <td th:text="${materialStorage.MStorageDate}"></td>
+                <td th:text="${materialStorage.materialStorageDate}"></td>
             </tr>
 
 

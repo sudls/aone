@@ -1,4 +1,4 @@
-package com.mes.aone.contant;
+package com.mes.aone.constant;
 
 public enum Status {
     Y,N,
@@ -6,5 +6,7 @@ public enum Status {
 
     A,B,C
     // A: 대기, B: 확정 C: 취소
+    
+    //작업지시에서 A:대기 B:진행
 
 }

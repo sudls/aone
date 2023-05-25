@@ -1,11 +1,12 @@
 package com.mes.aone.entity;
 
-import com.mes.aone.contant.State;
+import com.mes.aone.constant.MaterialState;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -31,10 +32,10 @@ public class MaterialStorage {
 
     @Column(name = "material_storage_state", nullable = false)
     @Enumerated(EnumType.STRING)
-    private State materialStorageState;        // 입출고상태
+    private MaterialState materialStorageState;        // 입출고상태
 
-    @Column(nullable = false)
-    private Date mStorageDate;          // 입출고 날짜
+    @Column(name = "material_storage_date", nullable = false)
+    private LocalDateTime materialStorageDate;          // 입출고 날짜
 
 
 }

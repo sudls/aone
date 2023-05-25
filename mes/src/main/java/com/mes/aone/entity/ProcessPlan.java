@@ -45,3 +45,4 @@ public class ProcessPlan {
 //    @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
 //    private List<Facility> facilityIdList = new ArrayList<>();
 }
+

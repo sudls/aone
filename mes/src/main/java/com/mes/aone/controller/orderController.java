@@ -1,6 +1,6 @@
 package com.mes.aone.controller;
 
-import com.mes.aone.contant.Status;
+import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;

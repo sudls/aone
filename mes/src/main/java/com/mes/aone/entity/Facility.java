@@ -1,6 +1,6 @@
 package com.mes.aone.entity;
 
-import com.mes.aone.contant.Status;
+import com.mes.aone.constant.Status;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,8 +20,6 @@ public class Facility {
     @Column(length = 50)
     private String facilityName;
 
-//    @Column(nullable = false)
-//    private Integer facilityVolume;
 
     @Column
     private Integer facilityCapacity;
@@ -45,4 +43,6 @@ public class Facility {
         this.facilityStatus = facilityStatus;
         this.processName = processName;
     }
+
 }
+

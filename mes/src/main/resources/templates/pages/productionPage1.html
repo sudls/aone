@@ -71,21 +71,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>230512-123</td>
-                <td>양배추즙</td>
-                <td>2000 /ea</td>
-                <td>2023.05.19</td>
-                <td>충진</td>
-                <td>대기</td>
-            </tr>
-            <tr>
-                <td>230512-124</td>
-                <td>흑마늘즙</td>
-                <td>2000 /ea</td>
-                <td>2023.05.19</td>
-                <td>전처리</td>
-                <td>진행</td>
+            <tr th:each="workOrder : ${workOrders}">
+                <td th:text="${workOrder.workOrderId}"></td>
+                <td th:text="${workOrder.productName}"></td>
+                <td th:text="${workOrder.workOrderQty}"></td>
+                <td th:text="${workOrder.workOrderDate}"></td>
+                <td th:text="${workOrder.processStage}"></td>
+                <td>
+                    <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
+                </td>
             </tr>
 
             </tbody>
@@ -108,12 +102,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>2023.05.19</td>
-            <td>5000 /ea</td>
+        <tr th:each="salesOrder : ${salesOrders}">
+            <td th:text="${salesOrder.salesOrderId}"></td>
+            <td th:text="${salesOrder.salesDate}"></td>
+            <td th:text="${salesOrder.salesQty}"></td>
+            <!-- 다른 필드 열 추가 -->
         </tr>
-
         </tbody>
     </table>
     </div>
