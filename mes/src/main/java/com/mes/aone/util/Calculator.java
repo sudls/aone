@@ -2,11 +2,11 @@ package com.mes.aone.util;
 
 
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Calculator {
@@ -27,7 +27,6 @@ public class Calculator {
         int requiredPouch;        // 필요 파우치(즙)
         int requiredStickPouch;        // 필요 파우치(스틱)
 
-        LocalDateTime shipmentDate = null;      // 출하일
         Map<String, Integer> purchaseMap = null;     // 발주량
 
         if (mesInfo.getProductName().equals("양배추즙")) {                // 창고 재고량 확인 전 세팅
@@ -313,11 +312,10 @@ public class Calculator {
 
 
     public  void materialArrived() { // 발주 원자재 도착 시간
-        LocalDateTime salesDate = mesInfo.salesDate;        // 수주시간
+        LocalDateTime salesDate = mesInfo.salesDay;        // 수주시간
         LocalDateTime stockOrderDate = null;                // 원자재 주문시간
         LocalDateTime stockInDate = null;                   // 창고 입고시간
         int leadTime = 0;                                // 리드타임
-        Map<String, Integer> purchaseMap = null;
         LocalDateTime latestStockInDate = null;            // 가장 마지막 도착일자
 
 

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class MESInfo {
    int pouch = 0; // 파우치(즙)
    int stickPouch = 0; // 파우치(스틱)
    Map<String, Integer> purchaseMap = null;
-  //int shipmentBox = 0;             // 출하량
+   int shipmentBox = 0;             // 출하량
   
   
    // 원자재발주 후 output
