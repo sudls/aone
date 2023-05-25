@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Getter
@@ -17,12 +18,28 @@ import java.util.List;
     //수주 정보
     String productName = ""; // 제품명
     int salesQty = 0; // 수주량(박스)
+    LocalDateTime salesDate = null; // 수주일
 
-    // 창고 원자재량
-    int stockCollagen = 60; // 콜라겐
-    int stockBox = 15; // 박스
-    int stockPouch = 8300; // 파우치(즙)
-    int stockStickPouch = 3800; // 파우치(스틱)
+    // 창고 원자재량(--)
+    int stockCabbage = 0;       // 양배추
+    int stockGarlic = 0;         // 흑마늘
+    int stockPomegranate = 0;    // 석류농축액
+    int stockPlum = 0;           // 매실농축액
+    int stockCollagen = 6000; // 콜라겐
+    int stockBox = 30; // 박스
+    int stockPouch = 6060; // 파우치(즙)
+    int stockStickPouch = 10; // 파우치(스틱)
+
+
+
+    // 창고 재고량(--)
+    int cabbagePackaging =0;    // 양배추즙 박스포장
+    int garlicPackaging = 0;    // 흑마늘즙 박스포장
+    int pomegranatePackaging = 0; // 석류젤리스틱 박스포장
+    int plumPackaging = 0;       // 매실젤리스틱 박스포장
+
+
+
 
 
     //원자재 발주량
@@ -33,11 +50,39 @@ import java.util.List;
     int collagen = 0; // 콜라겐
     int box = 0; // 박스
     int pouch = 0; // 파우치(즙)
-    int stickPouch = 0; // 파우치(스틱)
+    int stickPouch =0; // 파우치(스틱)
+    Map<String, Integer> purchaseMap = null;
+
+
+   int[] juiceArr= new int[3];      // 즙 발주량(양배추즙, 흑마늘즙) / 박스 / 파우치 순서
+   int[] jellyArr= new int[4];      // 젤리 발주량(액기스) / 콜라겐 / 스틱파우치 순서
+
+   int shipmentBox = 0;             // 출하량
+
+   // 원자재별 리드타임(--)
+   int cabbageLeadTime = 2;       // 양배추
+   int garlicLeadTime = 2;        // 흑마늘
+   int pomegranateLeadTime = 3;   // 석류농축액
+   int plumLeadTime = 3;          // 매실농축액
+   int collagenLeadTime = 3;      // 콜라겐
+   int boxLeadTime = 2;           // 박스
+   int pouchLeadTime= 2;          // 파우치(즙)
+   int stickPouchLeadTime = 2;    // 파우치(스틱)
+
+    // 원자재발주 후 output
+    LocalDateTime stockOrderDate = null; // 원자재 주문시간
+    String rowMaterialName = "";        // 발주 원자재 이름 - 입고 원자재 - 출고 원자재
+    int rowMaterialAmount = 0;          // 발주량 - 입고량
+    LocalDateTime arrivalMaterial = null;     // 도착시간 (원자재 창고 입고시간)
+    LocalDateTime lastStockInDate = null;     // 가장 마지막 도착시간
 
 
 
-    //리드 타임
+
+
+
+
+   //리드 타임
     int leadMeasurement = 20; // 원료계랑 리드타임
     int leadPreProcessing = 20; // 전처리 리드타임
     int leadExtraction = 60; // 추출 리드타임
@@ -84,6 +129,8 @@ import java.util.List;
     // 포장 후 set
     long packagingBoxOutput = 0;         // 포장 된 박스
     long packagingEaOutput = 0;           // 포장 후 남은 낱개
+
+    LocalDateTime estDay = null;
 
 
 
