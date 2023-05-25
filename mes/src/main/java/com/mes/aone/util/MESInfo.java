@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Getter
@@ -21,6 +22,26 @@ public class MESInfo {
    LocalDateTime salesDay = LocalDateTime.of(2023,5,25,9,0,0);
 
 
+  // 창고 원자재량(--)
+    int stockCabbage = 0;       // 양배추
+    int stockGarlic = 0;         // 흑마늘
+    int stockPomegranate = 0;    // 석류농축액
+    int stockPlum = 0;           // 매실농축액
+    int stockCollagen = 6000; // 콜라겐
+    int stockBox = 30; // 박스
+    int stockPouch = 6060; // 파우치(즙)
+    int stockStickPouch = 10; // 파우치(스틱)
+
+
+
+    // 창고 재고량(--)
+    int cabbagePackaging =0;    // 양배추즙 박스포장
+    int garlicPackaging = 0;    // 흑마늘즙 박스포장
+    int pomegranatePackaging = 0; // 석류젤리스틱 박스포장
+    int plumPackaging = 0;       // 매실젤리스틱 박스포장
+
+  
+  
 
    //원자재 발주량
    int cabbage = 0; // 양배추즙
@@ -31,7 +52,18 @@ public class MESInfo {
    int box = 0; // 박스
    int pouch = 0; // 파우치(즙)
    int stickPouch = 0; // 파우치(스틱)
+   Map<String, Integer> purchaseMap = null;
+  //int shipmentBox = 0;             // 출하량
+  
+  
+   // 원자재발주 후 output
+    LocalDateTime stockOrderDate = null; // 원자재 주문시간
+    String rowMaterialName = "";        // 발주 원자재 이름 - 입고 원자재 - 출고 원자재
+    int rowMaterialAmount = 0;          // 발주량 - 입고량
+    LocalDateTime arrivalMaterial = null;     // 도착시간 (원자재 창고 입고시간)
+    LocalDateTime lastStockInDate = null;     // 가장 마지막 도착시간
 
+  
 
 
    //리드 타임

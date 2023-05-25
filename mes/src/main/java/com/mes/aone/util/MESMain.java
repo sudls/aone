@@ -12,47 +12,61 @@ public class MESMain {
 
         String productName = "양배추즙"; // 제품명 입력
         int salesAmount = 3000; // 제품량 입력
+        // LocalDateTime salesDate = LocalDateTime.of(2023,5,23,15,46,45);
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
+       // mesInfo.setSalesDate(salesDate);
 
 
         if (productName.equals("양배추즙") || productName.equals("흑마늘즙")){ // 즙 공정
-
             System.out.println("-------------------발주---------------------------------------------------------");
-            calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-            System.out.println("-------------------원료계량------------------------------------------------------");
-            calculator.measurement(); // 원료계량 메서드 실행
-            System.out.println("-------------------전처리--------------------------------------------------------");
-            calculator.preProcessing(); // 전처리 메서드 실행
-            System.out.println("-------------------추출--------------------------------------------------------");
-            calculator.extraction(); // 추출 메서드 실행
-            System.out.println("-------------------충진--------------------------------------------------------");
-            calculator.fill();//충진 메서드 실행
-            System.out.println("-------------------검사--------------------------------------------------------");
-            calculator.examination();//검사 메서드 실행
-            System.out.println("-------------------열교환--------------------------------------------------------");
-            calculator.cooling();//열교환 메서드 실행
-            System.out.println("-------------------포장--------------------------------------------------------");
-            calculator.packaging(); // 포장 메서드 실행
+            String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+            if (purchaseCheck.equals("enough")){
+                mesInfo.setEstDay(LocalDateTime.now());
+            } else {
+                System.out.println("-------------------발주 도착시간---------------------------------------------------------");
+                calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                System.out.println("-------------------원료계량------------------------------------------------------");
+                calculator.measurement(); // 원료계량 메서드 실행
+                System.out.println("-------------------전처리--------------------------------------------------------");
+                calculator.preProcessing(); // 전처리 메서드 실행
+                System.out.println("-------------------추출--------------------------------------------------------");
+                calculator.extraction(); // 추출 메서드 실행
+                System.out.println("-------------------충진--------------------------------------------------------");
+                calculator.fill();//충진 메서드 실행
+                System.out.println("-------------------검사--------------------------------------------------------");
+                calculator.examination();//검사 메서드 실행
+                System.out.println("-------------------열교환--------------------------------------------------------");
+                calculator.cooling();//열교환 메서드 실행
+                System.out.println("-------------------포장--------------------------------------------------------");
+                calculator.packaging(); // 포장 메서드 실행
+            }
+
 
 
 
         }else { // 젤리스틱 공정
-            System.out.println("-------------------발주-----------------------------------------------------------");
-            calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-            System.out.println("-------------------원료계량--------------------------------------------------------");
-            calculator.measurement(); // 원료계량 메서드 실행
-            System.out.println("-------------------추출--------------------------------------------------------");
-            calculator.extraction(); // 추출 메서드 실행
-            System.out.println("-------------------충진--------------------------------------------------------");
-            calculator.fill();//충진 메서드 실행
-            System.out.println("-------------------검사--------------------------------------------------------");
-            calculator.examination();//검사 메서드 실행
-            System.out.println("-------------------열교환--------------------------------------------------------");
-            calculator.cooling();//열교환 메서드 실행
-            System.out.println("-------------------포장--------------------------------------------------------");
-            calculator.packaging(); // 포장 메서드 실행
+            System.out.println("-------------------발주---------------------------------------------------------");
+            String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+            if (purchaseCheck.equals("enough")){
+                mesInfo.setEstDay(LocalDateTime.now());
+            } else {
+                System.out.println("-------------------발주 도착시간---------------------------------------------------------");
+                calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                System.out.println("-------------------원료계량------------------------------------------------------");
+                calculator.measurement(); // 원료계량 메서드 실행
+                System.out.println("-------------------추출--------------------------------------------------------");
+                calculator.extraction(); // 추출 메서드 실행
+                System.out.println("-------------------충진--------------------------------------------------------");
+                calculator.fill();//충진 메서드 실행
+                System.out.println("-------------------검사--------------------------------------------------------");
+                calculator.examination();//검사 메서드 실행
+                System.out.println("-------------------열교환--------------------------------------------------------");
+                calculator.cooling();//열교환 메서드 실행
+                System.out.println("-------------------포장--------------------------------------------------------");
+                calculator.packaging(); // 포장 메서드 실행
+            }
 
 
         }
