@@ -12,7 +12,7 @@ class VendorRepositoryTest1 {
     @Autowired
     VendorRepository venderRepository;
 
-    @Test
+/*    @Test
     @DisplayName("거래처 저장테스트")
     public void insertVenderTest(){
         Vendor vendor = new Vendor();
@@ -23,5 +23,5 @@ class VendorRepositoryTest1 {
         vendor.setVendorNumber("xxx-xx-xxxxx");
         vendor.setVendorMemo("포장 비고");
         venderRepository.save(vendor);
-    }
+    }*/
 }

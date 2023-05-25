@@ -76,6 +76,7 @@
   padding: 12px 12px 12px 45px;
   transition: all 0.2s ease-out;
   text-decoration: none;
+  font-family: pri;
 }
 
 .submenuItems a:hover {
@@ -86,3 +87,4 @@
 .sub-link.active a {
   color: var(--green);
 }
+

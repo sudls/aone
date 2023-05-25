@@ -1,16 +1,14 @@
 package com.mes.aone.controller;
 
 
-import com.mes.aone.contant.State;
+import com.mes.aone.constant.MaterialState;
 import com.mes.aone.entity.Material;
 import com.mes.aone.entity.MaterialStorage;
 import com.mes.aone.repository.MaterialRepository;
 import com.mes.aone.repository.MaterialStorageRepository;
 import com.mes.aone.constant.StockManageState;
 import com.mes.aone.dto.PurchaseOrderDTO;
-import com.mes.aone.dto.StockManageDTO;
 import com.mes.aone.entity.PurchaseOrder;
-import com.mes.aone.entity.Stock;
 import com.mes.aone.entity.StockManage;
 import com.mes.aone.repository.PurchaseOrderRepository;
 import com.mes.aone.repository.StockManageRepository;
@@ -48,19 +46,14 @@ public class inventoryController {
   private final PurchaseOrderService purchaseOrderService;
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final MaterialService materialService;
-    private final StockRepository stockRepository;
-    private final StockManageService stockManageService;
-    private final StockManageRepository stockManageRepository;
-    private final StockService stockService;
-
-    private final MaterialStorageRepository materialStorageRepository;
 
     @Autowired
-    public inventoryController(MaterialService materialService, StockRepository stockRepository,
+    public inventoryController(MaterialRepository materialRepository, MaterialService materialService, StockRepository stockRepository,
                                StockManageService stockManageService, StockManageRepository stockManageRepository,
                                StockService stockService, MaterialStorageRepository materialStorageRepository,
                                PurchaseOrderService purchaseOrderService,
                                PurchaseOrderRepository purchaseOrderRepository) {
+        this.materialRepository = materialRepository;
         this.materialService = materialService;
         this.stockRepository = stockRepository;
         this.stockManageService = stockManageService;
@@ -71,10 +64,68 @@ public class inventoryController {
         this.purchaseOrderRepository = purchaseOrderRepository;
     }
 
-    //원자재 조회, 검색
+    //원자재 조회
     @GetMapping(value="/inventory1")
     public String inventoryPage1(Model model) {
-        List<MaterialStorage> materialStorageList = materialStorageRepository.findAll();
+        List<MaterialStorage> materialStorageList = materialStorageRepository.findAll(Sort.by(Sort.Direction.DESC, "materialStorageId"));       // 내림차순
+
+        model.addAttribute("materialStorageList", materialStorageList);
+        model.addAttribute("Material", materialService.getMaterial());
+
+        return "pages/inventoryPage1";
+    }
+
+
+    //원자재 검색
+    @GetMapping(value="/inventory1/search")
+    public String inventoryPage1(
+            @RequestParam(value = "searchMaterial", required = false) String searchMaterial,
+            @RequestParam(value = "searchMState", required = false) MaterialState searchMState,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate matStartDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate matEndDate,
+            Model model) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "materialStorageId");
+        List<MaterialStorage> materialStorageList;
+
+        LocalDateTime startDate = null;
+        LocalDateTime endDate = null;
+
+        Material material = new Material();
+        material.setMaterialName(searchMaterial);
+
+        if (matStartDate != null) {
+            startDate = matStartDate.atStartOfDay();
+        }
+
+        if (matEndDate != null) {
+            endDate = matEndDate.atTime(LocalTime.MAX);
+        }
+
+        if (searchMaterial != null && !searchMaterial.isEmpty() && searchMState != null && startDate != null && endDate != null) {
+            // 제품명, 입출고상태, 기간
+            materialStorageList = materialStorageRepository.findByMaterialNameAndMaterialStorageStateAndMaterialStorageDateBetween(material, searchMState, startDate, endDate, sort);
+        } else if (searchMaterial != null && !searchMaterial.isEmpty() && searchMState != null) {
+            // 제품명, 입출고상태
+            materialStorageList = materialStorageRepository.findByMaterialNameAndMaterialStorageState(material, searchMState, sort);
+        } else if (searchMaterial != null && !searchMaterial.isEmpty() && startDate != null && endDate != null) {
+            // 제품명, 기간
+            materialStorageList = materialStorageRepository.findByMaterialNameAndMaterialStorageDateBetween(material, startDate, endDate, sort);
+        } else if (searchMState != null && startDate != null && endDate != null) {
+            // 입출고상태, 기간
+            materialStorageList = materialStorageRepository.findByMaterialStorageStateAndMaterialStorageDateBetween(searchMState, startDate, endDate, sort);
+        } else if (searchMaterial != null && !searchMaterial.isEmpty()) {
+            // 제품명
+            materialStorageList = materialStorageRepository.findByMaterialName(material, sort);
+        } else if (searchMState != null) {
+            // 입출고상태
+            materialStorageList = materialStorageRepository.findByMaterialStorageState(searchMState, sort);
+        } else if (startDate != null && endDate != null) {
+            // 기간
+            materialStorageList = materialStorageRepository.findByMaterialStorageDateBetween(startDate, endDate, sort);
+        } else {
+            // 모든 검색 조건이 제공되지 않은 경우
+            materialStorageList = materialStorageRepository.findAll(Sort.by(Sort.Direction.DESC, "materialStorageId"));
+        }
 
         model.addAttribute("materialStorageList", materialStorageList);
         model.addAttribute("Material", materialService.getMaterial());
@@ -123,9 +174,10 @@ public class inventoryController {
         return "pages/inventoryPage2";
     }
 
+    //완제품 리스트
     @GetMapping(value = "/inventory3")
     public String inventoryPage3(Model model) {
-        List<StockManage> stockManageList = stockManageRepository.findAll();;
+        List<StockManage> stockManageList = stockManageRepository.findAll(Sort.by(Sort.Direction.DESC, "stockManageId"));
         model.addAttribute("stockManageList", stockManageList);
         model.addAttribute("Stock", stockService.getStock());
         model.addAttribute("StockSumList", stockService.getSumStock());

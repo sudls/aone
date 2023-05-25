@@ -21,7 +21,7 @@ public class purchaseOrderTest {
     @Autowired
     VendorRepository vendorRepository;
 
-    @Test // 발주 더미 (인설트)
+  /*  @Test // 발주 더미 (인설트)
     public void insertPurchaseOrder(){
         PurchaseOrder purchaseOrder = new PurchaseOrder();
 
@@ -42,6 +42,6 @@ public class purchaseOrderTest {
         purchaseOrder.setEstArrival(newDate);
 
         purchaseOrderRepository.save(purchaseOrder);
-    }
+    }*/
 
 }

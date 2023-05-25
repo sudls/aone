@@ -1,6 +1,6 @@
 package com.mes.aone.repository;
 
-import com.mes.aone.contant.Status;
+import com.mes.aone.constant.Status;
 import com.mes.aone.entity.SalesOrder;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;

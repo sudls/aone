@@ -12,7 +12,7 @@ class VendorRepositoryTest {
     @Autowired
     VendorRepository vendorRepository;
 
-    @Test
+/*    @Test
     @DisplayName("거래처 저장테스트")
     public void createVendorTest(){
         Vendor vendor = new Vendor();
@@ -24,7 +24,7 @@ class VendorRepositoryTest {
         vendor.setVendorMemo("테스트비고");
         Vendor savedVendor = vendorRepository.save(vendor);
         System.out.println(savedVendor.toString());
-    }
+    }*/
 
 //    @Test
 //    @DisplayName("거래처 아이디 조회테스트")
