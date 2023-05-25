@@ -4,3 +4,12 @@
     margin-left: 320px; /* 사이드바의 너비만큼 content를 이동시킴 */
     /*max-width: 1200px;*/
 }
+
+.innerContent{
+    max-width: 1500px;
+    min-width: 670px;
+    margin:0 auto;
+}
+.inlineBlock{
+    display: inline-block;
+}

@@ -10,11 +10,13 @@ rows.forEach(function(row) {
         // 작업지시 ID와 제품명을 가져옵니다.
         var workId = row.querySelector("td:first-child").innerText;
         var workProduct = row.querySelector("td:nth-child(2)").innerText;
-    console.log(workId, workProduct);
+        console.log(workId, workProduct);
+
         // 가져온 값으로 출력할 요소를 찾아 업데이트합니다.
         var workIdElement = document.getElementById("workId");
         var workProductElement = document.getElementById("workProduct");
         workIdElement.innerText = workId;
         workProductElement.innerText = workProduct;
+
     });
 });

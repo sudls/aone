@@ -5,19 +5,35 @@ document.getElementById("btnAdd").addEventListener("click", function() {
 
 //수주 확정
 document.getElementById("btnConfirm").addEventListener("click", function() {
-    // getCheckInfoData();//체크한 수주 정보 테이블로 보여주기
-    // document.getElementById("changeOrderModal").style.display = "block";
-    openModal("수주 확정", "확정", "/order/confirm", "color: #3196e2", "bg-blue");
+    let selectedValues = getSelectedValues();
+    if(selectedValues.orderIds.length>0){
+        openModal("수주 확정", "확정", "/order/confirm", "color: #3196e2", "bg-blue");
+    }else{
+        alert("주문상태를 확정으로 변경할 수주를 선택해주세요");
+    }
+
 });
 
 //수주 취소
 document.getElementById("btnCancel").addEventListener("click", function() {
-    openModal("수주 취소", "취소","/order/cancel", "color: #ff834c", "bg-orange");
+    let selectedValues = getSelectedValues();
+    if(selectedValues.orderIds.length>0){
+        openModal("수주 취소", "취소","/order/cancel", "color: #ff834c", "bg-orange");
+    }else{
+        alert("주문상태를 취소로 변경할 수주를 선택해주세요");
+    }
+
 });
 
 //수주 삭제
 document.getElementById("btnDel").addEventListener("click", function() {
-    openModal("수주 삭제", "삭제","/order/delete", "color: #ff6b6c", "bg-red");
+    let selectedValues = getSelectedValues();
+    if(selectedValues.orderIds.length>0){
+        openModal("수주 삭제", "삭제","/order/delete", "color: #ff6b6c", "bg-red");
+    }else{
+        alert("주문상태를 삭제로 변경할 수주를 선택해주세요");
+    }
+
 });
 
 //수주 확정, 취소, 삭제 모달창 열기
@@ -66,6 +82,7 @@ function getCurrentDateTime() {
     const formattedDate = `${year}-${month}-${day}`;
     const formattedTime = `${hours}:${minutes}`;
 
+
     return { date: formattedDate, time: formattedTime };
 }
 
@@ -82,18 +99,6 @@ document.getElementById("setOrderNum").addEventListener("change", function() {
     }
 });
 
-//---
-//체크박스 선택시 해당 행 값 반환
-function toggleSelectedRow(checkbox) {
-    let row = checkbox.parentNode.parentNode;
-    row.classList.toggle("selected");
-
-    //반환값 확인
-    let selectedValues = getSelectedValues();
-    console.log(selectedValues.orderIds);
-    console.log(selectedValues.orderProducts);
-    console.log(selectedValues.orderNum);
-}
 
 function getSelectedValues() {
     let table = document.querySelector(".table-container table");

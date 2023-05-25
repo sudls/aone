@@ -5,14 +5,64 @@
     <meta charset="UTF-8">
     <title>메인페이지</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
-    <!--    <th:block layout:fragment="script"></th:block>-->
-    <!--    <th:block layout:fragment="css"></th:block>-->
+
+    <!--    <script th:src="@{/js/currentTime.js}" defer></script>-->
+    <script th:src="@{/js/calender.js}" defer></script>
+    <link th:href="@{/css/calender.css}" rel="stylesheet">
+
 </head>
 <body>
 <header th:replace="fragments/nav::nav"></header>
-<!--<div layout:fragment="nav"></div>-->
-<div layout:fragment="content" id="contentStyle">
 
+<div layout:fragment="content" id="contentStyle">
+    <div class="innerContent">
+        <h2 id="current-time"></h2>
+
+        <div id="calendar"></div>
+
+        <hr>
+        <div class="titlebox" style="margin:40px 0 10px 0">
+            <h1>수주 진척도 조회</h1>
+            <button class="bg-green" onclick="window.location.href='/status'">현황 관리</button>
+
+        </div>
+        <p style="margin:20px 0;">날짜 : </p>
+
+        <div class="table-container" style="height: 300px">
+            <table>
+                <thead>
+                <tr>
+                    <th>수주 ID</th>
+                    <th>제품명</th>
+                    <th>전처리</th>
+                    <th>추출</th>
+                    <th>혼합</th>
+                    <th>충진</th>
+                    <th>검사</th>
+                    <th>포장</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>000-001</td>
+                    <td>석류젤리스틱</td>
+                    <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+                    <td><span style="font-size:30px; font-weight: 500; color:var(--grey)">-</span></td>
+                    <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+                    <td><i class="fa-solid fa-check" style="color:var(--navy)"></i></td>
+                    <td><i class="fas fa-spinner fa-pulse" style="color:var(--green)"></i></td>
+                    <td></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <p style="text-align: right; margin-bottom: 10px">
+            <i class="fa-solid fa-check" style="color:var(--navy)"></i>　완료　　
+            <i><span style="font-size:30px; font-weight: 500; color:var(--grey)">-</span> </i>　미해당　　
+            <i class="fas fa-spinner" style="color:var(--green)"></i>　진행중　
+        </p>
+    </div>
 </div>
 </body>
 </html>
