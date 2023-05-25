@@ -29,7 +29,7 @@ public class MaterialStorageTest {
         materialStorage.setMaterialName(material);
 
         materialStorage.setMaterialQty(55);
-        materialStorage.setMStorageState(State.I);
+        materialStorage.setMaterialStorageState(State.I);
         materialStorage.setMStorageDate(new Date());
         materialStorage.setUnit("kg");
 
