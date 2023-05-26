@@ -145,6 +145,7 @@ public class orderController {
         System.out.println("수주확정: " + selectedIds);
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
         }

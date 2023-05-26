@@ -30,5 +30,7 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
             "ON w.salesOrder.salesOrderId = s.salesOrderId WHERE w.workOrderId = :workOrderId")
     List<SalesOrder> findSalesOrdersByWorkOrderId(@Param("workOrderId") Long workOrderId);
 
+    WorkOrder findByWorkOrderId(Long workOrderId);
+
 
 }

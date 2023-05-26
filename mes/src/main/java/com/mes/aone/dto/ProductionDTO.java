@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -18,12 +19,12 @@ public class ProductionDTO {
 
     private String processStage;   //공정단계
 
-    private Date endTime; //생산일자
+    private LocalDateTime endTime; //생산일자
 
     private String lotNumber;   //lot번호
 
     public ProductionDTO(String productionName, int productionQty, String processStage,
-                         Date endTime, String lotNumber){
+                         LocalDateTime endTime, String lotNumber){
         this.productionName=productionName;
         this.productionQty=productionQty;
         this.processStage=processStage;
