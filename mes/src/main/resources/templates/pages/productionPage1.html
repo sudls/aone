@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+
+        <!-- 다른 스크립트 및 스타일 태그들 -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
@@ -101,12 +105,12 @@
             <th>주문 수량</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="resultData">
         <tr th:each="salesOrder : ${salesOrders}">
             <td th:text="${salesOrder.salesOrderId}"></td>
             <td th:text="${salesOrder.salesDate}"></td>
             <td th:text="${salesOrder.salesQty}"></td>
-            <!-- 다른 필드 열 추가 -->
+
         </tr>
         </tbody>
     </table>
