@@ -1,6 +1,6 @@
 @import url(colors.css);
 button {
-    background-color:var(--grey) ;
+    background-color:var(--darkgreen) ;
     border: none;
     color: white;
     padding: 5px 10px;
@@ -14,8 +14,14 @@ button {
     margin:0px 10px 0px 0px;
 }
 button:hover{
-    box-shadow:0px 0px 7px rgba(192, 192, 194,0.6);
+    box-shadow:0px 0px 7px rgba(4, 69, 77,0.6);
 }
+button:disabled {
+    background-color: var(--lightgrey);
+}
+button:disabled:hover {
+    box-shadow: none;
+ }
 
 .bg-blue{
     background-color:var(--blue);
@@ -52,3 +58,9 @@ button:hover{
     box-shadow:0px 0px 7px rgba(4, 186, 113,0.6);
 }
 
+.bg-excel{
+    background-color:var(--excel);
+}
+.bg-excel:hover {
+    box-shadow:0px 0px 7px rgba(4, 186, 113,0.6);
+}
