@@ -9,13 +9,18 @@ public class MESMain {
         Calculator calculator = new Calculator(mesInfo);
 
         String productName = "양배추즙"; // 제품명 입력
+<<<<<<< Updated upstream
         int salesAmount = 1000; // 제품량 입력
+=======
+        int salesAmount = 1500; // 제품량 입력
+>>>>>>> Stashed changes
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
 
 
         if (productName.equals("양배추즙") || productName.equals("흑마늘즙")){ // 즙 공정
+<<<<<<< Updated upstream
             System.out.println("-------------------발주---------------------------------------------------------");
             String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
             if (purchaseCheck.equals("enough")){
@@ -38,6 +43,25 @@ public class MESMain {
                 System.out.println("-------------------포장--------------------------------------------------------");
                 calculator.packaging(); // 포장 메서드 실행
             }
+=======
+            calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+
+            calculator.measurement(); // 원료계량 메서드 실행
+
+            calculator.preProcessing(); // 전처리 메서드 실행
+
+            calculator.extraction(); // 추출 및 혼합 메서드 실행
+
+            calculator.fill();//충진 메서드 실행
+
+            calculator.examination();//검사 메서드 실행
+            calculator.cooling();//열교환 메서드 실행
+          
+            calculator.packaging(); // 포장 메서드 실행
+
+
+
+>>>>>>> Stashed changes
         }else { // 젤리스틱 공정
             System.out.println("-------------------발주---------------------------------------------------------");
             String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
@@ -60,6 +84,17 @@ public class MESMain {
                 calculator.packaging(); // 포장 메서드 실행
             }
 
+<<<<<<< Updated upstream
+=======
+            calculator.measurement(); // 원료계량 메서드 실행
+
+            calculator.extraction(); // 추출 및 혼합 메서드 실행
+            calculator.fill();//충진 메서드 실행
+
+            calculator.examination();//검사 메서드 실행
+            calculator.cooling();//열교환 메서드 실행
+            calculator.packaging(); // 포장 메서드 실행
+>>>>>>> Stashed changes
 
         }
         System.out.println("-------------------공정계획 리스트--------------------------------------------------------");
