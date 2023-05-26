@@ -29,10 +29,6 @@ public class WorkOrder {
     private Status workStatus;
 
     @ManyToOne
-    @JoinColumn(name = "process_plan_id")
-    private ProcessPlan processPlan;
-
-    @ManyToOne
     @JoinColumn(name = "sales_order_id")
     private SalesOrder salesOrder;
 }

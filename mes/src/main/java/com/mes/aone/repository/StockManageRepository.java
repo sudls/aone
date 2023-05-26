@@ -35,12 +35,14 @@ public interface StockManageRepository extends JpaRepository<StockManage, Long> 
     List<StockManage> findByStockDateBetween(LocalDateTime stockStartDateTime, LocalDateTime stockEndDateTime, Sort sort);
   
 
+    //완제품 자재 조회
     @Query("SELECT new com.mes.aone.dto.StockDTO(s.stockName, SUM(CASE WHEN sm.stockManageState = 'I' THEN sm.stockManageQty ELSE -sm.stockManageQty END)) " +
             "FROM StockManage sm " +
             "JOIN sm.stock s " +
             "GROUP BY s.stockName")
     List<StockDTO> getCurrentQuantitiesByStockName();
 
+    //입출고 상태에 따른 재고량 업데이트
     @Modifying
     @Query("UPDATE Stock st " +
             "SET st.stockQty = :stockQty " +

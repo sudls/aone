@@ -30,6 +30,13 @@ public class Stock {
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<StockManage> stockManageList = new ArrayList<>();
 
+    public Stock(){
+    }
+
+    public Stock(String stockName, int stockQty){
+        this.stockName = stockName;
+        this.stockQty = stockQty;
+    }
 
     //stockQty 값 업데이트
 /*    public void updateStockQty(StockDTO stockDTO){

@@ -38,12 +38,13 @@
         </thead>
 
         <tbody>
-        <tr>
-            <td>0512-1</td>
-            <td>양배추즙(포)</td>
-            <td>20000</td>
-            <td>ea</td>
-            <td>23.06.23</td>
+        <tr th:each="workResult : ${workResults}">
+            <td th:text="${workResult.workOrderId}"></td>
+            <td th:text="${workResult.productName}"></td>
+            <td th:text="${workResult.workFinishQty}"></td>
+            <td>box</td>
+            <td th:text="${#dates.format(workResult.workFinishDate,'yy/MM/dd')}"></td>
+
         </tr>
 
 

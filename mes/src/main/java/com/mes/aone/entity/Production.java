@@ -24,7 +24,7 @@ public class Production {
     private int productionQty;  //생산수량
 
     @OneToOne
-    @JoinColumn(name = "processStage")
+    @JoinColumn(name = "process_plan_id")
     private ProcessPlan processPlan;   //공정단계
 
     @Column(length = 50, nullable = false)

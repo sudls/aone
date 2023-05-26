@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+
+    <!-- 다른 스크립트 및 스타일 태그들 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
@@ -58,7 +62,7 @@
 
     </form>
     <hr>
-    <div class="table-container" style="height: 300px">
+    <div class="table-container" style="height: 500px">
         <table id="workListTable">
             <thead>
             <tr>
@@ -66,7 +70,6 @@
                 <th>제품명</th>
                 <th>작업지시 수량</th>
                 <th>작업지시 일자</th>
-                <th>공정 단계</th>
                 <th>작업 진행 상태</th>
             </tr>
             </thead>
@@ -76,7 +79,6 @@
                 <td th:text="${workOrder.productName}"></td>
                 <td th:text="${workOrder.workOrderQty}"></td>
                 <td th:text="${workOrder.workOrderDate}"></td>
-                <td th:text="${workOrder.processStage}"></td>
                 <td>
                     <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
                 </td>
@@ -92,24 +94,24 @@
         <b>제품명 : </b><span id="workProduct" style="min-width: 100px; display: inline-block" ></span>
     </div>
 
-    <div class="table-container" style="height: 500px">
-    <table id="resultTable">
-        <thead>
-        <tr>
-            <th>수주 ID</th>
-            <th>수주 날짜</th>
-            <th>주문 수량</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="salesOrder : ${salesOrders}">
-            <td th:text="${salesOrder.salesOrderId}"></td>
-            <td th:text="${salesOrder.salesDate}"></td>
-            <td th:text="${salesOrder.salesQty}"></td>
-            <!-- 다른 필드 열 추가 -->
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-container" style="height: 200px">
+        <table id="resultTable">
+            <thead>
+            <tr>
+                <th>수주 ID</th>
+                <th>수주 날짜</th>
+                <th>주문 수량</th>
+            </tr>
+            </thead>
+            <tbody id="resultData">
+            <tr th:each="salesOrder : ${salesOrders}">
+                <td th:text="${salesOrder.salesOrderId}"></td>
+                <td th:text="${salesOrder.salesDate}"></td>
+                <td th:text="${salesOrder.salesQty}"></td>
+
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

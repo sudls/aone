@@ -20,7 +20,7 @@ public class WorkResult {
 
     @ManyToOne
     @JoinColumn(name = "work_order_id")
-    private WorkOrder workOrderId;
+    private WorkOrder workOrder;
 
     @Column(nullable = false)
     private Date workFinishDate;

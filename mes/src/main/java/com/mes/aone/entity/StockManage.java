@@ -31,7 +31,7 @@ public class StockManage {
     @Enumerated(EnumType.STRING)
     private StockManageState stockManageState;
 
-    // 제품명 : 양배추박스, 양배추포
+    // 제품명 : 양배추즙, 흑마늘즙
     @Column(nullable = false, length = 50)
     private String stockManageName;
 
