@@ -31,7 +31,7 @@ public class MaterialStorageTest {
         orderDTO.setSalesOrderId(10L);
         orderDTO.setProductName("양배추즙");
         orderDTO.setVendorId("ven-11");
-        orderDTO.setSalesQty(1000);
+        orderDTO.setSalesQty(2000);
         orderDTO.setSalesDate(LocalDateTime.now());
         orderDTO.setSalesStatus(SalesStatus.B);
 
