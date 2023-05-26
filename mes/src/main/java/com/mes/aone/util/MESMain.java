@@ -1,9 +1,7 @@
 package com.mes.aone.util;
 
 
-
 import java.time.LocalDateTime;
-import java.util.Scanner;
 
 public class MESMain {
     public static void main(String[] args) {
@@ -18,41 +16,53 @@ public class MESMain {
 
 
         if (productName.equals("양배추즙") || productName.equals("흑마늘즙")){ // 즙 공정
-
             System.out.println("-------------------발주---------------------------------------------------------");
-            calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-            System.out.println("-------------------원료계량------------------------------------------------------");
-            calculator.measurement(); // 원료계량 메서드 실행
-            System.out.println("-------------------전처리--------------------------------------------------------");
-            calculator.preProcessing(); // 전처리 메서드 실행
-            System.out.println("-------------------추출--------------------------------------------------------");
-            calculator.extraction(); // 추출 메서드 실행
-            System.out.println("-------------------충진--------------------------------------------------------");
-            calculator.fill();//충진 메서드 실행
-            System.out.println("-------------------검사--------------------------------------------------------");
-            calculator.examination();//검사 메서드 실행
-            System.out.println("-------------------열교환--------------------------------------------------------");
-            calculator.cooling();//열교환 메서드 실행
-            System.out.println("-------------------포장--------------------------------------------------------");
-            calculator.packaging(); // 포장 메서드 실행
+            String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+            if (purchaseCheck.equals("enough")){
+                mesInfo.setEstDelivery(LocalDateTime.now());
+            } else {
+                System.out.println("-------------------발주 도착시간---------------------------------------------------------");
+                calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                System.out.println("-------------------원료계량------------------------------------------------------");
+                calculator.measurement(); // 원료계량 메서드 실행
+                System.out.println("-------------------전처리--------------------------------------------------------");
+                calculator.preProcessing(); // 전처리 메서드 실행
+                System.out.println("-------------------추출--------------------------------------------------------");
+                calculator.extraction(); // 추출 메서드 실행
+                System.out.println("-------------------충진--------------------------------------------------------");
+                calculator.fill();//충진 메서드 실행
+                System.out.println("-------------------검사--------------------------------------------------------");
+                calculator.examination();//검사 메서드 실행
+                System.out.println("-------------------열교환--------------------------------------------------------");
+                calculator.cooling();//열교환 메서드 실행
+                System.out.println("-------------------포장--------------------------------------------------------");
+                calculator.packaging(); // 포장 메서드 실행
+            }
+
 
 
 
         }else { // 젤리스틱 공정
-            System.out.println("-------------------발주-----------------------------------------------------------");
-            calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-            System.out.println("-------------------원료계량--------------------------------------------------------");
-            calculator.measurement(); // 원료계량 메서드 실행
-            System.out.println("-------------------추출--------------------------------------------------------");
-            calculator.extraction(); // 추출 메서드 실행
-            System.out.println("-------------------충진--------------------------------------------------------");
-            calculator.fill();//충진 메서드 실행
-            System.out.println("-------------------검사--------------------------------------------------------");
-            calculator.examination();//검사 메서드 실행
-            System.out.println("-------------------열교환--------------------------------------------------------");
-            calculator.cooling();//열교환 메서드 실행
-            System.out.println("-------------------포장--------------------------------------------------------");
-            calculator.packaging(); // 포장 메서드 실행
+            System.out.println("-------------------발주---------------------------------------------------------");
+            String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+            if (purchaseCheck.equals("enough")){
+                mesInfo.setEstDelivery(LocalDateTime.now());
+            } else {
+                System.out.println("-------------------발주 도착시간---------------------------------------------------------");
+                calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                System.out.println("-------------------원료계량------------------------------------------------------");
+                calculator.measurement(); // 원료계량 메서드 실행
+                System.out.println("-------------------추출--------------------------------------------------------");
+                calculator.extraction(); // 추출 메서드 실행
+                System.out.println("-------------------충진--------------------------------------------------------");
+                calculator.fill();//충진 메서드 실행
+                System.out.println("-------------------검사--------------------------------------------------------");
+                calculator.examination();//검사 메서드 실행
+                System.out.println("-------------------열교환--------------------------------------------------------");
+                calculator.cooling();//열교환 메서드 실행
+                System.out.println("-------------------포장--------------------------------------------------------");
+                calculator.packaging(); // 포장 메서드 실행
+            }
 
 
         }
@@ -90,6 +100,8 @@ public class MESMain {
         System.out.println("충진(젤리) 시작시간 리스트: " + mesInfo.startFillingJellyMachine);
         System.out.println("충진(젤리) 완료시간 리스트: " + mesInfo.finishFillingJellyMachine);
         System.out.println("충진(젤리) 생산량 리스트: " + mesInfo.nowFillingJellyMachineOutput);
+
+        System.out.println("예상 납품일: " + mesInfo.estDelivery);
 
 
     }
