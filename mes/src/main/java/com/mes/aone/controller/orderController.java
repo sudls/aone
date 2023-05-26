@@ -89,30 +89,43 @@ public class orderController {
             }
 
             try {
+                System.out.println("수주등록: " + orderDTO);
                 MESInfo mesInfo = new MESInfo();
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명
                 mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
 
+                // 예상납품일 계산기 실행
                 if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
-                    calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    calculator.measurement(); // 원료계량 메서드 실행
-                    calculator.preProcessing(); // 전처리 메서드 실행
-                    calculator.extraction(); // 추출 메서드 실행
-                    calculator.fill();//충진 메서드 실행
-                    calculator.examination();//검사 메서드 실행
-                    calculator.cooling();//열교환 메서드 실행
-                    calculator.packaging(); // 포장 메서드 실행
+                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    if (purchaseCheck.equals("enough")){ // 재고가 충분하면
+                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+                    } else {
+                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                        calculator.measurement(); // 원료계량 메서드 실행
+                        calculator.preProcessing(); // 전처리 메서드 실행
+                        calculator.extraction(); // 추출 메서드 실행
+                        calculator.fill();//충진 메서드 실행
+                        calculator.examination();//검사 메서드 실행
+                        calculator.cooling();//열교환 메서드 실행
+                        calculator.packaging(); // 포장 메서드 실행
+                    }
                 }else { // 젤리스틱 공정
-                    calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    calculator.measurement(); // 원료계량 메서드 실행
-                    calculator.extraction(); // 추출 메서드 실행
-                    calculator.fill();//충진 메서드 실행
-                    calculator.examination();//검사 메서드 실행
-                    calculator.cooling();//열교환 메서드 실행
-                    calculator.packaging(); // 포장 메서드 실행
+                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    if (purchaseCheck.equals("enough")){ //재고가 충분하면
+                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+                    } else {
+                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                        calculator.measurement(); // 원료계량 메서드 실행
+                        calculator.extraction(); // 추출 메서드 실행
+                        calculator.fill();//충진 메서드 실행
+                        calculator.examination();//검사 메서드 실행
+                        calculator.cooling();//열교환 메서드 실행
+                        calculator.packaging(); // 포장 메서드 실행
+                    }
                 }
+
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 
 
@@ -129,8 +142,7 @@ public class orderController {
     @PostMapping(value="/order/confirm")
     public String confirmOrder(@Valid SalesOrderFormDTO salesOrderFromDTO, Model model) {
         String[] selectedIds = salesOrderFromDTO.getSelectedOrderIdList().split(",");
-
-
+        System.out.println("수주확정: " + selectedIds);
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);
         } catch (Exception e) {

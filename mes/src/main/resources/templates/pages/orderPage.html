@@ -94,7 +94,7 @@
                     <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
 
 
-                <td >
+                <td>
                     <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
                     <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
                     <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff834c">취소</span>

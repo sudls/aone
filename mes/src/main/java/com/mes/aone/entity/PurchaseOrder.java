@@ -35,6 +35,6 @@ public class PurchaseOrder {
 //    @JoinColumn(name = "vendor_id")
 //    private Vendor vendorId;                 // 거래처아이디와 fk
 
-//    @Column(nullable = false)
-//    private Date estArrival;    // 예상 입고일자 (발주일자 + 리드타임)
+    @Column(nullable = false)
+    private LocalDateTime estArrival;    // 예상 입고일자 (발주일자 + 리드타임)
 }
