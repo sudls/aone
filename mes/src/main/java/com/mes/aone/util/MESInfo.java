@@ -160,6 +160,7 @@ public class MESInfo {
    long packagingEaOutput = 0;           // 포장 후 남은 낱개
 
    LocalDateTime estDelivery = null; // 예상 납품일
+   int asdsa = 0;
 
 
 
