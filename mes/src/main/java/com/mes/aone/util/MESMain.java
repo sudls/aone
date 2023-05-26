@@ -9,7 +9,7 @@ public class MESMain {
         Calculator calculator = new Calculator(mesInfo);
 
         String productName = "양배추즙"; // 제품명 입력
-        int salesAmount = 3000; // 제품량 입력
+        int salesAmount = 1000; // 제품량 입력
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
@@ -38,10 +38,6 @@ public class MESMain {
                 System.out.println("-------------------포장--------------------------------------------------------");
                 calculator.packaging(); // 포장 메서드 실행
             }
-
-
-
-
         }else { // 젤리스틱 공정
             System.out.println("-------------------발주---------------------------------------------------------");
             String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행

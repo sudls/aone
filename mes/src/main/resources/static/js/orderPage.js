@@ -205,7 +205,7 @@ function getCheckInfoData() {
 
 }
 
-//--
+
 // 수주 확정 버튼 클릭 이벤트 추가
 document.addEventListener("DOMContentLoaded", function () {
     var buttons = document.querySelectorAll(".btnConfirm");
@@ -230,3 +230,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+

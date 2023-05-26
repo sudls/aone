@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,10 +27,10 @@ public class ProcessPlan {
 //    private Process processId;
 
     @NotNull
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @NotNull
-    private Date endTime;
+    private LocalDateTime endTime;
 
 /*    @ManyToOne
     @JoinColumn(name = "sales_order_id")

@@ -317,6 +317,7 @@ public class Calculator {
         LocalDateTime stockInDate = null;                   // 창고 입고시간
         int leadTime = 0;                                // 리드타임
         LocalDateTime latestStockInDate = null;            // 가장 마지막 도착일자
+        Map<String, LocalDateTime> purchaseAndTime = new HashMap<>();       // 자재명, 도착일 세팅
 
 
         for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
@@ -389,12 +390,38 @@ public class Calculator {
             System.out.println("자재명: " + mesInfo.getRowMaterialName());
             System.out.println("수량: " + mesInfo.getRowMaterialAmount());
 
+            // 자재명, 도착일 Map에 세팅
+            purchaseAndTime.put(mesInfo.getRowMaterialName(),  mesInfo.getArrivalMaterial());
+            mesInfo.setPurchaseAndTimeMap(purchaseAndTime);
+
             // 가장 마지막 도착일자인지 확인 후 업데이트
             if (latestStockInDate == null || stockInDate.isAfter(latestStockInDate)) {
                 latestStockInDate = stockInDate;
             }
             }
         }
+
+        // PurchaseMap에서 발주량이 0인 목록 삭제
+        for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            if (value == 0 || value == null){
+                mesInfo.getPurchaseMap().remove(key);
+            }
+        }
+        // Map에 세팅된 자재명, 발주량 출력
+        for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println("자재명: " + key + ", 발주량: " + value);
+        }
+        // Map에 세팅된 자재명, 도착일 출력
+        for (Map.Entry<String, LocalDateTime> entry : mesInfo.getPurchaseAndTimeMap().entrySet()) {
+            String key = entry.getKey();
+            LocalDateTime value = entry.getValue();
+            System.out.println("자재명: " + key + ", 도착시간: " + value);
+        }
+
         mesInfo.setLastStockInDate(latestStockInDate);
         System.out.println();
         System.out.println("가장 마지막 도착일: " + mesInfo.getLastStockInDate());

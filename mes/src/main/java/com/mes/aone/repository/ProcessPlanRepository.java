@@ -1,6 +1,7 @@
 package com.mes.aone.repository;
 
 
+
 import com.mes.aone.entity.ProcessPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,7 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
             "OR :currentTime > p.endTime AND :currentTime < p.startTime) " +
             "ORDER BY p.endTime DESC, p.startTime ASC")
     List<ProcessPlan> findProcessPlansByTimeCondition(Date currentTime);
+
 
 
 
