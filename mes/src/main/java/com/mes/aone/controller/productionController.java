@@ -26,10 +26,10 @@ public class productionController {
 
     private final ProductionRepository productionRepository;
 
-    public productionController(WorkOrderRepository workOrderRepository, WorkOrderService workOrderService, WorkResultRepository workResultRepository, WorkResultRepository workResultRepository1, ProductionRepository productionRepository) {
+    public productionController(WorkOrderRepository workOrderRepository, WorkOrderService workOrderService, WorkResultRepository workResultRepository, ProductionRepository productionRepository) {
         this.workOrderRepository = workOrderRepository;
         this.workOrderService = workOrderService;
-        this.workResultRepository = workResultRepository1;
+        this.workResultRepository = workResultRepository;
         this.productionRepository = productionRepository;
     }
 
@@ -56,7 +56,7 @@ public class productionController {
     }
 
 
-//작업실적조회
+    //작업실적조회
     @GetMapping(value="/production2")
     public String WorkResultPage(Model model){
 
