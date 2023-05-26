@@ -6,9 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -36,7 +34,7 @@ public class ProcessPlan {
     private SalesOrder salesOrderId;
 
     @NotNull
-    private String processStage;
+    private String processStage;            // 공정단계
 
     @ManyToOne
     @JoinColumn(name = "facility_id")

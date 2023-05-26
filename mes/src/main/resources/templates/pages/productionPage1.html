@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+
+    <!-- 다른 스크립트 및 스타일 태그들 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
@@ -19,46 +23,46 @@
     </div>
 
     <hr>
-    <form action="">
-        <input type="text" placeholder="작업 지시 ID">
+    <form action="/production1/search" value="get">
+        <input type="text" placeholder="작업 지시 ID" name="workOrderId">
 
-        <select name="" id="option1">
+        <select name="productName" id="option1">
             <option disabled selected>제품명</option>
-            <option value="">양배추즙</option>
-            <option value="">흑마늘즙</option>
-            <option value="">석류젤리스틱</option>
-            <option value="">매실젤리스틱</option>
+            <option value="양배추즙">양배추즙</option>
+            <option value="흑마늘즙">흑마늘즙</option>
+            <option value="석류젤리스틱">석류젤리스틱</option>
+            <option value="매실젤리스틱">매실젤리스틱</option>
         </select>
         <br><br>
 
         <div class="periodBox">
-            <input type="date" id="startDate">
+            <input type="date" id="startDate" name="startDate">
             <span>~</span>
-            <input type="date" id="endDate">
+            <input type="date" id="endDate" name="endDate">
         </div>
 
 
-        <select name="" id="option2">
+        <select name="processStage" id="option2">
             <option disabled selected>공정 단계</option>
-            <option value="">전처리</option>
-            <option value="">추출</option>
-            <option value="">혼합</option>
-            <option value="">충진</option>
-            <option value="">검사</option>
-            <option value="">포장</option>
+            <option value="전처리">전처리</option>
+            <option value="추출">추출</option>
+            <option value="혼합">혼합</option>
+            <option value="충진">충진</option>
+            <option value="검사">검사</option>
+            <option value="포장">포장</option>
         </select>
 
-        <select name="" id="option3">
+        <select name="workStatus" id="option3">
             <option disabled selected>작업진행 상태</option>
             <option value="A">대기</option>
             <option value="B">진행</option>
         </select>
 
         <button type="submit">검색</button>
-
     </form>
+
     <hr>
-    <div class="table-container" style="height: 300px">
+    <div class="table-container" style="height: 500px">
         <table id="workListTable">
             <thead>
             <tr>
@@ -92,24 +96,24 @@
         <b>제품명 : </b><span id="workProduct" style="min-width: 100px; display: inline-block" ></span>
     </div>
 
-    <div class="table-container" style="height: 500px">
-    <table id="resultTable">
-        <thead>
-        <tr>
-            <th>수주 ID</th>
-            <th>수주 날짜</th>
-            <th>주문 수량</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="salesOrder : ${salesOrders}">
-            <td th:text="${salesOrder.salesOrderId}"></td>
-            <td th:text="${salesOrder.salesDate}"></td>
-            <td th:text="${salesOrder.salesQty}"></td>
-            <!-- 다른 필드 열 추가 -->
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-container" style="height: 200px">
+        <table id="resultTable">
+            <thead>
+            <tr>
+                <th>수주 ID</th>
+                <th>수주 날짜</th>
+                <th>주문 수량</th>
+            </tr>
+            </thead>
+            <tbody id="resultData">
+            <tr th:each="salesOrder : ${salesOrders}">
+                <td th:text="${salesOrder.salesOrderId}"></td>
+                <td th:text="${salesOrder.salesDate}"></td>
+                <td th:text="${salesOrder.salesQty}"></td>
+
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

@@ -3,17 +3,14 @@ package com.mes.aone.service;
 import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.entity.SalesOrder;
-import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.repository.WorkOrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,6 +41,18 @@ public class SalesOrderService {
         }
 
     }
+//    public void confirmSalesOrderState(String[] selectedIds){
+//        for (String salesOrderId : selectedIds) {
+//            Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
+//            SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
+//            if (salesOrder != null) {
+//                salesOrder.setSalesStatus(Status.B); // 상태
+//                salesOrderRepository.save(salesOrder);
+//            }
+//        }
+//
+//    }
+
 
 
     // 수주 취소

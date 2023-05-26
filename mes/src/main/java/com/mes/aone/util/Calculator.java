@@ -32,8 +32,6 @@ public class Calculator {
         if (mesInfo.getProductName().equals("양배추즙")) {                // 창고 재고량 확인 전 세팅
             requiredCabbage = mesInfo.salesQty;
             if (mesInfo.cabbagePackaging >= requiredCabbage) {            // 재고량 > 주문량
-                mesInfo.setShipmentBox(requiredCabbage);                // 출하량
-                mesInfo.setCabbagePackaging(mesInfo.cabbagePackaging - requiredCabbage);        // 창고 재고 뺴기
                 return "enough";
             } else {                                                    // 재고량 < 주문량
                 requiredProduct = requiredCabbage - mesInfo.cabbagePackaging;
@@ -68,7 +66,6 @@ public class Calculator {
                     System.out.println("창고 파우치 수: " + mesInfo.getStockPouch() + "ea");
                     System.out.println("발주 파우치 수: " + mesInfo.getPouch() + "ea");
 
-
                 } else {                                    // 창고 파우치 재고량이 충분할 때
                     System.out.println("창고 파우치 수: " + mesInfo.getStockPouch() + "ea");
                     System.out.println("발주 파우치 수: " + mesInfo.getPouch() + "ea");
@@ -94,8 +91,6 @@ public class Calculator {
         } else if (mesInfo.getProductName().equals("흑마늘즙")) {
             requiredGarlic = mesInfo.salesQty;
             if (mesInfo.garlicPackaging >= requiredGarlic) {            // 재고량 > 주문량
-                mesInfo.setShipmentBox(requiredGarlic);                // 출하량
-                mesInfo.setGarlicPackaging(mesInfo.garlicPackaging - requiredGarlic);        // 창고 재고 뺴기
                 return "enough";
             } else {
                 requiredProduct = requiredGarlic - mesInfo.garlicPackaging;
@@ -155,8 +150,6 @@ public class Calculator {
         } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
             requiredPomegranate = mesInfo.salesQty;
             if (mesInfo.pomegranatePackaging >= requiredPomegranate) {            // 재고량 > 주문량
-                mesInfo.setShipmentBox(requiredPomegranate);                // 출하량
-                mesInfo.setPomegranatePackaging(mesInfo.pomegranatePackaging - requiredPomegranate);        // 창고 재고 뺴기
                 return "enough";
             } else {
                 requiredProduct = requiredPomegranate - mesInfo.pomegranatePackaging;
@@ -232,8 +225,6 @@ public class Calculator {
         } else {
                 requiredPlum = mesInfo.salesQty;
             if (mesInfo.plumPackaging >= requiredPlum) {            // 재고량 > 주문량
-                mesInfo.setShipmentBox(requiredPlum);                // 출하량
-                mesInfo.setPlumPackaging(mesInfo.plumPackaging - requiredPlum);        // 창고 재고 뺴기
                 return "enough";
             } else {
                 requiredProduct = requiredPlum - mesInfo.plumPackaging;
@@ -314,10 +305,10 @@ public class Calculator {
     public  void materialArrived() { // 발주 원자재 도착 시간
         LocalDateTime salesDate = mesInfo.salesDay;        // 수주시간
         LocalDateTime stockOrderDate = null;                // 원자재 주문시간
-        LocalDateTime stockInDate = null;                   // 창고 입고시간
+        LocalDateTime arrivalMaterialDate = null;                   // 창고 입고시간(도착시간)
         int leadTime = 0;                                // 리드타임
         LocalDateTime latestStockInDate = null;            // 가장 마지막 도착일자
-
+        Map<String, LocalDateTime> purchaseAndTime = new HashMap<>();       // 자재명, 도착일 세팅
 
         for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
             String key = entry.getKey();
@@ -367,34 +358,49 @@ public class Calculator {
             // 주문 요일이 목,금요일이면 +2일(주말)
             if (stockOrderDate.getDayOfWeek() == DayOfWeek.THURSDAY || stockOrderDate.getDayOfWeek() == DayOfWeek.FRIDAY) {
                 stockOrderDate = stockOrderDate.plusDays(2);
-                stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
+                arrivalMaterialDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
             } else {
-                stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
+                arrivalMaterialDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
             }
 
             // 입고 가능한 시간인지 확인하고, 월, 수, 금 오전 10시에 입고시간 설정
-            DayOfWeek dayOfWeek = stockInDate.getDayOfWeek();
+            DayOfWeek dayOfWeek = arrivalMaterialDate.getDayOfWeek();
             if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.WEDNESDAY || dayOfWeek == DayOfWeek.FRIDAY) {
-                stockInDate = stockInDate.withHour(10).withMinute(0).withSecond(0);
+                arrivalMaterialDate = arrivalMaterialDate.withHour(10).withMinute(0).withSecond(0);
             } else if (dayOfWeek == DayOfWeek.TUESDAY || dayOfWeek == DayOfWeek.THURSDAY) {
-                stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
+                arrivalMaterialDate = arrivalMaterialDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
             } else if (dayOfWeek == DayOfWeek.SATURDAY) {
-                stockInDate = stockInDate.plusDays(2).withHour(10).withMinute(0).withSecond(0);
+                arrivalMaterialDate = arrivalMaterialDate.plusDays(2).withHour(10).withMinute(0).withSecond(0);
             } else if (dayOfWeek == DayOfWeek.SUNDAY) {
-                stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
+                arrivalMaterialDate = arrivalMaterialDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
             }
 
-            mesInfo.setArrivalMaterial(stockInDate);      // 도착일
+            mesInfo.setArrivalMaterial(arrivalMaterialDate);      // 도착일
             System.out.println("도착일: " + mesInfo.getArrivalMaterial());
             System.out.println("자재명: " + mesInfo.getRowMaterialName());
             System.out.println("수량: " + mesInfo.getRowMaterialAmount());
 
+            // 자재명, 도착일 Map에 세팅
+            purchaseAndTime.put(mesInfo.getRowMaterialName(),  mesInfo.getArrivalMaterial());
+            mesInfo.setPurchaseAndTimeMap(purchaseAndTime);
+
             // 가장 마지막 도착일자인지 확인 후 업데이트
-            if (latestStockInDate == null || stockInDate.isAfter(latestStockInDate)) {
-                latestStockInDate = stockInDate;
+            if (latestStockInDate == null || arrivalMaterialDate.isAfter(latestStockInDate)) {
+                latestStockInDate = arrivalMaterialDate;
+
+
             }
             }
         }
+
+        // Map에 세팅된 자재명, 도착일 출력
+        for (Map.Entry<String, LocalDateTime> entry : mesInfo.getPurchaseAndTimeMap().entrySet()) {
+            String key = entry.getKey();
+            LocalDateTime value = entry.getValue();
+            System.out.println("자재명: " + key + ", 도착시간: " + value);
+        }
+
+
         mesInfo.setLastStockInDate(latestStockInDate);
         System.out.println();
         System.out.println("가장 마지막 도착일: " + mesInfo.getLastStockInDate());

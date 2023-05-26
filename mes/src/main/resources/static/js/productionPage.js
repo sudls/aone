@@ -18,6 +18,22 @@ rows.forEach(function(row) {
         workIdElement.innerText = workId;
         workProductElement.innerText = workProduct;
 
+        // AJAX 요청을 보냅니다.
+        $.ajax({
+            url: "/production1/check",
+            method: "GET",
+            data: { workOrderId: workId },
+            dataType:"html",
+            success: function(response) {
+                // 서버로부터 받은 결과를 처리합니다.
+                let resultDataHtml = $(response).find("#resultData").html();
+                $("#resultData").html(resultDataHtml);
+                console.log("출력 " +resultDataHtml);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+
     });
 });
-

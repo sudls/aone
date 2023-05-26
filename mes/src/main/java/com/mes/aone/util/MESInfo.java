@@ -27,7 +27,7 @@ public class MESInfo {
     int stockPomegranate = 0;    // 석류농축액
     int stockPlum = 0;           // 매실농축액
     int stockCollagen = 0; // 콜라겐
-    int stockBox = 0; // 박스
+    int stockBox = 3000; // 박스
     int stockPouch = 0; // 파우치(즙)
     int stockStickPouch = 0; // 파우치(스틱)
 
@@ -39,8 +39,7 @@ public class MESInfo {
     int pomegranatePackaging = 0; // 석류젤리스틱 박스포장
     int plumPackaging = 0;       // 매실젤리스틱 박스포장
 
-  
-  
+
 
    //원자재 발주량
    int cabbage = 0; // 양배추즙
@@ -52,7 +51,9 @@ public class MESInfo {
    int pouch = 0; // 파우치(즙)
    int stickPouch = 0; // 파우치(스틱)
    Map<String, Integer> purchaseMap = null;
-   int shipmentBox = 0;             // 출하량
+   Map<String, LocalDateTime> purchaseAndTimeMap = null;
+
+//   int shipmentBox = 0;             // 출하량
   
   
    // 원자재발주 후 output

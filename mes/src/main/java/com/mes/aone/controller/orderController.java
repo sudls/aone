@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -69,7 +68,6 @@ public class orderController {
         // 검색결과
         List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(searchProduct, searchVendor, searchState, startDateTime, endDateTime, sort);
 
-
         model.addAttribute("orderDTOList", salesOrderList);
         model.addAttribute("orderDTO", new OrderDTO());
         model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
@@ -96,22 +94,33 @@ public class orderController {
                 mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
 
                 if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
-                    calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    calculator.measurement(); // 원료계량 메서드 실행
-                    calculator.preProcessing(); // 전처리 메서드 실행
-                    calculator.extraction(); // 추출 메서드 실행
-                    calculator.fill();//충진 메서드 실행
-                    calculator.examination();//검사 메서드 실행
-                    calculator.cooling();//열교환 메서드 실행
-                    calculator.packaging(); // 포장 메서드 실행
+                    System.out.println("-------------------발주---------------------------------------------------------");
+                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    if (purchaseCheck.equals("enough")){
+                        mesInfo.setEstDelivery(LocalDateTime.now());
+                    } else {
+                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                        calculator.measurement(); // 원료계량 메서드 실행
+                        calculator.preProcessing(); // 전처리 메서드 실행
+                        calculator.extraction(); // 추출 메서드 실행
+                        calculator.fill();//충진 메서드 실행
+                        calculator.examination();//검사 메서드 실행
+                        calculator.cooling();//열교환 메서드 실행
+                        calculator.packaging(); // 포장 메서드 실행
+                    }
                 }else { // 젤리스틱 공정
-                    calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    calculator.measurement(); // 원료계량 메서드 실행
-                    calculator.extraction(); // 추출 메서드 실행
-                    calculator.fill();//충진 메서드 실행
-                    calculator.examination();//검사 메서드 실행
-                    calculator.cooling();//열교환 메서드 실행
-                    calculator.packaging(); // 포장 메서드 실행
+                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    if (purchaseCheck.equals("enough")){
+                        mesInfo.setEstDelivery(LocalDateTime.now());
+                    } else {
+                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                        calculator.measurement(); // 원료계량 메서드 실행
+                        calculator.extraction(); // 추출 메서드 실행
+                        calculator.fill();//충진 메서드 실행
+                        calculator.examination();//검사 메서드 실행
+                        calculator.cooling();//열교환 메서드 실행
+                        calculator.packaging(); // 포장 메서드 실행
+                    }
                 }
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 

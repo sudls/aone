@@ -1,12 +1,11 @@
 package com.mes.aone.entity;
 
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,10 +19,10 @@ public class WorkResult {
 
     @ManyToOne
     @JoinColumn(name = "work_order_id")
-    private WorkOrder workOrderId;
+    private WorkOrder workOrder;
 
     @Column(nullable = false)
-    private Date workFinishDate;
+    private LocalDateTime workFinishDate;
 
     @Column(nullable = false)
     private Integer workFinishQty;
