@@ -19,10 +19,8 @@ import java.util.List;
 public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
     //작업지시 조회
-    @Query("SELECT NEW com.mes.aone.dto.WorkOrderDTO(w.workOrderId, w.workOrderDate, w.workOrderQty, w.workStatus, " +
-            "p.processStage, s.productName) " +
+    @Query("SELECT NEW com.mes.aone.dto.WorkOrderDTO(w.workOrderId, w.workOrderDate, w.workOrderQty, w.workStatus, s.productName) " +
             "FROM WorkOrder w " +
-            "JOIN w.processPlan p " +
             "JOIN w.salesOrder s " )
     List<WorkOrderDTO> findWorkOrderDetails();
 

@@ -1,7 +1,8 @@
 package com.mes.aone.dto;
 
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
@@ -13,8 +14,7 @@ public class MaterialDTO {
 
     public MaterialDTO(String materialName, Long currentQuantity){
         this.materialName = materialName;
-        this.currentQuantity = currentQuantity;
-
+        this.currentQuantity = currentQuantity != null? currentQuantity : 0L;
     }
 
 

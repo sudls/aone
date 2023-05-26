@@ -18,15 +18,13 @@ public class WorkOrderDTO {
     private Date workOrderDate;
     private int workOrderQty;
     private Status workStatus;
-    private String processStage;
     private String productName;
 
-    public WorkOrderDTO(Long workOrderId, Date workOrderDate, int workOrderQty, Status workStatus, String processStage, String productName) {
+    public WorkOrderDTO(Long workOrderId, Date workOrderDate, int workOrderQty, Status workStatus,String productName) {
         this.workOrderId = workOrderId;
         this.workOrderDate = workOrderDate;
         this.workOrderQty = workOrderQty;
         this.workStatus = workStatus;
-        this.processStage = processStage;
         this.productName = productName;
     }
 

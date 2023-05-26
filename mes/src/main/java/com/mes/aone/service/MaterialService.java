@@ -10,6 +10,7 @@ import com.mes.aone.repository.PurchaseOrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,8 +25,30 @@ public class MaterialService {
         return materialStorageRepository.findAll();
     }
 
-    public List<MaterialDTO> getMaterial(){
+/*    public List<MaterialDTO> getMaterial(){
         return materialStorageRepository.getCurrentQuantitiesByMaterialNames();
+    }*/
+
+    public List<MaterialDTO> getMaterial(){
+        List<MaterialDTO> materialDTOList = materialStorageRepository.getCurrentQuantitiesByMaterialNames();
+        List<MaterialDTO> dummyMaterialDTOList = new ArrayList<>();
+
+        List<String> materialNames = materialRepository.getAllMaterialNames();
+
+        for (String materialName : materialNames){
+            Long currentQuantity = null;
+            for (MaterialDTO materialDTO : materialDTOList){
+                if (materialDTO.getMaterialName().equals(materialName)){
+                    currentQuantity = materialDTO.getCurrentQuantity();
+                    break;
+                }
+            }
+            if (currentQuantity == null){
+                currentQuantity = 0L;
+            }
+            dummyMaterialDTOList.add(new MaterialDTO(materialName, currentQuantity));
+        }
+        return dummyMaterialDTOList;
     }
 
     public List<PurchaseOrder> getPurchaseOrder(){

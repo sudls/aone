@@ -1,5 +1,6 @@
 package com.mes.aone.entity;
 
+import com.mes.aone.constant.ShipmentState;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,12 +26,16 @@ public class Shipment {
     @Column(nullable = false)
     private LocalDate shipmentDate; //출하날짜
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ShipmentState shipmentState = ShipmentState.A;
+
     @OneToOne
-    @JoinColumn(name = "salesOrderId")
+    @JoinColumn(name = "sales_order_id")
     private SalesOrder salesOrder;  //수주테이블의 id
 
     @OneToOne
-    @JoinColumn(name = "lotNumber")
+    @JoinColumn(name = "production_id")
     private Production production;   //생산테이블의 lot번호
 
 
