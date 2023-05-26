@@ -7,6 +7,7 @@ import com.mes.aone.entity.PurchaseOrder;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.*;
+import com.mes.aone.util.Calculator;
 import com.mes.aone.util.MESInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,58 @@ public class SalesOrderService {
             Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
             if (salesOrder != null) {
-                salesOrder.setSalesStatus(Status.B); // 상태
+                salesOrder.setSalesStatus(Status.B); // 상태 업데이트
+                salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
+
+
+                MESInfo mesInfo = new MESInfo();
+                Calculator calculator = new Calculator(mesInfo);
+                mesInfo.setProductName(salesOrder.getProductName()); //수주 제품명
+                mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
+                mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
+
+                // 예상납품일 계산기 실행
+                if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
+                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    if (purchaseCheck.equals("enough")){ // 재고가 충분하면
+                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+                    } else {
+                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                        calculator.measurement(); // 원료계량 메서드 실행
+                        calculator.preProcessing(); // 전처리 메서드 실행
+                        calculator.extraction(); // 추출 메서드 실행
+                        calculator.fill();//충진 메서드 실행
+                        calculator.examination();//검사 메서드 실행
+                        calculator.cooling();//열교환 메서드 실행
+                        calculator.packaging(); // 포장 메서드 실행
+                    }
+                }else { // 젤리스틱 공정
+                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                    if (purchaseCheck.equals("enough")){ //재고가 충분하면
+                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+                    } else {
+                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                        calculator.measurement(); // 원료계량 메서드 실행
+                        calculator.extraction(); // 추출 메서드 실행
+                        calculator.fill();//충진 메서드 실행
+                        calculator.examination();//검사 메서드 실행
+                        calculator.cooling();//열교환 메서드 실행
+                        calculator.packaging(); // 포장 메서드 실행
+                    }
+                }
+
+                salesOrder.setEstDelivery(mesInfo.getEstDelivery()); // 예상 납품일 업데이트
+
+                createProcessPlan(mesInfo);
+                createPurchaseOrder(mesInfo);
+
                 salesOrderRepository.save(salesOrder);
+            }
+
             }
         }
 
-    }
+
 
     // 수주 취소
     public void cancelSalesOrderState(String[] selectedIds){
@@ -129,18 +176,17 @@ public class SalesOrderService {
         processPlan.setFacilityId(null);
         processPlan.setStartTime(mesInfo.getStartMeasurement());
         processPlan.setEndTime(mesInfo.getFinishMeasurement());
-        processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+//        processPlan.setWorkOrder(workOrderRepository.findByWorkOrderId());
+        processPlan.setWorkOrder(null);
         processPlanRepository.save(processPlan);
-        System.out.println(mesInfo.getStartPreProcessing().size());
         // 전처리
         for (int i=0; i<mesInfo.getStartPreProcessing().size(); i++){
-            System.out.println("전처리: " + i);
             processPlan = new ProcessPlan();
             processPlan.setProcessStage("전처리");
             processPlan.setFacilityId(null);
             processPlan.setStartTime(mesInfo.getStartPreProcessing().get(i));
             processPlan.setEndTime(mesInfo.getFinishPreProcessing().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         // 추출 및 혼합
@@ -150,7 +196,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("extraction_1"));
             processPlan.setStartTime(mesInfo.getStartExtractionMachine1().get(i));
             processPlan.setEndTime(mesInfo.getFinishExtractionMachine1().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         for (int i=0; i<mesInfo.getStartExtractionMachine2().size(); i++){ // 추출기2
@@ -159,7 +205,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("extraction_2"));
             processPlan.setStartTime(mesInfo.getStartExtractionMachine2().get(i));
             processPlan.setEndTime(mesInfo.getFinishExtractionMachine2().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         // 충진
@@ -169,7 +215,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("pouch_1"));
             processPlan.setStartTime(mesInfo.getStartFillingLiquidMachine().get(i));
             processPlan.setEndTime(mesInfo.getFinishFillingLiquidMachine().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         for (int i=0; i<mesInfo.getStartFillingJellyMachine().size(); i++){ // 충진기(젤리)
@@ -178,7 +224,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("liquid_stick_1"));
             processPlan.setStartTime(mesInfo.getStartFillingJellyMachine().get(i));
             processPlan.setEndTime(mesInfo.getFinishFillingJellyMachine().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         // 검사
@@ -188,7 +234,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("inspection"));
             processPlan.setStartTime(mesInfo.getStartExamination().get(i));
             processPlan.setEndTime(mesInfo.getFinishExamination().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         // 포장
@@ -198,7 +244,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(null);
             processPlan.setStartTime(mesInfo.getStartPackaging().get(i));
             processPlan.setEndTime(mesInfo.getFinishPackaging().get(i));
-            processPlan.setSalesOrderId(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            processPlan.setWorkOrder(null);
             processPlanRepository.save(processPlan);
         }
         // 출하

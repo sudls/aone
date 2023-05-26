@@ -23,6 +23,7 @@ public class MESInfo {
    int salesQty = 0; // 수주량(박스)
    LocalDateTime salesDay = LocalDateTime.now(); // 수주일
    Long salesOrderId = null; // 수주 id
+   Long workOrderId = null; // 작업지시 id
 
 
   // 창고 원자재량(--)
@@ -31,7 +32,7 @@ public class MESInfo {
     int stockPomegranate = 0;    // 석류농축액
     int stockPlum = 0;           // 매실농축액
     int stockCollagen = 0; // 콜라겐
-    int stockBox = 2000; // 박스
+    int stockBox = 0; // 박스
     int stockPouch = 0; // 파우치(즙)
     int stockStickPouch = 0; // 파우치(스틱)
 
