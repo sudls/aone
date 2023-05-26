@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -15,12 +16,12 @@ import java.util.Date;
 public class WorkOrderDTO {
 
     private Long workOrderId;
-    private Date workOrderDate;
+    private LocalDateTime workOrderDate;
     private int workOrderQty;
     private Status workStatus;
     private String productName;
 
-    public WorkOrderDTO(Long workOrderId, Date workOrderDate, int workOrderQty, Status workStatus,String productName) {
+    public WorkOrderDTO(Long workOrderId, LocalDateTime workOrderDate, int workOrderQty, Status workStatus,String productName) {
         this.workOrderId = workOrderId;
         this.workOrderDate = workOrderDate;
         this.workOrderQty = workOrderQty;

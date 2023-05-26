@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -14,7 +15,7 @@ public class PurchaseOrderDTO {
     private Long purchaseOrderId;           // id
     private Material materialName;          // 자재명
     private Integer purchaseQty;            // 수량
-    private Date purchaseDate;              // 발주일
+    private LocalDateTime purchaseDate;              // 발주일
     private String vendorId;                // 거래처 id
 //    private Vendor vendorId;                // 거래처 id
     // private Date estArrival;             // 예상도착일

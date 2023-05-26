@@ -4,6 +4,7 @@ import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
+import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.service.SalesOrderService;
 import com.mes.aone.util.Calculator;
@@ -129,7 +130,17 @@ public class orderController {
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 
 
-                salesOrderService.createSalesOrder(orderDTO);
+                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+                WorkOrder workOrder = new WorkOrder();
+                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+//                workOrder.setWorkOrderQty();
+                
+                
+
+
+
+
+
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
                 }

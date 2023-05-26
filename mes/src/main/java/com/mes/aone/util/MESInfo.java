@@ -8,10 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< Updated upstream
 import java.util.Map;
-=======
->>>>>>> Stashed changes
 
 @AllArgsConstructor
 @Getter
@@ -160,7 +157,6 @@ public class MESInfo {
    long packagingEaOutput = 0;           // 포장 후 남은 낱개
 
    LocalDateTime estDelivery = null; // 예상 납품일
-   int asdsa = 0;
 
 
 

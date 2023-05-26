@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class WorkOrder {
     private Long workOrderId;   //수주
 
     @Column(nullable = false)
-    private Date workOrderDate;
+    private LocalDateTime workOrderDate;
 
     @Column(nullable = false)
     private Integer workOrderQty;
