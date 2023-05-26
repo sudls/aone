@@ -16,23 +16,30 @@ function updateGraph(data) {
         let span = progressCircle.querySelector('span');
         let valueBar = progressCircle.querySelector('.value-bar');
 
-        if (startTime === null) {
+        let currentTime = new Date(); //현재시간
+
+        //시작시간이 없을 때, 시작시간이 현재시간보다 미래일때
+        if (startTime === null || startTime>currentTime) {
             span.textContent = '0%';
             progressCircle.classList.add('p0');
-            return; // Skip further processing for this data
+            return;
         }
-
-        // 현재시간이 완료시간을 지났다면
-        let currentTime = new Date();
+        // 현재시간이 완료시간을 지났다면 (작업이 완료됨)
         if (endTime < currentTime) {
-            // Remove the data and show 0%
+
             span.textContent = '0%';
             progressCircle.classList.remove('over50');
             for (let i = 0; i <= 100; i++) {
                 progressCircle.classList.remove('p' + i);
             }
             valueBar.style.transform = 'rotate(0deg)';
-            return; // Skip further processing for this data
+            span.classList.add('p0');
+
+            //데이터 지우기
+            data[index] = {jobId: '', productName: '', startTime: null, endTime: null};
+
+
+            return;
         }
 
         // 퍼센테이지 계산
@@ -41,10 +48,11 @@ function updateGraph(data) {
         let percent = Math.min((currentDuration / totalDuration) * 100, 100);
         span.textContent = percent.toFixed(0) + '%';
 
-        // Update graph
+        // 그래프값 변경
         progressCircle.classList.remove('over50');
         for (let i = 0; i <= 100; i++) {
             progressCircle.classList.remove('p' + i);
+            span.classList.remove('p0');
         }
         progressCircle.classList.add('p' + Math.floor(percent));
 
@@ -61,6 +69,8 @@ function updateGraph(data) {
         } else {
             span.classList.remove('p0'); // 'p0' 클래스 제거
         }
+
+
     });
 }
 
@@ -117,76 +127,14 @@ window.onload = function() {
 
     }
     console.log(data);
-    // let data = [
-    //     {
-    //         jobId: '12345',
-    //         productName: '제품 A',
-    //         startTime: null,
-    //         endTime: null,
-    //     },
-    //     {
-    //         jobId: '12346',
-    //         productName: '제품 B',
-    //         startTime: new Date('2023-05-25T10:00:00'), // 수정: 10시로 변경
-    //         endTime: new Date('2023-05-25T13:53:00')
-    //     },
-    //     {
-    //         jobId: '12347', // 수정: 고유한 jobId 값으로 변경
-    //         productName: '제품 C', // 수정: 다른 제품 이름으로 변경
-    //         startTime: new Date('2023-05-24T12:00:00'), // 수정: 12시로 변경
-    //         endTime: new Date('2023-05-24T18:00:00') // 수정: 18시로 변경
-    //     },
-    //     {
-    //         jobId: '12348',
-    //         productName: '제품 D',
-    //         startTime: new Date('2023-05-25T09:00:00'), // 수정: 9시로 변경
-    //         endTime: new Date('2023-05-25T17:00:00') // 수정: 17시로 변경
-    //     },
-    //     {
-    //         jobId: '12349',
-    //         productName: '제품 E',
-    //         startTime: new Date('2023-05-25T11:00:00'), // 수정: 11시로 변경
-    //         endTime: new Date('2023-05-25T16:00:00') // 수정: 15시로 변경
-    //     },
-    //     {
-    //         jobId: '12345',
-    //         productName: '제품 A',
-    //         startTime: new Date('2023-05-25T08:00:00'),
-    //         endTime: new Date('2023-05-25T16:00:00')
-    //     },
-    //     {
-    //         jobId: '12346',
-    //         productName: '제품 B',
-    //         startTime: new Date('2023-05-25T10:00:00'), // 수정: 10시로 변경
-    //         endTime: new Date('2023-05-26T14:00:00')
-    //     },
-    //     {
-    //         jobId: '12347', // 수정: 고유한 jobId 값으로 변경
-    //         productName: '제품 C', // 수정: 다른 제품 이름으로 변경
-    //         startTime: new Date('2023-05-25T12:00:00'), // 수정: 12시로 변경
-    //         endTime: new Date('2023-05-25T18:00:00') // 수정: 18시로 변경
-    //     },
-    //     {
-    //         jobId: '12348',
-    //         productName: '제품 D',
-    //         startTime: new Date('2023-05-25T09:00:00'), // 수정: 9시로 변경
-    //         endTime: new Date('2023-05-25T17:00:00') // 수정: 17시로 변경
-    //     },
-    //     {
-    //         jobId: '12349',
-    //         productName: '제품 E',
-    //         startTime: new Date('2023-05-25T11:00:00'), // 수정: 11시로 변경
-    //         endTime: new Date('2023-05-26T15:00:00') // 수정: 15시로 변경
-    //     },
-    // ];
 
 
     updateGraph(data);
-
 
     // 10초마다 데이터 업데이트
     setInterval(function() {
         // 그래프 업데이트
         updateGraph(data);
     }, 10000);
+
 };
