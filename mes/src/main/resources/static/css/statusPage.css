@@ -53,3 +53,6 @@
     grid-template-rows: 1fr 1fr 1fr 1fr;
 
 }
+.statusInfo span{
+    margin-top:10px;
+}
