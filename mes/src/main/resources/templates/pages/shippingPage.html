@@ -15,8 +15,9 @@
 
     <div class="titlebox">
         <h1 style="display: inline-block">출하현황</h1>
-        <button class="bg-green" style="float: right"
-                onclick="downloadTablesAsExcel()">Excel 다운로드</button>
+        <button class="bg-excel" onclick="downloadTablesAsExcel()">
+            Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
+        </button>
     </div>
 
     <hr>
@@ -66,13 +67,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>11번가</td>
-            <td>양배추즙</td>
-            <td>384</td>
-            <td>23.12.12</td>
-            <td>대기</td>
+        <tr th:each="shipment : ${shipments}">
+            <td th:text="${shipment.salesOrderId}"></td>
+            <td>
+                <span th:if="${shipment.vendorId.contains('c')}">쿠팡</span>
+                <span th:unless="${shipment.vendorId.contains('c')}">11번가</span>
+            </td>
+
+            <td th:text="${shipment.shipmentProduct}"></td>
+            <td th:text="${shipment.shipmentQty}"></td>
+            <td th:text="${shipment.shipmentDate}"></td>
+            <td>
+                <span th:text="${shipment.shipmentState.name()=='A'} ? '대기' : '완료'"></span>
+            </td>
         </tr>
 
         </tbody>

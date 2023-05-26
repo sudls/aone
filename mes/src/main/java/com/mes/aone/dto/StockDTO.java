@@ -14,8 +14,10 @@ public class StockDTO {
 
     public StockDTO(String stockName, Long currentStockQty){
         this.stockName = stockName;
-        this.currentStockQty = currentStockQty;
+        this.currentStockQty = currentStockQty != null ? currentStockQty : 0L;
     }
+
+
 
 
 }

@@ -44,7 +44,7 @@
   <hr>
 
   <h1>재고 입출고 현황</h1>
-  <div style="margin-bottom: 20px;">
+  <div class="titlebox" style="margin-bottom: 20px;">
     <form id="searchForm" method="get" action="/inventory3/search">
       <select name="searchProduct" id="option1">
         <option disabled selected>제품명</option>
@@ -67,9 +67,10 @@
       </div>
 
       <button type="submit">검색</button>
-      <button class="bg-green" style="float: right" type="button"
-              onclick="downloadTablesAsExcel()">Excel 다운로드</button>
     </form>
+    <button class="bg-excel" onclick="downloadTablesAsExcel()">
+      Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
+    </button>
   </div>
 
   <div class="table-container" style="height: 600px">

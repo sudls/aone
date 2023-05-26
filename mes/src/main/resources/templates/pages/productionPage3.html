@@ -50,12 +50,12 @@
         </thead>
 
         <tbody>
-        <tr>
-            <td>양배추</td>
-            <td>1000</td>
-            <td>kg</td>
-            <td>전처리</td>
-            <td>2023.05.20</td>
+        <tr th:each="production : ${productions}">
+            <td th:text="${production.productionName}"></td>
+            <td th:text="${production.productionQty}"></td>
+            <td>BOX</td>
+            <td th:text="${production.processStage}"></td>
+            <td th:text="${#dates.format(production.endTime, 'yy/MM/dd')}"></td>
             <td>yag-Bo1-23052001</td>
         </tr>
 

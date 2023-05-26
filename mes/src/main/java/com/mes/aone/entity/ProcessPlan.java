@@ -32,9 +32,9 @@ public class ProcessPlan {
     @NotNull
     private LocalDateTime endTime;
 
-    @ManyToOne
+/*    @ManyToOne
     @JoinColumn(name = "sales_order_id")
-    private SalesOrder salesOrderId;
+    private SalesOrder salesOrderId;*/
 
     @NotNull
     private String processStage;
@@ -42,6 +42,10 @@ public class ProcessPlan {
     @ManyToOne
     @JoinColumn(name = "facility_id")
     private Facility facilityId;
+
+    @ManyToOne
+    @JoinColumn(name = "work_order_id")
+    private WorkOrder workOrder;
 
 //    @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
 //    private List<Facility> facilityIdList = new ArrayList<>();

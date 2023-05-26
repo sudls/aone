@@ -16,11 +16,15 @@
 <div layout:fragment="content" id="contentStyle">
     <div class="titlebox">
         <h1>수주관리</h1>
+
         <div class="btn-box">
             <button class="bg-green" id="btnAdd">등록</button>
-            <button class="bg-blue" id="btnConfirm">확정</button>
-            <button class="bg-orange" id="btnCancel">취소</button>
-            <button class="bg-red" id="btnDel">삭제</button>
+<!--            <button class="bg-blue" id="btnConfirm">확정</button>-->
+            <button class="bg-red" id="btnCancel">취소</button>
+            <button class="bg-excel" onclick="downloadTablesAsExcel()">
+                Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
+            </button>
+<!--            <button class="bg-red" id="btnDel">삭제</button>-->
         </div>
     </div>
 
@@ -56,8 +60,8 @@
     </form>
 
       <hr>
-        <button class="bg-green" style="float: right; margin: 20px 0;"
-                onclick="downloadTablesAsExcel()">Excel다운로드</button>
+<!--        <button class="bg-green" style="float: right; margin: 20px 0;"-->
+<!--                onclick="downloadTablesAsExcel()">Excel다운로드</button>-->
 
         <div class="table-container" style="height: 800px">
             <table>
@@ -70,7 +74,8 @@
                     <th>수량(box)</th>
                     <th>수주일</th>
                     <th>예상 납품일</th>
-                    <th>주문상태</th>
+                    <th>수주상태</th>
+                    <th>확정</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -94,11 +99,18 @@
                     <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
 
 
-                <td>
-                    <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
-                    <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
-                    <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff834c">취소</span>
-                </td>
+
+                    <td >
+                        <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
+                        <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
+                        <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff6b6c">취소</span>
+                    </td>
+
+                    <td>
+                        <button th:if="${orderDTO.salesStatus.name() == 'A'}" class="bg-blue btnConfirm" th:id="${orderDTO.salesOrderId}" >확정</button>
+                        <button th:unless="${orderDTO.salesStatus.name() == 'A'}" class="bg-blue btnConfirm" th:id="${orderDTO.salesOrderId}" disabled >확정</button>
+                    </td>
+
             </tr>
 
             </tbody>
@@ -136,7 +148,7 @@
 
 
                 <div class="modalBtn">
-                    <button id="closeAddModal" type="reset">취소</button>
+                    <button id="closeAddModal" type="reset" class="bg-grey">취소</button>
                     <button class="bg-green" type="submit">등록</button>
                 </div>
 
@@ -176,7 +188,7 @@
                     <h4>선택한 수주를 <span id="changeText">확정</span>하시겠습니까?</h4>
                 </div>
                 <div class="modalBtn ">
-                    <button id="closeChangeModal" type="reset">취소</button>
+                    <button id="closeChangeModal" type="reset" class="bg-grey">취소</button>
                     <button id="okChangeModal" type="submit">확정</button>
                 </div>
 

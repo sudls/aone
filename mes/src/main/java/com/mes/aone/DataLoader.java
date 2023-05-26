@@ -1,10 +1,7 @@
 package com.mes.aone;
 
 import com.mes.aone.constant.Status;
-import com.mes.aone.entity.BOM;
-import com.mes.aone.entity.Facility;
-import com.mes.aone.entity.Material;
-import com.mes.aone.entity.Vendor;
+import com.mes.aone.entity.*;
 import com.mes.aone.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,6 +22,9 @@ public class DataLoader implements CommandLineRunner {
     private BOMRepository bomRepository;
     @Autowired
     private FacilityRepository facilityRepository;
+
+    @Autowired
+    private StockRepository stockRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -81,6 +81,15 @@ public class DataLoader implements CommandLineRunner {
         Facility facility15 = new Facility("packaging","",200,20, Status.N,"박스포장");
 
         facilityRepository.saveAll(Arrays.asList(facility1,facility2,facility3,facility4,facility5,facility6,facility7,facility8,facility9,facility10,facility11,facility12));
+
+
+        //완제품 재고 생성
+        Stock stock1 = new Stock("양배추즙", 0);
+        Stock stock2 = new Stock("흑마늘즙", 0);
+        Stock stock3 = new Stock("석류젤리스틱", 0);
+        Stock stock4 = new Stock("매실젤리스틱", 0);
+
+        stockRepository.saveAll(Arrays.asList(stock1, stock2, stock3, stock4));
 
 
     }

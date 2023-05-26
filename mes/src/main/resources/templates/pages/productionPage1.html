@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+
+        <!-- 다른 스크립트 및 스타일 태그들 -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
@@ -14,8 +17,9 @@
 <div layout:fragment="content" id="contentStyle">
     <div class="titlebox">
         <h1 style="display: inline-block">작업지시 현황</h1>
-        <button class="bg-green" style="float: right" type="button"
-                onclick="downloadTablesAsExcel()">Excel 다운로드</button>
+        <button class="bg-excel" onclick="downloadTablesAsExcel()">
+            Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
+        </button>
     </div>
 
     <hr>
@@ -58,7 +62,7 @@
 
     </form>
     <hr>
-    <div class="table-container" style="height: 300px">
+    <div class="table-container" style="height: 500px">
         <table id="workListTable">
             <thead>
             <tr>
@@ -66,7 +70,6 @@
                 <th>제품명</th>
                 <th>작업지시 수량</th>
                 <th>작업지시 일자</th>
-                <th>공정 단계</th>
                 <th>작업 진행 상태</th>
             </tr>
             </thead>
@@ -75,7 +78,7 @@
                 <td th:text="${workOrder.workOrderId}"></td>
                 <td th:text="${workOrder.productName}"></td>
                 <td th:text="${workOrder.workOrderQty}"></td>
-                <td th:text="${workOrder.workOrderDate}"></td>
+                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>
                 <td th:text="${workOrder.processStage}"></td>
                 <td>
                     <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
@@ -92,7 +95,7 @@
         <b>제품명 : </b><span id="workProduct" style="min-width: 100px; display: inline-block" ></span>
     </div>
 
-    <div class="table-container" style="height: 500px">
+    <div class="table-container" style="height: 200px">
     <table id="resultTable">
         <thead>
         <tr>
@@ -101,12 +104,11 @@
             <th>주문 수량</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="resultData">
         <tr th:each="salesOrder : ${salesOrders}">
             <td th:text="${salesOrder.salesOrderId}"></td>
-            <td th:text="${salesOrder.salesDate}"></td>
+            <td th:text="${#temporals.format(salesOrder.salesDate, 'yy/MM/dd')}"></td>
             <td th:text="${salesOrder.salesQty}"></td>
-            <!-- 다른 필드 열 추가 -->
         </tr>
         </tbody>
     </table>
