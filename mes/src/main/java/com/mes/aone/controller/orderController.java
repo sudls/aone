@@ -34,6 +34,7 @@ public class orderController {
     private final SalesOrderRepository salesOrderRepository;
 
 
+
     //기본 조회 리스트
     @GetMapping(value="/order")
     public String orderPage(Model model){
@@ -126,20 +127,17 @@ public class orderController {
                         calculator.packaging(); // 포장 메서드 실행
                     }
                 }
-
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 
 
                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
                 WorkOrder workOrder = new WorkOrder();
                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
-//                workOrder.setWorkOrderQty();
-                
-                
+                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+                workOrder.setWorkStatus(Status.A);
+                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
 
-
-
-
+                salesOrderService.createWorkOrder(workOrder);
 
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");

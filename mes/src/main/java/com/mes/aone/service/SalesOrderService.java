@@ -269,6 +269,11 @@ public class SalesOrderService {
 
     }
 
+    // 수주 등록 시 작업 지시 테이블 인설트(대기상태)
+    public void createWorkOrder(WorkOrder workOrder){
+        workOrderRepository.save(workOrder);
+    }
+
 
 
 
