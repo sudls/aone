@@ -311,7 +311,7 @@ public class Calculator {
     }
 
 
-    public  void materialArrived() { // 발주 원자재 도착 시간
+    public void materialArrived() { // 발주 원자재 도착 시간
         LocalDateTime salesDate = mesInfo.salesDay;        // 수주시간
         LocalDateTime stockOrderDate = null;                // 원자재 주문시간
         LocalDateTime stockInDate = null;                   // 창고 입고시간
@@ -319,11 +319,11 @@ public class Calculator {
         LocalDateTime latestStockInDate = null;            // 가장 마지막 도착일자
         Map<String, LocalDateTime> purchaseAndTime = new HashMap<>();       // 자재명, 도착일 세팅
 
-
         for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
             if (!(value == 0 || value == null)) {             // 주문할게 있으면
+                System.out.println("주문할게 있으면");
                 switch (key) {
                     case "양배추":
                     case "흑마늘":
@@ -353,7 +353,7 @@ public class Calculator {
                                 "\n발주일: " + stockOrderDate +
                                 "\n발주량: " + value);
             }else if(salesDate.getDayOfWeek()== DayOfWeek.FRIDAY){  // 수주일이 금요일이면 3일뒤 오전 9시 주문(월요일)      -> 주문시간 = 이틀뒤 오전 9시 주문(월요일)
-
+                System.out.println("주주일 금");
                 stockOrderDate = salesDate.plusDays(3).withHour(9).withMinute(0).withSecond(0);
                 mesInfo.setRowMaterialName(key);
                 mesInfo.setStockOrderDate(stockOrderDate);
@@ -362,8 +362,16 @@ public class Calculator {
                         "\n발주자재: " + key +
                         "\n발주일: " + stockOrderDate +
                         "\n발주량: " + value);
+            } else { // 수주일이 주말일 때
+                stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+                mesInfo.setRowMaterialName(key);
+                mesInfo.setStockOrderDate(stockOrderDate);
+                mesInfo.setRowMaterialAmount(value);
+                System.out.println(
+                        "\n발주자재: " + key +
+                                "\n발주일: " + stockOrderDate +
+                                "\n발주량: " + value);
             }
-
             // 원자재 입고일, 입고자재, 입고량, 원자재창고 자재량, 출고자재, 출고자재, 출고량,
             // 주문 요일이 목,금요일이면 +2일(주말)
             if (stockOrderDate.getDayOfWeek() == DayOfWeek.THURSDAY || stockOrderDate.getDayOfWeek() == DayOfWeek.FRIDAY) {
@@ -372,7 +380,6 @@ public class Calculator {
             } else {
                 stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
             }
-
             // 입고 가능한 시간인지 확인하고, 월, 수, 금 오전 10시에 입고시간 설정
             DayOfWeek dayOfWeek = stockInDate.getDayOfWeek();
             if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.WEDNESDAY || dayOfWeek == DayOfWeek.FRIDAY) {
@@ -429,6 +436,7 @@ public class Calculator {
 
 
     public void measurement() { // 원료계량
+        System.out.println("원료계량 도착시간 메서드 실행");
         System.out.println("수주일: " + mesInfo.salesDay);
         LocalDateTime currentTime = mesInfo.lastStockInDate; // 원료계량 시작시간
 
