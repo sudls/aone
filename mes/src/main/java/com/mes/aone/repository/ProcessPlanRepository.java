@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,12 +16,16 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
 
     List<ProcessPlan>  findAll();
 
-    @Query("SELECT p FROM ProcessPlan p " +
-            "WHERE (:currentTime BETWEEN p.startTime AND p.endTime " +
-            "OR :currentTime > p.endTime AND :currentTime < p.startTime) " +
-            "ORDER BY p.endTime DESC, p.startTime ASC")
-    List<ProcessPlan> findProcessPlansByTimeCondition(Date currentTime);
+//    @Query("SELECT p FROM ProcessPlan p " +
+//            "WHERE (:currentTime BETWEEN p.startTime AND p.endTime " +
+//            "OR :currentTime > p.endTime AND :currentTime < p.startTime) " +
+//            "ORDER BY p.endTime DESC, p.startTime ASC")
+//    List<ProcessPlan> findProcessPlansByTimeCondition(LocalDateTime currentTime);
 
+    @Query("SELECT p FROM ProcessPlan p " +
+            "WHERE :currentTime BETWEEN p.startTime AND p.endTime " +
+            "ORDER BY p.endTime DESC, p.startTime ASC")
+    List<ProcessPlan> findProcessPlansByTimeCondition(LocalDateTime currentTime);
 
 
 

@@ -1,37 +1,41 @@
 package com.mes.aone.controller;
 
 import com.mes.aone.entity.ProcessPlan;
+import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.ProcessPlanRepository;
+import com.mes.aone.repository.SalesOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
-public class statusController {
+public class mainController {
 
-
+    private final SalesOrderRepository salesOrderRepository;
     private final ProcessPlanRepository processPlanRepository;
 
+
     @Autowired
-    public statusController(ProcessPlanRepository processPlanRepository) {
+    public mainController(ProcessPlanRepository processPlanRepository,SalesOrderRepository salesOrderRepository) {
         this.processPlanRepository = processPlanRepository;
+        this.salesOrderRepository = salesOrderRepository;
     }
 
 
-    //현황 관리 페이지
-    @GetMapping(value="/status")
-    public String statusPage(Model model){
-//        List<ProcessPlan> productPlanList = processPlanRepository.findAll();
-//        LocalDateTime currentTime = LocalDateTime.now();
 
-//        LocalDateTime currentTime = LocalDateTime.now();
+    @GetMapping(value="/")
+    public String mainPage(Model model){
+
+
+        //특정날짜 수주 현황 정보
+
+        //LocalDateTime currentTime = LocalDateTime.now();
 
         LocalDateTime currentTime = LocalDateTime.of(2023,6,2,10,35);
 
@@ -75,6 +79,6 @@ public class statusController {
         model.addAttribute("productPlanList",productPlanList);
         model.addAttribute("processStageNumbers", processStageNumbers);
 
-        return"pages/statusPage";
+        return"index";
     }
 }
