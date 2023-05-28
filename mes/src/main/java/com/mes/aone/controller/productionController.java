@@ -2,11 +2,13 @@ package com.mes.aone.controller;
 
 import com.mes.aone.dto.ProductionDTO;
 import com.mes.aone.dto.WorkOrderDTO;
+import com.mes.aone.entity.Production;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkResult;
 import com.mes.aone.repository.ProductionRepository;
 import com.mes.aone.repository.WorkOrderRepository;
 import com.mes.aone.repository.WorkResultRepository;
+import com.mes.aone.service.ProductionService;
 import com.mes.aone.service.WorkOrderService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -29,12 +31,14 @@ public class productionController {
     private final WorkResultRepository workResultRepository;
 
     private final ProductionRepository productionRepository;
+    private final ProductionService productionService;
 
-    public productionController(WorkOrderRepository workOrderRepository, WorkOrderService workOrderService, WorkResultRepository workResultRepository, ProductionRepository productionRepository) {
+    public productionController(WorkOrderRepository workOrderRepository, WorkOrderService workOrderService, WorkResultRepository workResultRepository, ProductionRepository productionRepository, ProductionService productionService) {
         this.workOrderRepository = workOrderRepository;
         this.workOrderService = workOrderService;
         this.workResultRepository = workResultRepository;
         this.productionRepository = productionRepository;
+        this.productionService = productionService;
     }
 
     //작업지시 조회
@@ -136,14 +140,24 @@ public class productionController {
 
 
 
-        //생산현황
+    //생산현황
     @GetMapping(value="production3")
     public String productionPage(Model model){
-
         List<ProductionDTO> productionDTOList = productionRepository.findProductionDetials();
-//        List<Production> productionDTOList = productionRepository.findAll();
         model.addAttribute("productions", productionDTOList);
+        return "pages/productionPage3";
+    }
 
+
+    // 생산현황 search
+    @GetMapping(value="/production3/search")
+    public String productionPage( @RequestParam(required = false) String productName,
+                                  @RequestParam(required = false) String processStage,
+                                  Model model){
+        List<Production> productionList = productionService.searchProduction(productName, processStage);
+        List<ProductionDTO> productionDtoList = ProductionDTO.of(productionList);
+
+        model.addAttribute("productions", productionDtoList);
         return "pages/productionPage3";
     }
 }
