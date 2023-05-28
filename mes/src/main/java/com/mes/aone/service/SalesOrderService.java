@@ -47,6 +47,8 @@ public class SalesOrderService {
         for (String salesOrderId : selectedIds) {
             Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
+            WorkOrder workOrder = workOrderRepository.findBySalesOrder(salesOrder);
+            workOrder.setWorkStatus(Status.B); // 작업지시를 진행중으로 변경
             if (salesOrder != null) {
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
                 salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
@@ -94,6 +96,7 @@ public class SalesOrderService {
                 createPurchaseOrder(mesInfo);
 
                 salesOrderRepository.save(salesOrder);
+                workOrderRepository.save(workOrder);
             }
 
             }
