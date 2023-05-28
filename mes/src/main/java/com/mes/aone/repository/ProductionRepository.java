@@ -15,4 +15,7 @@ public interface ProductionRepository extends JpaRepository<Production, Long> {
     List<ProductionDTO> findProductionDetials();
 
 
+//    List<Production> findAll();
+
+
 }

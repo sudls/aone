@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -18,6 +19,8 @@ public interface WorkResultRepository extends JpaRepository<WorkResult, Long> {
     List<WorkResultDTO> findWorkResultDetails();
 
 
+    // 기간 검색
+    List<WorkResult> findByWorkFinishDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
 
 }
