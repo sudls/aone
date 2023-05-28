@@ -1,18 +1,26 @@
 package com.mes.aone.controller;
-
+import java.sql.Timestamp;
+import com.mes.aone.dto.WorkOrderDTO;
 import com.mes.aone.entity.ProcessPlan;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.ProcessPlanRepository;
 import com.mes.aone.repository.SalesOrderRepository;
+import com.mes.aone.service.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class mainController {
@@ -21,32 +29,52 @@ public class mainController {
     private final ProcessPlanRepository processPlanRepository;
 
 
+    private final SalesOrderService salesOrderService;
+
     @Autowired
-    public mainController(ProcessPlanRepository processPlanRepository,SalesOrderRepository salesOrderRepository) {
+    public mainController(SalesOrderService salesOrderService, ProcessPlanRepository processPlanRepository,SalesOrderRepository salesOrderRepository) {
         this.processPlanRepository = processPlanRepository;
         this.salesOrderRepository = salesOrderRepository;
+        this.salesOrderService = salesOrderService;
     }
-
-
 
     @GetMapping(value="/")
     public String mainPage(Model model){
 
 
-        //특정날짜 수주 현황 정보
+
+
+        return"index";
+    }
+
+    @GetMapping(value ="/getEvent")
+    public @ResponseBody List<Map<String, Object>> getSalesOrderInfo(){
+//        List<SalesOrder> salesOrderList = salesOrderRepository.findAll();
+//        return salesOrderList;
+        return salesOrderService.getEventList();
+    }
+
+    //작업지시에 따른 수주 정보 조회
+    @GetMapping(value = "/check")
+    public String mainPageCheck(@RequestParam("selectDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate selectDate, Model model){
+        LocalDateTime selectDateTime = null;
+        if(selectDate != null){
+            selectDateTime =  LocalDateTime.of(selectDate, LocalTime.MIN);
+        }
+
 
         //LocalDateTime currentTime = LocalDateTime.now();
 
-        LocalDateTime currentTime = LocalDateTime.of(2023,6,2,10,35);
+        LocalDateTime currentTime = LocalDateTime.of(2023,6,6,9,10);
+         List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate(currentTime,selectDateTime);
 
-        List<ProcessPlan> productPlanList =  processPlanRepository.findProcessPlansByTimeCondition(currentTime);
-        System.out.println(productPlanList);
+        System.out.println("here" + processPlanList);
+        model.addAttribute("processPlanList", processPlanList);
 
-        // processStage에 따라 번호를 매기고 결과를 리스트에 담기
         List<Integer> processStageNumbers = new ArrayList<>();
-        for (ProcessPlan processPlan : productPlanList) {
+        for (ProcessPlan processPlan : processPlanList) {
             String processStage = processPlan.getProcessStage();
-            int stageNum;
+            int stageNum =0;
 
             switch (processStage) {
                 case "원료계량":
@@ -66,6 +94,9 @@ public class mainController {
                     break;
                 case "포장":
                     stageNum=6;
+                    if(processPlan.getEndTime().isBefore(currentTime)){
+                        stageNum=7;
+                    }
                     break;
                 default:
                     stageNum = 0; // 다른 값일 경우 0으로 처리
@@ -76,9 +107,12 @@ public class mainController {
         }
         System.out.println(processStageNumbers);
 
-        model.addAttribute("productPlanList",productPlanList);
         model.addAttribute("processStageNumbers", processStageNumbers);
 
-        return"index";
+
+        return "index";
     }
+
+
+
 }

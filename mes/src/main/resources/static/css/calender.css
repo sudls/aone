@@ -1,48 +1,41 @@
 @import url(colors.css);
-.calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    margin-top: 20px;
-    border-collapse: collapse;
+#calendar {
+    max-height: 500px;
+      }
+#calendar table {
+   /* border: 2px solid #ddd;*/
+    background-color:white;
+}
+#calendar tr:nth-child(even) {
+    background-color: white;
+}
 
-
+#calendar th div{
+    height:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+#calendar td:hover {
+  background-color: rgba(4, 186, 113,0.1);
+  cursor: pointer;
 }
 
 
+:root{
+--fc-today-bg-color: rgba(253, 200, 39,0.5);
+--fc-event-bg-color: var(--yellow);
+--fc-event-border-color:rgba(0, 0, 0,0);
+--fc-event-text-color:var(--darkgreen);
 
-
-
-.calendar-header {
-    font-weight: bold;
-    font-size: 20px;
-    padding: 10px;
-    grid-column: 1 / -1;
-
+--fc-button-bg-color: var(--darkgreen);
+--fc-button-border-color: var(--darkgreen);
+--fc-button-hover-bg-color:var(--darkgreen);
+--fc-button-hover-border-color: rgba(4, 69, 77,0.7);
+--fc-button-active-bg-color: var(--darkgreen);
+--fc-button-active-border-color: rgba(4, 69, 77,0.7);
 }
 
-.calendar-day {
-    padding: 10px;
-    border: 1px solid #ccc;
-    display: inline-block;
-    width: calc(100% / 7);
-    box-sizing: border-box;
-}
-
-.prev-month,
-.next-month {
-    color: #999;
-}
-
-.today {
-    background-color: var(--yellow);
-}
-
-.week-row:nth-child(2n) .calendar-day {
-    background-color: #f2f2f2;
-}
-
-.calendar-days{
-    background-color: #f2f2f2;
-    font-weight: bold;
+.fc-daygrid-dot-event{
+ justify-content: space-between;
 }
