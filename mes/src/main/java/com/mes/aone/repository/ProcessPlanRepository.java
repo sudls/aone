@@ -19,27 +19,34 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
 
     List<ProcessPlan>  findAll();
 
-//    @Query("SELECT p FROM ProcessPlan p " +
-//            "WHERE (:currentTime BETWEEN p.startTime AND p.endTime " +
-//            "OR :currentTime > p.endTime AND :currentTime < p.startTime) " +
-//            "ORDER BY p.endTime DESC, p.startTime ASC")
-//    List<ProcessPlan> findProcessPlansByTimeCondition(LocalDateTime currentTime);
-
-    @Query("SELECT p FROM ProcessPlan p " +
-            "WHERE :currentTime BETWEEN p.startTime AND p.endTime " +
-            "ORDER BY p.endTime DESC, p.startTime ASC")
-    List<ProcessPlan> findProcessPlansByTimeCondition(LocalDateTime currentTime);
-
-
-@Query("SELECT pp FROM ProcessPlan pp " +
-        "JOIN pp.workOrder wo " +
-        "JOIN wo.salesOrder so " +
-        "WHERE (:currentTime BETWEEN pp.startTime AND pp.endTime " +
-        "OR (pp.processStage = '원료계량' AND pp.startTime > :currentTime AND DATE(:orderDate) = DATE(so.salesDate)) " +
-        "OR (pp.processStage = '포장' AND pp.endTime < :currentTime AND DATE(:orderDate) = DATE(so.salesDate))) " +
-        "AND DATE(:orderDate) = DATE(so.salesDate)")
+    //main페이지의 수주 진척도 조회
+    @Query("SELECT pp FROM ProcessPlan pp " +
+            "JOIN pp.workOrder wo " +
+            "JOIN wo.salesOrder so " +
+            "WHERE DATE(so.salesDate) = DATE(:orderDate) " +
+            "AND (" +
+            "(pp.processStage = '원료계량' AND pp.startTime > :currentTime) " +
+            "OR (pp.processStage = '포장' AND pp.endTime < :currentTime) " +
+            "OR (:currentTime BETWEEN pp.startTime AND pp.endTime)" +
+            ")")
     List<ProcessPlan> findByCurrentTimeAndSalesDate(@Param("currentTime") LocalDateTime currentTime, @Param("orderDate") LocalDateTime orderDate);
 
+    //현황관리페이지의 수주 진척도 조회
+    @Query("SELECT pp FROM ProcessPlan pp " +
+            "JOIN pp.workOrder wo " +
+            "JOIN wo.salesOrder so " +
+            "WHERE (" +
+            "(pp.processStage = '원료계량' AND pp.startTime > :currentTime) " +
+            "OR (pp.processStage = '포장' AND pp.endTime < :currentTime) " +
+            "OR (:currentTime BETWEEN pp.startTime AND pp.endTime)" +
+            ")")
+    List<ProcessPlan> findByCurrentTimeAndSalesDate2(@Param("currentTime") LocalDateTime currentTime);
+
+
+//    @Query("SELECT p FROM ProcessPlan p " +
+//            "WHERE :currentTime BETWEEN p.startTime AND p.endTime " +
+//            "ORDER BY p.endTime DESC, p.startTime ASC")
+//    List<ProcessPlan> findProcessPlansByTimeCondition(LocalDateTime currentTime);
 
     List<ProcessPlan> findByStartTimeBeforeAndEndTimeAfter(LocalDateTime startTime, LocalDateTime endTime);
 

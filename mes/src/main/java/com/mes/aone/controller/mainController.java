@@ -54,11 +54,10 @@ public class mainController {
 
 
         LocalDateTime currentTime = LocalDateTime.now();
-        currentTime  = currentTime.plusDays(4); //지워야함
+        currentTime=LocalDateTime.of(2023,06,02,02,20); //임시;
         System.out.println("currentTime="+currentTime);
 
         List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate(currentTime,selectDateTime);
-
         System.out.println("here" + processPlanList);
         model.addAttribute("processPlanList", processPlanList);
 
@@ -96,7 +95,7 @@ public class mainController {
 
             processStageNumbers.add(stageNum);
         }
-//        System.out.println(processStageNumbers);
+        System.out.println(processStageNumbers);
 
         model.addAttribute("processStageNumbers", processStageNumbers);
 

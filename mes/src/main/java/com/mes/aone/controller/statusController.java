@@ -32,20 +32,23 @@ public class statusController {
     @GetMapping(value="/status")
     public String statusPage(Model model){
         LocalDateTime currentTime = LocalDateTime.now();
-        currentTime  = currentTime.plusDays(4); //지워야함
+        currentTime=LocalDateTime.of(2023,06,02,02,20); //임시;
 
-        List<ProcessPlan> productPlanList =  processPlanRepository.findProcessPlansByTimeCondition(currentTime);
-        System.out.println(productPlanList);
+        List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate2(currentTime);
+        System.out.println(processPlanList);
 
         // processStage에 따라 번호를 매기고 결과를 리스트에 담기
         List<Integer> processStageNumbers = new ArrayList<>();
-        for (ProcessPlan processPlan : productPlanList) {
+        for (ProcessPlan processPlan : processPlanList) {
             String processStage = processPlan.getProcessStage();
-            int stageNum;
+            int stageNum =0;
 
             switch (processStage) {
                 case "원료계량":
                     stageNum=1;
+                    if(processPlan.getStartTime().isAfter(currentTime)){
+                        stageNum=0;
+                    }
                     break;
                 case "전처리" :
                     stageNum=2;
@@ -61,9 +64,9 @@ public class statusController {
                     break;
                 case "포장":
                     stageNum=6;
-                    break;
-                default:
-                    stageNum = 0; // 다른 값일 경우 0으로 처리
+                    if(processPlan.getEndTime().isBefore(currentTime)){
+                        stageNum=7;
+                    }
                     break;
             }
 
@@ -71,7 +74,7 @@ public class statusController {
         }
         System.out.println(processStageNumbers);
 
-        model.addAttribute("productPlanList",productPlanList);
+        model.addAttribute("processPlanList",processPlanList);
         model.addAttribute("processStageNumbers", processStageNumbers);
 
         return"pages/statusPage";
@@ -82,7 +85,9 @@ public class statusController {
     @GetMapping(value = "/status/facility-info")
     public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
         LocalDateTime currentTime = LocalDateTime.now();
-        currentTime  = currentTime.plusDays(4); //지워야함
+        currentTime=LocalDateTime.of(2023,06,02,02,20); //임시;
+
+        System.out.println(currentTime);
         List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
         List<ProcessPlanDTO> result = new ArrayList<>();
 
