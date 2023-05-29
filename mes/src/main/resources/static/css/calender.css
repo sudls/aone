@@ -1,6 +1,6 @@
 @import url(colors.css);
 #calendar {
-    max-height: 500px;
+    max-height: 700px;
       }
 #calendar table {
    /* border: 2px solid #ddd;*/
@@ -23,7 +23,7 @@
 
 
 :root{
---fc-today-bg-color: rgba(253, 200, 39,0.5);
+--fc-today-bg-color: rgba(253, 200, 39,0.2);
 --fc-event-bg-color: var(--yellow);
 --fc-event-border-color:rgba(0, 0, 0,0);
 --fc-event-text-color:var(--darkgreen);
@@ -38,4 +38,17 @@
 
 .fc-daygrid-dot-event{
  justify-content: space-between;
+}
+
+.fc-daygrid-event-dot{
+    border: calc(var(--fc-daygrid-event-dot-width)/2) solid var(--blue);
+    border-radius: calc(var(--fc-daygrid-event-dot-width)/2);
+    box-sizing: content-box;
+    height: 0px;
+    margin: 0px 4px;
+    width: 0px;
+}
+
+.fc-daygrid-event-harness{
+background-color:transparent
 }

@@ -30,14 +30,7 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
             "ORDER BY p.endTime DESC, p.startTime ASC")
     List<ProcessPlan> findProcessPlansByTimeCondition(LocalDateTime currentTime);
 
-    List<ProcessPlan> findByStartTimeLessThanEqualAndEndTimeGreaterThanEqualAndWorkOrder_WorkOrderDate(
-            LocalDateTime startTime, LocalDateTime endTime, LocalDateTime orderDate);
 
-//    @Query("SELECT pp FROM ProcessPlan pp " +
-//            "JOIN pp.workOrder wo " +
-//            "JOIN wo.salesOrder so " +
-//            "WHERE :currentTime BETWEEN pp.startTime AND pp.endTime " +
-//            "AND DATE(:orderDate) = DATE(so.salesDate)")
 @Query("SELECT pp FROM ProcessPlan pp " +
         "JOIN pp.workOrder wo " +
         "JOIN wo.salesOrder so " +
@@ -47,6 +40,8 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
         "AND DATE(:orderDate) = DATE(so.salesDate)")
     List<ProcessPlan> findByCurrentTimeAndSalesDate(@Param("currentTime") LocalDateTime currentTime, @Param("orderDate") LocalDateTime orderDate);
 
+
+    List<ProcessPlan> findByStartTimeBeforeAndEndTimeAfter(LocalDateTime startTime, LocalDateTime endTime);
 
 
 }

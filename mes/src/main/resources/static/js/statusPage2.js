@@ -16,7 +16,14 @@ function updateGraph(data) {
         let span = progressCircle.querySelector('span');
         let valueBar = progressCircle.querySelector('.value-bar');
 
-        let currentTime = new Date(); //현재시간
+//현재시간
+        let currentTime = new Date();
+         currentTime.setFullYear(2023);
+         currentTime.setMonth(5); // 월은 0부터 시작하므로 5는 6월을 의미합니다.
+         currentTime.setDate(2);
+         currentTime.setHours(10);
+         currentTime.setMinutes(35);
+
 
         //시작시간이 없을 때, 시작시간이 현재시간보다 미래일때
         if (startTime === null || startTime>currentTime) {

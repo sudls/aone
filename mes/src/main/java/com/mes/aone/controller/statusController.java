@@ -1,17 +1,20 @@
 package com.mes.aone.controller;
 
+import com.mes.aone.dto.ProcessPlanDTO;
 import com.mes.aone.entity.ProcessPlan;
 import com.mes.aone.repository.ProcessPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class statusController {
@@ -76,5 +79,36 @@ public class statusController {
         model.addAttribute("processStageNumbers", processStageNumbers);
 
         return"pages/statusPage";
+    }
+
+//    @GetMapping(value = "/status/facility-info")
+//    public @ResponseBody List<ProcessPlan> getCurrentProcessPlans (){
+//        LocalDateTime currentTime = LocalDateTime.now();
+//        List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
+//
+//
+//        System.out.println("result임당 : " + currentPlans);
+//        return currentPlans;
+//    }
+
+
+    @GetMapping(value = "/status/facility-info")
+    public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
+//        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.of(2023,6,2,10,35);
+        List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
+        List<ProcessPlanDTO> result = new ArrayList<>();
+
+        //LocalDateTime startTime, LocalDateTime endTime, String facilityId, String productName, Long workOrderId
+        for (ProcessPlan plan : currentPlans) {
+            if(plan.getFacilityId()!=null){
+                result.add(new ProcessPlanDTO(plan.getStartTime(), plan.getEndTime(), plan.getFacilityId().getFacilityId(),
+                        plan.getWorkOrder().getSalesOrder().getProductName(), plan.getWorkOrder().getWorkOrderId()));
+            }
+
+        }
+
+        System.out.println("result임당 : " + result);
+        return result;
     }
 }

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+
     var calendarEl = document.getElementById("calendar");
 
     var request = $.ajax({
@@ -9,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: "dayGridMonth",
+      eventClick: function(info) {
+          info.jsEvent.preventDefault(); // 기본 동작 중지
+
+        },
        // Add the onSelect event handler
       dateClick: function(info) {
           document.getElementById('selectedDate').textContent = info.dateStr;

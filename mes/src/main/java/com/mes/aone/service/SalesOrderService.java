@@ -283,6 +283,7 @@ public class SalesOrderService {
             Map<String, Object> eventData = new HashMap<>();
 
             eventData.put("start", salesOrder.getSalesDate());
+//            eventData.put("start", salesOrder.getSalesDate().toLocalDate());
             eventData.put("title",salesOrder.getSalesOrderId() +"_" + salesOrder.getProductName());
             //eventData.put("end", salesOrder.getSalesDate());
 
