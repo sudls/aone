@@ -5,6 +5,7 @@ import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -12,12 +13,12 @@ import java.util.List;
 
 
 @Repository
-public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
+public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long>, QuerydslPredicateExecutor<WorkOrder> {
 
     //작업지시 조회
     @Query("SELECT NEW com.mes.aone.dto.WorkOrderDTO(w.workOrderId, w.workOrderDate, w.workOrderQty, w.workStatus, s.productName) " +
             "FROM WorkOrder w " +
-            "JOIN w.salesOrder s " )    // + "ORDER BY w.workOrderId DESC"
+            "JOIN w.salesOrder s " + "ORDER BY w.workOrderId DESC")
     List<WorkOrderDTO> findWorkOrderDetails();
 
 

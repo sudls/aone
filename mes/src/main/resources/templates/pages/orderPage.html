@@ -30,7 +30,7 @@
 
     <hr>
     <form id="searchForm" method="get" action="/order/search">
-        <select name="searchProduct" id="productname">
+        <select name="productName" id="productname">
             <option disabled selected>제품명</option>
             <option value="양배추즙">양배추즙</option>
             <option value="흑마늘즙">흑마늘즙</option>
@@ -38,7 +38,7 @@
             <option value="매실젤리스틱">매실젤리스틱</option>
         </select>
 
-        <select name="searchVendor" id="vendor">
+        <select name="vendorId" id="vendor">
             <option disabled selected>거래처</option>
             <option value="ven-cou">쿠팡</option>
             <option value="ven-11">11번가</option>
@@ -50,7 +50,7 @@
             <input type="date" id="endDate" name="endDate">
         </div>
 
-        <select name="searchState" id="state">
+        <select name="salesStatus" id="state">
             <option disabled selected>주문상태</option>
             <option value="A">대기</option>
             <option value="B">확정</option>

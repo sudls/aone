@@ -22,31 +22,31 @@
 
     <hr>
     <div style="margin-bottom: 20px;">
-        <form action="">
-            <input type="text" placeholder="수주 ID">
-            <select name="" id="option1">
+        <form action="/shipping/search">
+            <input name="salesOrderId" type="text" placeholder="수주 ID">
+            <select name="vendorId" id="option1">
                 <option disabled selected>거래처</option>
-                <option value="">11번가</option>
-                <option value="">쿠팡</option>
+                <option value="ven-11">11번가</option>
+                <option value="ven-cou">쿠팡</option>
             </select>
-            <select name="" id="option2">
+            <select name="shipmentProduct" id="option2">
                 <option disabled selected>제품명</option>
-                <option value="">양배추즙</option>
-                <option value="">흑마늘즙</option>
-                <option value="">석류젤리스틱</option>
-                <option value="">매실젤리스틱</option>
+                <option value="양배추즙">양배추즙</option>
+                <option value="흑마늘즙">흑마늘즙</option>
+                <option value="석류젤리스틱">석류젤리스틱</option>
+                <option value="매실젤리스틱">매실젤리스틱</option>
             </select>
 
             <div class="periodBox">
-                <input type="date" id="startDate">
+                <input type="date" id="startDate" name="startDate">
                 <span>~</span>
-                <input type="date" id="endDate">
+                <input type="date" id="endDate" name="endDate">
             </div>
 
-            <select name="" id="option3">
+            <select name="shipmentState" id="option3">
                 <option disabled selected>출하상태</option>
-                <option value="">대기</option>
-                <option value="">완료</option>
+                <option value="A">대기</option>
+                <option value="B">완료</option>
             </select>
 
             <button type="submit">검색</button>

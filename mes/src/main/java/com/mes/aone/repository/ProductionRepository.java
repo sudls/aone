@@ -14,7 +14,7 @@ public interface ProductionRepository extends JpaRepository<Production, Long>, Q
 
     //생산현황조회
     @Query("SELECT New com.mes.aone.dto.ProductionDTO(p.productionName, p.productionQty, pp.processStage, pp.endTime, p.lotNumber)"+
-    "FROM Production p JOIN p.processPlan pp")
+    "FROM Production p JOIN p.processPlan pp" + " ORDER BY p.productionId DESC")
     List<ProductionDTO> findProductionDetials();
 
 

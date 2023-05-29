@@ -38,24 +38,24 @@
         </thead>
 
         <tbody>
-<!--        <tr th:each="workResult : ${workResults}">-->
-<!--            <td th:text="${workResult.workOrderId}"></td>-->
-<!--            <td th:text="${workResult.productName}"></td>-->
-<!--            <td th:text="${workResult.workFinishQty}"></td>-->
-<!--            <td>box</td>-->
-<!--            <td th:text="${#dates.format(workResult.workFinishDate,'yy/MM/dd')}"></td>-->
+        <tr th:each="workResult : ${workResults}">
+            <td th:text="${workResult.workOrderId}"></td>
+            <td th:text="${workResult.productName}"></td>
+            <td th:text="${workResult.workFinishQty}"></td>
+            <td>box</td>
+            <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>
 
-<!--        </tr>-->
+        </tr>
 
 
-    <tr th:each="workResult : ${workResults}">
-        <td th:text="${workResult.workOrder.workOrderId}"></td>
-        <td th:text="${workResult.workOrder.salesOrder.productName}"></td>
-        <td th:text="${workResult.workFinishQty}"></td>
-        <td>box</td>
-        <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>
+<!--    <tr th:each="workResult : ${workResults}">-->
+<!--        <td th:text="${workResult.workOrder.workOrderId}"></td>-->
+<!--        <td th:text="${workResult.workOrder.salesOrder.productName}"></td>-->
+<!--        <td th:text="${workResult.workFinishQty}"></td>-->
+<!--        <td>box</td>-->
+<!--        <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>-->
 
-    </tr>
+<!--    </tr>-->
 
         </tbody>
     </table>
