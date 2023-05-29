@@ -24,7 +24,7 @@
 
 :root{
 --fc-today-bg-color: rgba(253, 200, 39,0.2);
---fc-event-bg-color: var(--yellow);
+--fc-event-bg-color: transparent;
 --fc-event-border-color:rgba(0, 0, 0,0);
 --fc-event-text-color:var(--darkgreen);
 

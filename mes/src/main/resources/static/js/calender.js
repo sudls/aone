@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         method:"GET"
     });
     request.done(function(data){
+        console.log(JSON.stringify(data,null,2))
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: "dayGridMonth",
@@ -36,7 +37,19 @@ document.addEventListener("DOMContentLoaded", function () {
               }
           });
       },
-      events: data
+      eventContent: function(arg) {
+        var textColor = (arg.event.extendedProps.status === 'A') ? '#04ba71' : '#3196e2';
+
+          var content = document.createElement('div');
+          content.style.backgroundColor = ""; //배경 투명
+          content.style.color = textColor;
+          content.style.textAlign = "left";
+          content.style.border="none";
+          content.innerHTML ='<i class="fa-solid fa-circle fa-2xs"></i>　' + arg.event.title;
+
+          return { domNodes: [content] };
+        },
+      events: data,
     });
     calendar.render();
 

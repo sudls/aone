@@ -1,13 +1,9 @@
 package com.mes.aone.controller;
-import java.sql.Timestamp;
-import com.mes.aone.dto.WorkOrderDTO;
 import com.mes.aone.entity.ProcessPlan;
-import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.ProcessPlanRepository;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.service.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +23,6 @@ public class mainController {
 
     private final SalesOrderRepository salesOrderRepository;
     private final ProcessPlanRepository processPlanRepository;
-
-
     private final SalesOrderService salesOrderService;
 
     @Autowired
@@ -41,16 +35,12 @@ public class mainController {
     @GetMapping(value="/")
     public String mainPage(Model model){
 
-
-
-
         return"index";
     }
 
     @GetMapping(value ="/getEvent")
     public @ResponseBody List<Map<String, Object>> getSalesOrderInfo(){
-//        List<SalesOrder> salesOrderList = salesOrderRepository.findAll();
-//        return salesOrderList;
+
         return salesOrderService.getEventList();
     }
 
@@ -63,10 +53,11 @@ public class mainController {
         }
 
 
-        //LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.now();
+        currentTime  = currentTime.plusDays(4); //지워야함
+        System.out.println("currentTime="+currentTime);
 
-        LocalDateTime currentTime = LocalDateTime.of(2023,6,6,9,10);
-         List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate(currentTime,selectDateTime);
+        List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate(currentTime,selectDateTime);
 
         System.out.println("here" + processPlanList);
         model.addAttribute("processPlanList", processPlanList);
@@ -79,6 +70,9 @@ public class mainController {
             switch (processStage) {
                 case "원료계량":
                     stageNum=1;
+                    if(processPlan.getStartTime().isAfter(currentTime)){
+                        stageNum=0;
+                    }
                     break;
                 case "전처리" :
                     stageNum=2;
@@ -98,14 +92,11 @@ public class mainController {
                         stageNum=7;
                     }
                     break;
-                default:
-                    stageNum = 0; // 다른 값일 경우 0으로 처리
-                    break;
             }
 
             processStageNumbers.add(stageNum);
         }
-        System.out.println(processStageNumbers);
+//        System.out.println(processStageNumbers);
 
         model.addAttribute("processStageNumbers", processStageNumbers);
 

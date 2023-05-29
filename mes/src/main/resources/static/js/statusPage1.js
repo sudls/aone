@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
   // AJAX 호출 코드 작성
   $.ajax({
@@ -86,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         }
         console.log(d.facilityId);
+        calGraph();
     }
 
 

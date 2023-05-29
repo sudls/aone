@@ -57,6 +57,7 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, Long> {
     // 기간 검색
     List<SalesOrder> findBySalesDateBetween(LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
-
+    //상태가 취소가 아닌것 검색
+    List<SalesOrder> findBySalesStatusNot(Status salesStatus);
 
 }

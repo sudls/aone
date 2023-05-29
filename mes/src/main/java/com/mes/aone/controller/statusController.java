@@ -31,12 +31,8 @@ public class statusController {
     //현황 관리 페이지
     @GetMapping(value="/status")
     public String statusPage(Model model){
-//        List<ProcessPlan> productPlanList = processPlanRepository.findAll();
-//        LocalDateTime currentTime = LocalDateTime.now();
-
-//        LocalDateTime currentTime = LocalDateTime.now();
-
-        LocalDateTime currentTime = LocalDateTime.of(2023,6,2,10,35);
+        LocalDateTime currentTime = LocalDateTime.now();
+        currentTime  = currentTime.plusDays(4); //지워야함
 
         List<ProcessPlan> productPlanList =  processPlanRepository.findProcessPlansByTimeCondition(currentTime);
         System.out.println(productPlanList);
@@ -81,25 +77,15 @@ public class statusController {
         return"pages/statusPage";
     }
 
-//    @GetMapping(value = "/status/facility-info")
-//    public @ResponseBody List<ProcessPlan> getCurrentProcessPlans (){
-//        LocalDateTime currentTime = LocalDateTime.now();
-//        List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
-//
-//
-//        System.out.println("result임당 : " + currentPlans);
-//        return currentPlans;
-//    }
 
 
     @GetMapping(value = "/status/facility-info")
     public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
-//        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime currentTime = LocalDateTime.of(2023,6,2,10,35);
+        LocalDateTime currentTime = LocalDateTime.now();
+        currentTime  = currentTime.plusDays(4); //지워야함
         List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
         List<ProcessPlanDTO> result = new ArrayList<>();
 
-        //LocalDateTime startTime, LocalDateTime endTime, String facilityId, String productName, Long workOrderId
         for (ProcessPlan plan : currentPlans) {
             if(plan.getFacilityId()!=null){
                 result.add(new ProcessPlanDTO(plan.getStartTime(), plan.getEndTime(), plan.getFacilityId().getFacilityId(),
@@ -108,7 +94,6 @@ public class statusController {
 
         }
 
-        System.out.println("result임당 : " + result);
         return result;
     }
 }

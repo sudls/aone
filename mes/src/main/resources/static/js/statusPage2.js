@@ -18,11 +18,7 @@ function updateGraph(data) {
 
 //현재시간
         let currentTime = new Date();
-         currentTime.setFullYear(2023);
-         currentTime.setMonth(5); // 월은 0부터 시작하므로 5는 6월을 의미합니다.
-         currentTime.setDate(2);
-         currentTime.setHours(10);
-         currentTime.setMinutes(35);
+        currentTime.setDate(currentTime.getDate() + 4); //지워야함(임시로 확인)
 
 
         //시작시간이 없을 때, 시작시간이 현재시간보다 미래일때
@@ -82,8 +78,7 @@ function updateGraph(data) {
 }
 
 
-window.onload = function() {
-
+function calGraph() {
     let data = [];
 
     for (let i = 1; i <= 10; i++) {
@@ -133,8 +128,7 @@ window.onload = function() {
 
 
     }
-    console.log(data);
-
+    //console.log(data);
 
     updateGraph(data);
 
