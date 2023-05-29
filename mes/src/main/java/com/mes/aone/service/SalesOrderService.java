@@ -15,7 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +61,14 @@ public class SalesOrderService {
                 mesInfo.setProductName(salesOrder.getProductName()); //수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
+
+                mesInfo.setPastPreProcessingMachine(getProcessFinishTime("전처리"));
+                mesInfo.setPastExtractionMachine1(getFacilityFinishTime("extraction_1"));
+                mesInfo.setPastExtractionMachine2(getFacilityFinishTime("extraction_2"));
+                mesInfo.setPastFillingLiquidMachine(getFacilityFinishTime("pouch_1"));
+                mesInfo.setPastFillingJellyMachine(getFacilityFinishTime("liquid_stick_1"));
+                mesInfo.setPastExaminationMachine(getFacilityFinishTime("inspection"));
+                mesInfo.setPastPackagingTime(getProcessFinishTime("포장"));
 
                 // 예상납품일 계산기 실행
                 if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
@@ -275,6 +285,38 @@ public class SalesOrderService {
     // 수주 등록 시 작업 지시 테이블 인설트(대기상태)
     public void createWorkOrder(WorkOrder workOrder){
         workOrderRepository.save(workOrder);
+    }
+
+    // 공정별 마지막 공정시간
+    public LocalDateTime getProcessFinishTime(String processStage){
+        System.out.println(processStage);
+        List<ProcessPlan> processPlan = processPlanRepository.findProcessPlanByProcessStage(processStage);
+        System.out.println(processPlan);
+        LocalDateTime processEndTime;
+
+        if (processPlan == null){
+            processEndTime = LocalDateTime.of(1,1,1,1,1,1);
+        } else {
+            processEndTime = processPlan.get(0).getEndTime();
+        }
+        System.out.println(processStage + processEndTime);
+        return processEndTime;
+    }
+
+    // 설비별 마지막 공정시간
+    public LocalDateTime getFacilityFinishTime(String facilityId){
+        System.out.println(facilityId);
+        List<ProcessPlan> processPlan = processPlanRepository.findProcessPlanByFacilityId(facilityRepository.findByFacilityId(facilityId));
+        System.out.println(processPlan);
+        LocalDateTime facilityEndTime;
+
+        if (processPlan.isEmpty()){
+            facilityEndTime = LocalDateTime.of(1,1,1,1,1,1);
+        }else {
+            facilityEndTime = processPlan.get(0).getEndTime();
+        }
+        System.out.println(facilityId + facilityEndTime);
+        return facilityEndTime;
     }
 
 

@@ -473,7 +473,9 @@ public class Calculator {
 
         int workAmount = mesInfo.nowMeasurementOutput; // 작업량
         int output = 0; // 생산량
-
+        if (currentTime.isBefore(mesInfo.pastPreProcessingMachine)){
+            currentTime = mesInfo.pastPreProcessingMachine;
+        }
         for (int i = 0; i < Math.ceil( workAmount / 1000.0); i++) { // 작업 반복횟수 만큼 실행 ex) 2500kg 이면 3번 반복
             currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
             currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadPreProcessing), currentTime); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
