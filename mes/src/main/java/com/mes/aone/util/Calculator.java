@@ -473,7 +473,9 @@ public class Calculator {
 
         int workAmount = mesInfo.nowMeasurementOutput; // 작업량
         int output = 0; // 생산량
-
+        if (currentTime.isBefore(mesInfo.pastPreProcessingMachine)){
+            currentTime = mesInfo.pastPreProcessingMachine;
+        }
         for (int i = 0; i < Math.ceil( workAmount / 1000.0); i++) { // 작업 반복횟수 만큼 실행 ex) 2500kg 이면 3번 반복
             currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
             currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadPreProcessing), currentTime); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
@@ -794,6 +796,7 @@ public class Calculator {
         int addMinutes = 0;
 
         for (int i=0; i<coolingTimeList.size(); i++){ // 냉각 공정 수 만큼 반복
+//            currentTime = coolingTimeList.get(i);
             currentTime = coolingTimeList.get(i);
             workAmount = coolingOutputList.get(i); // i번째 냉각 생산량 (포)
             box = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙") ? workAmount/30 : workAmount/25 ); // 박스 생산량

@@ -16,4 +16,6 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long>, Query
     @Query("SELECT NEW com.mes.aone.dto.ShipmentDTO(sh.salesOrder.salesOrderId, sh.salesOrder.vendorId, sh.shipmentProduct, sh.shipmentQty, sh.shipmentDate, sh.shipmentState )"+
     "FROM Shipment sh JOIN sh.salesOrder s" + " ORDER BY sh.salesOrder.salesOrderId DESC")
     List<ShipmentDTO> findShipmentDetails();
+
+
 }
