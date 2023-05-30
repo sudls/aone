@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 break;
 
         }
-        console.log(d.facilityId);
+        // console.log(d.facilityId);
     }
         calGraph();
     }
