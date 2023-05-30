@@ -2,7 +2,6 @@ package com.mes.aone.controller;
 
 import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
-import com.mes.aone.dto.SalesOrderDTO;
 import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
@@ -34,13 +33,53 @@ public class orderController {
     private final SalesOrderRepository salesOrderRepository;
 
     //기본 조회 리스트
+//    @GetMapping(value="/order")
+//    public String orderPage(Model model){
+//
+//        List<SalesOrder> salesOrderList = salesOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "salesOrderId"));       // 내림차순
+//        model.addAttribute("orderDTOList",salesOrderList);
+////        model.addAttribute("orderDTO", new OrderDTO());
+////        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
+//        return"pages/orderPage";
+//    }
+//
+//
+//    //조건 검색
+//    @GetMapping(value="/order/search")
+//    public String orderPage(
+//            @RequestParam(value = "searchProduct", required = false) String productName,
+//            @RequestParam(value = "searchVendor", required = false) String vendorId,
+//            @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+//            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+//            @RequestParam(value = "searchState", required = false) Status salesStatus,
+//            Model model){
+//        // 날짜 변환
+//        LocalDateTime startDateTime = null;
+//        LocalDateTime endDateTime = null;
+//        if(startDate != null && endDate != null){
+//            startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
+//            endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
+//        }
+//
+//        // 검색결과
+//        List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(productName, vendorId, startDateTime, endDateTime, salesStatus);
+//        List<SalesOrderDTO> salesOrderDTOList = SalesOrderDTO.of(salesOrderList);
+//
+//        model.addAttribute("orderDTOList", salesOrderDTOList);
+////        model.addAttribute("orderDTO", new OrderDTO());
+////        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
+//        return "pages/orderPage";
+//    }
+//
+
+    //기본 조회 리스트
     @GetMapping(value="/order")
     public String orderPage(Model model){
 
         List<SalesOrder> salesOrderList = salesOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "salesOrderId"));       // 내림차순
         model.addAttribute("orderDTOList",salesOrderList);
-//        model.addAttribute("orderDTO", new OrderDTO());
-//        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
+        model.addAttribute("orderDTO", new OrderDTO());
+        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
         return"pages/orderPage";
     }
 
@@ -48,12 +87,13 @@ public class orderController {
     //조건 검색
     @GetMapping(value="/order/search")
     public String orderPage(
-            @RequestParam(value = "searchProduct", required = false) String productName,
-            @RequestParam(value = "searchVendor", required = false) String vendorId,
+            @RequestParam(value = "searchProduct", required = false) String searchProduct,
+            @RequestParam(value = "searchVendor", required = false) String searchVendor,
+            @RequestParam(value = "searchState", required = false) Status searchState,
             @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-            @RequestParam(value = "searchState", required = false) Status salesStatus,
             Model model){
+
         // 날짜 변환
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
@@ -62,16 +102,19 @@ public class orderController {
             endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
         }
 
-        // 검색결과
-        List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(productName, vendorId, startDateTime, endDateTime, salesStatus);
-        List<SalesOrderDTO> salesOrderDTOList = SalesOrderDTO.of(salesOrderList);
+        // 정렬 설정
+        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
 
-        model.addAttribute("orderDTOList", salesOrderDTOList);
-//        model.addAttribute("orderDTO", new OrderDTO());
-//        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
+        // 검색결과
+        List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(searchProduct, searchVendor, searchState, startDateTime, endDateTime, sort);
+
+
+        model.addAttribute("orderDTOList", salesOrderList);
+        model.addAttribute("orderDTO", new OrderDTO());
+        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
+
         return "pages/orderPage";
     }
-
 
 
 

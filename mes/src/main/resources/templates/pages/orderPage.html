@@ -8,9 +8,9 @@
     <link th:href="@{/css/orderPageStyle.css}" rel="stylesheet">
     <script th:src="@{/js/orderPage.js}" defer></script>
 
-    </head>
-    <body>
-    <div th:replace="fragments/nav::nav"></div>
+</head>
+<body>
+<div th:replace="fragments/nav::nav"></div>
 
 
 <div layout:fragment="content" id="contentStyle">
@@ -19,18 +19,18 @@
 
         <div class="btn-box">
             <button class="bg-green" id="btnAdd">등록</button>
-<!--            <button class="bg-blue" id="btnConfirm">확정</button>-->
+            <!--            <button class="bg-blue" id="btnConfirm">확정</button>-->
             <button class="bg-red" id="btnCancel">취소</button>
             <button class="bg-excel" onclick="downloadTablesAsExcel()">
                 Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
             </button>
-<!--            <button class="bg-red" id="btnDel">삭제</button>-->
+            <!--            <button class="bg-red" id="btnDel">삭제</button>-->
         </div>
     </div>
 
     <hr>
     <form id="searchForm" method="get" action="/order/search">
-        <select name="productName" id="productname">
+        <select name="searchProduct" id="productname">
             <option disabled selected>제품명</option>
             <option value="양배추즙">양배추즙</option>
             <option value="흑마늘즙">흑마늘즙</option>
@@ -38,7 +38,7 @@
             <option value="매실젤리스틱">매실젤리스틱</option>
         </select>
 
-        <select name="vendorId" id="vendor">
+        <select name="searchVendor" id="vendor">
             <option disabled selected>거래처</option>
             <option value="ven-cou">쿠팡</option>
             <option value="ven-11">11번가</option>
@@ -50,7 +50,7 @@
             <input type="date" id="endDate" name="endDate">
         </div>
 
-        <select name="salesStatus" id="state">
+        <select name="searchState" id="state">
             <option disabled selected>주문상태</option>
             <option value="A">대기</option>
             <option value="B">확정</option>
@@ -59,57 +59,57 @@
         <button>검색</button>
     </form>
 
-      <hr>
-<!--        <button class="bg-green" style="float: right; margin: 20px 0;"-->
-<!--                onclick="downloadTablesAsExcel()">Excel다운로드</button>-->
+    <hr>
+    <!--        <button class="bg-green" style="float: right; margin: 20px 0;"-->
+    <!--                onclick="downloadTablesAsExcel()">Excel다운로드</button>-->
 
-        <div class="table-container" style="height: 800px">
-            <table>
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>수주번호</th>
-                    <th>제품명</th>
-                    <th>거래처</th>
-                    <th>수량(box)</th>
-                    <th>수주일</th>
-                    <th>예상 납품일</th>
-                    <th>수주상태</th>
-                    <th>확정</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="orderDTO, status: ${orderDTOList}">
-                    <td>
-                        <input th:if="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" >
-                        <input th:unless="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" disabled>
-                    </td>
-                    <td th:text="${orderDTO.salesOrderId}"></td>
-                    <td th:text="${orderDTO.productName}"></td>
-                    <td>
-                        <span th:if="${orderDTO.vendorId == 'ven-11'}">11번가</span>
-                        <span th:if="${orderDTO.vendorId == 'ven-cou'}">쿠팡</span>
-                        <span th:if="${orderDTO.vendorId == 'ven-a'}">에이농장</span>
-                        <span th:if="${orderDTO.vendorId == 'ven-nh'}">○○농협</span>
-                        <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
-                    </td>
-                    <td th:text="${orderDTO.salesQty}"></td>
+    <div class="table-container" style="height: 800px">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>수주번호</th>
+                <th>제품명</th>
+                <th>거래처</th>
+                <th>수량(box)</th>
+                <th>수주일</th>
+                <th>예상 납품일</th>
+                <th>수주상태</th>
+                <th>확정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderDTO, status: ${orderDTOList}">
+                <td>
+                    <input th:if="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" >
+                    <input th:unless="${orderDTO.salesStatus.name() == 'A'}" type="checkbox" disabled>
+                </td>
+                <td th:text="${orderDTO.salesOrderId}"></td>
+                <td th:text="${orderDTO.productName}"></td>
+                <td>
+                    <span th:if="${orderDTO.vendorId == 'ven-11'}">11번가</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-cou'}">쿠팡</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-a'}">에이농장</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-nh'}">○○농협</span>
+                    <span th:if="${orderDTO.vendorId == 'ven-po'}">○○포장</span>
+                </td>
+                <td th:text="${orderDTO.salesQty}"></td>
 
-                    <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
-                    <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
+                <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
+                <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
 
 
 
-                    <td >
-                        <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
-                        <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
-                        <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff6b6c">취소</span>
-                    </td>
+                <td >
+                    <span th:if="${orderDTO.salesStatus.name() == 'A'}" style="color: #04ba71">대기</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'B'}" style="color: #3196e2">확정</span>
+                    <span th:if="${orderDTO.salesStatus.name() == 'C'}" style="color: #ff6b6c">취소</span>
+                </td>
 
-                    <td>
-                        <button th:if="${orderDTO.salesStatus.name() == 'A'}" class="bg-blue btnConfirm" th:id="${orderDTO.salesOrderId}" >확정</button>
-                        <button th:unless="${orderDTO.salesStatus.name() == 'A'}" class="bg-blue btnConfirm" th:id="${orderDTO.salesOrderId}" disabled >확정</button>
-                    </td>
+                <td>
+                    <button th:if="${orderDTO.salesStatus.name() == 'A'}" class="bg-blue btnConfirm" th:id="${orderDTO.salesOrderId}" >확정</button>
+                    <button th:unless="${orderDTO.salesStatus.name() == 'A'}" class="bg-blue btnConfirm" th:id="${orderDTO.salesOrderId}" disabled >확정</button>
+                </td>
 
             </tr>
 
