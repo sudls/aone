@@ -18,7 +18,7 @@ public class PurchaseOrderDTO {
     private LocalDateTime purchaseDate;              // 발주일
     private String vendorId;                // 거래처 id
 //    private Vendor vendorId;                // 거래처 id
-    // private Date estArrival;             // 예상도착일
+     private Date estArrival;             // 예상도착일
 
 
 //    private static ModelMapper modelMapper = new ModelMapper();

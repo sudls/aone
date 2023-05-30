@@ -140,9 +140,9 @@ public class MESInfo {
    List<Integer> nowPreProcessingOutput = new ArrayList<>(); // 전처리 생산량
    List<Integer> nowExtractionOutput = new ArrayList<>(); // 추출 생산량
    List<Integer> nowFillingOutput = new ArrayList<>(); // 충진 생산량
-   List<Integer> nowExaminationOutput = new ArrayList<>(); // 충진 생산량
-   List<Integer> nowCoolingOutput = new ArrayList<>(); // 충진 생산량
-   List<Integer> nowPackagingOutput = new ArrayList<>(); // 충진 생산량
+   List<Integer> nowExaminationOutput = new ArrayList<>(); // 검사 생산량
+   List<Integer> nowCoolingOutput = new ArrayList<>(); // 식힘 생산량
+   List<Integer> nowPackagingOutput = new ArrayList<>(); // 포장 생산량
 
 
    //추출혼합 작업 완료량
@@ -157,6 +157,22 @@ public class MESInfo {
    long packagingEaOutput = 0;           // 포장 후 남은 낱개
 
    LocalDateTime estDelivery = null; // 예상 납품일
+
+
+/* Map<String, LocalDateTime> outputAndTimeMap = null;
+ Map<String, Integer> outputMap = null;*/
+
+ // 출고량(필요한 원자재량)
+ int requiredCabbage = 0; // 양배추즙
+ int requiredGarlic = 0; // 흑마늘즙
+ int requiredPomegranate = 0; // 석류젤리스틱
+ int requiredPlum = 0; // 매실젤리스틱
+ int requiredCollagen = 0; // 콜라겐
+ int requiredBox = 0; // 박스
+ int requiredPouch = 0; // 파우치(즙)
+ int requiredStickPouch = 0; // 파우치(스틱)
+
+ Map<String, Integer> requiredMaterial = null;
 
 
 

@@ -41,9 +41,14 @@ public class Calculator {
                 System.out.println("만들어야 할 양배추즙 : " + requiredProduct + " 박스");
 
                 mesInfo.setCabbage((int) (Math.ceil((double) (requiredProduct * 30 / 20) / 1000) * 1000));        // 양배추 주문량
+                mesInfo.setRequiredCabbage(mesInfo.getCabbage());
+                mesInfo.requiredMaterial.put("양배추", mesInfo.getCabbage());
                 System.out.println("양배추 주문 수: " + mesInfo.getCabbage() + "kg");
 
                 requiredBox = (int) (Math.ceil((double) (mesInfo.cabbage * 20 / 30)));      // 필요한 박스량
+                mesInfo.setRequiredBox(requiredBox);
+                mesInfo.requiredMaterial.put("박스", requiredBox);
+
                 System.out.println("필요 박스 수: " + requiredBox + " 박스");
                 if (mesInfo.stockBox < requiredBox) {          // 창고 박스 재고량이 필요 박스보다 작을때
                     requiredBox = requiredBox - mesInfo.stockBox;
@@ -60,6 +65,9 @@ public class Calculator {
 
 
                 requiredPouch = (int) (Math.ceil((double) (mesInfo.cabbage * 20)));      // 필요한 파우치 수
+                mesInfo.setRequiredPouch(requiredPouch);
+                mesInfo.requiredMaterial.put("파우치", requiredPouch);
+
                 System.out.println("필요 파우치 수: " + requiredPouch + "ea");
                 if (mesInfo.stockPouch < requiredPouch) {          // 창고재고량이 필요량보다 작을때
                     requiredPouch = requiredPouch - mesInfo.stockPouch;      // 주문파우치 = 필요 파우치- 창고 파우치
@@ -103,9 +111,14 @@ public class Calculator {
                 System.out.println("만들어야 할 흑마늘즙: " + requiredProduct + " 박스");
 
                 mesInfo.setGarlic((int) Math.ceil((double) (requiredProduct * 30 / 120) / 10) * 10);  // 흑마늘 주문량
+                mesInfo.setRequiredGarlic(mesInfo.getGarlic());
+                mesInfo.requiredMaterial.put("흑마늘", mesInfo.getGarlic());
                 System.out.println("흑마늘 주문 수: " + mesInfo.getGarlic() + "kg");
 
                 requiredBox = (int) (Math.ceil((double) (mesInfo.garlic * 120 / 30)));      // 필요한 박스량
+                mesInfo.setRequiredBox(requiredBox);
+                mesInfo.requiredMaterial.put("박스", requiredBox);
+
                 System.out.println("필요 박스 수: " + requiredBox + " 박스");
                 if (mesInfo.stockBox < requiredBox) {          // 창고 박스 재고량이 필요 박스보다 작을때
                     requiredBox = requiredBox - mesInfo.getStockBox();              // 필요박스 = 필요박스 - 창고박스
@@ -123,6 +136,9 @@ public class Calculator {
 
 
                 requiredPouch = (int) (Math.ceil((double) (mesInfo.garlic * 120)));      // 필요한 파우치 수
+                mesInfo.setRequiredPouch(requiredPouch);
+                mesInfo.requiredMaterial.put("파우치", requiredPouch);
+
                 System.out.println("필요 파우치 수: " + requiredPouch + "ea");
                 if (mesInfo.stockPouch < requiredPouch) {          // 창고재고량이 필요량보다 작을때
                     requiredPouch = requiredPouch - mesInfo.stockPouch;       // 주문파우치 = 필요 파우치 - 창고 파우치
@@ -165,9 +181,13 @@ public class Calculator {
 
                 // 석류 농축액 주문량
                 mesInfo.setPomegranate((int) Math.ceil((double) (requiredProduct * 25 / 200) / 5) * 5);   // 석류 주문량
+                mesInfo.setRequiredPomegranate(mesInfo.getPomegranate());
+                mesInfo.requiredMaterial.put("석류농축액", mesInfo.getPomegranate());
                 System.out.println("석류농축액 주문 수: " + mesInfo.getPomegranate() + "kg");
                 // 콜라겐 주문량
-                requiredCollagen = (int) (Math.ceil((double) (mesInfo.pomegranate * 2 / 5)));      // 필요한 박스량
+                requiredCollagen = (int) (Math.ceil((double) (mesInfo.pomegranate * 2 / 5)));      // 필요한 콜라겐량
+                mesInfo.setRequiredCollagen(requiredCollagen);
+                mesInfo.requiredMaterial.put("콜라겐", requiredCollagen);
                 System.out.println("필요 콜라겐 수: " + requiredCollagen + "kg");
                 if (mesInfo.stockCollagen < requiredCollagen) {          // 창고 박스 재고량이 필요 박스보다 작을때
                     requiredCollagen = requiredCollagen - mesInfo.getStockCollagen();              // 필요박스 = 필요박스 - 창고박스
@@ -184,6 +204,8 @@ public class Calculator {
                 }
                 // 박스 주문량
                 requiredBox = (int) (Math.ceil((double) (mesInfo.pomegranate * 200 / 25)));      // 필요한 박스량
+                mesInfo.setRequiredBox(requiredBox);
+                mesInfo.requiredMaterial.put("박스", requiredBox);
                 System.out.println("필요 박스 수: " + requiredBox + " 박스");
                 if (mesInfo.stockBox < requiredBox) {          // 창고 박스 재고량이 필요 박스보다 작을때
                     requiredBox = requiredBox - mesInfo.getStockBox();              // 필요박스 = 필요박스 - 창고박스
@@ -200,6 +222,8 @@ public class Calculator {
                 }
                 // 파우치 주문량
                 requiredStickPouch = (int) (Math.ceil((double) (mesInfo.pomegranate * 200)));      // 필요한 파우치스틱 수
+                mesInfo.setRequiredStickPouch(requiredStickPouch);
+                mesInfo.requiredMaterial.put("스틱파우치", requiredStickPouch);
                 System.out.println("필요 스틱파우치 수: " + requiredStickPouch + "ea");
                 if (mesInfo.stockStickPouch < requiredStickPouch) {          // 창고재고량이 필요량보다 작을때
                     requiredStickPouch = requiredStickPouch - mesInfo.stockStickPouch;       // 주문파우치스틱 = 필요 파우치 - 창고 파우치
@@ -230,7 +254,7 @@ public class Calculator {
                 System.out.println("석류농축액: " + mesInfo.pomegranate + " 콜라겐: " + mesInfo.collagen + " 박스: " + mesInfo.box + " 스틱파우치: " + mesInfo.stickPouch);
             }
         } else {
-                requiredPlum = mesInfo.salesQty;
+            requiredPlum = mesInfo.salesQty;
             if (mesInfo.plumPackaging >= requiredPlum) {            // 재고량 > 주문량
                 mesInfo.setShipmentBox(requiredPlum);                // 출하량
                 mesInfo.setPlumPackaging(mesInfo.plumPackaging - requiredPlum);        // 창고 재고 뺴기
@@ -241,9 +265,13 @@ public class Calculator {
                 System.out.println("주문할 원재고 수: " + requiredProduct + " 박스");
                 // 매실 액기스 주문량
                 mesInfo.setPlum((int) Math.ceil( (double) (requiredProduct * 25/200) / 5 ) * 5);
+                mesInfo.setRequiredPlum(mesInfo.getPlum());
+                mesInfo.requiredMaterial.put("매실농축액", mesInfo.getPlum());
                 System.out.println("매실농축액 주문 수: " + mesInfo.getPlum() + "kg");
                 // 콜라겐 주문량
                 requiredCollagen = (int) (Math.ceil((double) (mesInfo.plum * 2 / 5)));      // 필요한 콜라겐량
+                mesInfo.setRequiredCollagen(requiredCollagen);
+                mesInfo.requiredMaterial.put("콜라겐", requiredCollagen);
                 System.out.println("필요 콜라겐 수: " + requiredCollagen + "kg");
                 if(mesInfo.stockCollagen < requiredCollagen){          // 창고 콜라겐 재고량이 필요 콜라겐보다 작을때
                     requiredCollagen = requiredCollagen - mesInfo.getStockCollagen();              // 필요콜라겐 = 필요콜라겐 - 창고콜라겐
@@ -260,6 +288,8 @@ public class Calculator {
                 }
                 // 박스 주문량
                 requiredBox = (int) (Math.ceil((double) (mesInfo.plum * 200 / 25)));      // 필요한 박스량
+                mesInfo.setRequiredBox(requiredBox);
+                mesInfo.requiredMaterial.put("박스", requiredBox);
                 System.out.println("필요 박스 수: " + requiredBox + " 박스");
                 if(mesInfo.stockBox < requiredBox){          // 창고 박스 재고량이 필요 박스보다 작을때
                     requiredBox = requiredBox - mesInfo.getStockBox();              // 필요박스 = 필요박스 - 창고박스
@@ -277,6 +307,8 @@ public class Calculator {
 
                 // 파우치 스틱 주문량
                 requiredStickPouch = (int) (Math.ceil((double) (mesInfo.plum * 200)));      // 필요한 파우치스틱 수
+                mesInfo.setRequiredStickPouch(requiredStickPouch);
+                mesInfo.requiredMaterial.put("스틱파우치", requiredStickPouch);
                 System.out.println("필요 스틱파우치 수: " + requiredStickPouch + "ea");
                 if(mesInfo.stockStickPouch < requiredStickPouch){          // 창고재고량이 필요량보다 작을때
                     requiredStickPouch = requiredStickPouch - mesInfo.stockStickPouch;       // 주문파우치스틱 = 필요 파우치 - 창고 파우치
@@ -306,12 +338,12 @@ public class Calculator {
 
                 System.out.println("매실농축액: " + mesInfo.plum + " 콜라겐: " + mesInfo.collagen + " 박스: " + mesInfo.box + " 스틱파우치: " + mesInfo.stickPouch);
             }
-         }
+        }
         return "";
     }
 
 
-    public  void materialArrived() { // 발주 원자재 도착 시간
+    public void materialArrived() { // 발주 원자재 도착 시간
         LocalDateTime salesDate = mesInfo.salesDay;        // 수주시간
         LocalDateTime stockOrderDate = null;                // 원자재 주문시간
         LocalDateTime stockInDate = null;                   // 창고 입고시간
@@ -319,11 +351,11 @@ public class Calculator {
         LocalDateTime latestStockInDate = null;            // 가장 마지막 도착일자
         Map<String, LocalDateTime> purchaseAndTime = new HashMap<>();       // 자재명, 도착일 세팅
 
-
         for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
             if (!(value == 0 || value == null)) {             // 주문할게 있으면
+                System.out.println("주문할게 있으면");
                 switch (key) {
                     case "양배추":
                     case "흑마늘":
@@ -339,65 +371,72 @@ public class Calculator {
                         break;
 
                 }
-            // 원자재 발주일, 발주자재, 발주량
-            if (salesDate.getDayOfWeek() == DayOfWeek.MONDAY || salesDate.getDayOfWeek() == DayOfWeek.TUESDAY ||                   // 수주일이 월, 화, 수, 목이면
-                    salesDate.getDayOfWeek() == DayOfWeek.WEDNESDAY || salesDate.getDayOfWeek() == DayOfWeek.THURSDAY) {
+                // 원자재 발주일, 발주자재, 발주량
+                if (salesDate.getDayOfWeek() == DayOfWeek.MONDAY || salesDate.getDayOfWeek() == DayOfWeek.TUESDAY ||                   // 수주일이 월, 화, 수, 목이면
+                        salesDate.getDayOfWeek() == DayOfWeek.WEDNESDAY || salesDate.getDayOfWeek() == DayOfWeek.THURSDAY) {
 
-                stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
-                mesInfo.setRowMaterialName(key);
-                mesInfo.setStockOrderDate(stockOrderDate);
-                mesInfo.setRowMaterialAmount(value);
+                    stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+                    mesInfo.setRowMaterialName(key);
+                    mesInfo.setStockOrderDate(stockOrderDate);
+                    mesInfo.setRowMaterialAmount(value);
 
-                System.out.println(
-                        "\n발주자재: " + key +
-                                "\n발주일: " + stockOrderDate +
-                                "\n발주량: " + value);
-            }else if(salesDate.getDayOfWeek()== DayOfWeek.FRIDAY){  // 수주일이 금요일이면 3일뒤 오전 9시 주문(월요일)      -> 주문시간 = 이틀뒤 오전 9시 주문(월요일)
+                    System.out.println(
+                            "\n발주자재: " + key +
+                                    "\n발주일: " + stockOrderDate +
+                                    "\n발주량: " + value);
+                }else if(salesDate.getDayOfWeek()== DayOfWeek.FRIDAY){  // 수주일이 금요일이면 3일뒤 오전 9시 주문(월요일)      -> 주문시간 = 이틀뒤 오전 9시 주문(월요일)
+                    System.out.println("주주일 금");
+                    stockOrderDate = salesDate.plusDays(3).withHour(9).withMinute(0).withSecond(0);
+                    mesInfo.setRowMaterialName(key);
+                    mesInfo.setStockOrderDate(stockOrderDate);
+                    mesInfo.setRowMaterialAmount(value);
+                    System.out.println(
+                            "\n발주자재: " + key +
+                                    "\n발주일: " + stockOrderDate +
+                                    "\n발주량: " + value);
+                } else { // 수주일이 주말일 때
+                    stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+                    mesInfo.setRowMaterialName(key);
+                    mesInfo.setStockOrderDate(stockOrderDate);
+                    mesInfo.setRowMaterialAmount(value);
+                    System.out.println(
+                            "\n발주자재: " + key +
+                                    "\n발주일: " + stockOrderDate +
+                                    "\n발주량: " + value);
+                }
+                // 원자재 입고일, 입고자재, 입고량, 원자재창고 자재량, 출고자재, 출고자재, 출고량,
+                // 주문 요일이 목,금요일이면 +2일(주말)
+                if (stockOrderDate.getDayOfWeek() == DayOfWeek.THURSDAY || stockOrderDate.getDayOfWeek() == DayOfWeek.FRIDAY) {
+                    stockOrderDate = stockOrderDate.plusDays(2);
+                    stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
+                } else {
+                    stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
+                }
+                // 입고 가능한 시간인지 확인하고, 월, 수, 금 오전 10시에 입고시간 설정
+                DayOfWeek dayOfWeek = stockInDate.getDayOfWeek();
+                if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.WEDNESDAY || dayOfWeek == DayOfWeek.FRIDAY) {
+                    stockInDate = stockInDate.withHour(10).withMinute(0).withSecond(0);
+                } else if (dayOfWeek == DayOfWeek.TUESDAY || dayOfWeek == DayOfWeek.THURSDAY) {
+                    stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
+                } else if (dayOfWeek == DayOfWeek.SATURDAY) {
+                    stockInDate = stockInDate.plusDays(2).withHour(10).withMinute(0).withSecond(0);
+                } else if (dayOfWeek == DayOfWeek.SUNDAY) {
+                    stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
+                }
 
-                stockOrderDate = salesDate.plusDays(3).withHour(9).withMinute(0).withSecond(0);
-                mesInfo.setRowMaterialName(key);
-                mesInfo.setStockOrderDate(stockOrderDate);
-                mesInfo.setRowMaterialAmount(value);
-                System.out.println(
-                        "\n발주자재: " + key +
-                        "\n발주일: " + stockOrderDate +
-                        "\n발주량: " + value);
-            }
+                mesInfo.setArrivalMaterial(stockInDate);      // 도착일
+                System.out.println("도착일: " + mesInfo.getArrivalMaterial());
+                System.out.println("자재명: " + mesInfo.getRowMaterialName());
+                System.out.println("수량: " + mesInfo.getRowMaterialAmount());
 
-            // 원자재 입고일, 입고자재, 입고량, 원자재창고 자재량, 출고자재, 출고자재, 출고량,
-            // 주문 요일이 목,금요일이면 +2일(주말)
-            if (stockOrderDate.getDayOfWeek() == DayOfWeek.THURSDAY || stockOrderDate.getDayOfWeek() == DayOfWeek.FRIDAY) {
-                stockOrderDate = stockOrderDate.plusDays(2);
-                stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
-            } else {
-                stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
-            }
+                // 자재명, 도착일 Map에 세팅
+                purchaseAndTime.put(mesInfo.getRowMaterialName(),  mesInfo.getArrivalMaterial());
+                mesInfo.setPurchaseAndTimeMap(purchaseAndTime);
 
-            // 입고 가능한 시간인지 확인하고, 월, 수, 금 오전 10시에 입고시간 설정
-            DayOfWeek dayOfWeek = stockInDate.getDayOfWeek();
-            if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.WEDNESDAY || dayOfWeek == DayOfWeek.FRIDAY) {
-                stockInDate = stockInDate.withHour(10).withMinute(0).withSecond(0);
-            } else if (dayOfWeek == DayOfWeek.TUESDAY || dayOfWeek == DayOfWeek.THURSDAY) {
-                stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
-            } else if (dayOfWeek == DayOfWeek.SATURDAY) {
-                stockInDate = stockInDate.plusDays(2).withHour(10).withMinute(0).withSecond(0);
-            } else if (dayOfWeek == DayOfWeek.SUNDAY) {
-                stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
-            }
-
-            mesInfo.setArrivalMaterial(stockInDate);      // 도착일
-            System.out.println("도착일: " + mesInfo.getArrivalMaterial());
-            System.out.println("자재명: " + mesInfo.getRowMaterialName());
-            System.out.println("수량: " + mesInfo.getRowMaterialAmount());
-
-            // 자재명, 도착일 Map에 세팅
-            purchaseAndTime.put(mesInfo.getRowMaterialName(),  mesInfo.getArrivalMaterial());
-            mesInfo.setPurchaseAndTimeMap(purchaseAndTime);
-
-            // 가장 마지막 도착일자인지 확인 후 업데이트
-            if (latestStockInDate == null || stockInDate.isAfter(latestStockInDate)) {
-                latestStockInDate = stockInDate;
-            }
+                // 가장 마지막 도착일자인지 확인 후 업데이트
+                if (latestStockInDate == null || stockInDate.isAfter(latestStockInDate)) {
+                    latestStockInDate = stockInDate;
+                }
             }
         }
 
@@ -429,6 +468,7 @@ public class Calculator {
 
 
     public void measurement() { // 원료계량
+        System.out.println("원료계량 도착시간 메서드 실행");
         System.out.println("수주일: " + mesInfo.salesDay);
         LocalDateTime currentTime = mesInfo.lastStockInDate; // 원료계량 시작시간
 
@@ -465,7 +505,9 @@ public class Calculator {
 
         int workAmount = mesInfo.nowMeasurementOutput; // 작업량
         int output = 0; // 생산량
-
+        if (currentTime.isBefore(mesInfo.pastPreProcessingMachine)){
+            currentTime = mesInfo.pastPreProcessingMachine;
+        }
         for (int i = 0; i < Math.ceil( workAmount / 1000.0); i++) { // 작업 반복횟수 만큼 실행 ex) 2500kg 이면 3번 반복
             currentTime = lunchAndLeaveTimeStartCheck(currentTime); // 작업 시작 시 비근무 시간 체크(작업 시작시간 리턴)
             currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadPreProcessing), currentTime); // 작업 완료 시 비근무 시간 체크(작업 시작시간 리턴)
@@ -793,7 +835,7 @@ public class Calculator {
             if(currentTime.isBefore(beforePackagingTime)){
                 currentTime = beforePackagingTime; // 이전 공정이 있으면 공정완료시간을 시작시간으로
             }
-            
+
             // 리드 타임
             currentTime = lunchAndLeaveTimeStartCheck(currentTime);
             currentTime = lunchAndLeaveTimeFinishCheck(currentTime.plusMinutes(mesInfo.leadPackaging), currentTime);

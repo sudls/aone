@@ -1,24 +1,21 @@
 package com.mes.aone.service;
 
+import com.mes.aone.constant.MaterialState;
+import com.mes.aone.constant.ShipmentState;
 import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
-import com.mes.aone.entity.ProcessPlan;
-import com.mes.aone.entity.PurchaseOrder;
-import com.mes.aone.entity.SalesOrder;
-import com.mes.aone.entity.WorkOrder;
+import com.mes.aone.entity.*;
 import com.mes.aone.repository.*;
 import com.mes.aone.util.Calculator;
 import com.mes.aone.util.MESInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 @Service
 @Transactional
@@ -30,8 +27,8 @@ public class SalesOrderService {
     private final FacilityRepository facilityRepository;
     private final MaterialRepository materialRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
-
-
+    private final MaterialStorageRepository materialStorageRepository;
+    private final ShipmentRepository shipmentRepository;
 
     // 수주 등록
     public Long createSalesOrder(OrderDTO orderDTO) throws Exception{
@@ -47,6 +44,9 @@ public class SalesOrderService {
         for (String salesOrderId : selectedIds) {
             Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
+            WorkOrder workOrder = workOrderRepository.findBySalesOrder(salesOrder);
+            workOrder.setWorkStatus(Status.B); // 작업지시를 진행중으로 변경
+
             if (salesOrder != null) {
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
                 salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
@@ -57,6 +57,15 @@ public class SalesOrderService {
                 mesInfo.setProductName(salesOrder.getProductName()); //수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
+                mesInfo.setSalesOrderId(salesOrder.getSalesOrderId());//수주 아이디
+
+                mesInfo.setPastPreProcessingMachine(getProcessFinishTime("전처리"));
+                mesInfo.setPastExtractionMachine1(getFacilityFinishTime("extraction_1"));
+                mesInfo.setPastExtractionMachine2(getFacilityFinishTime("extraction_2"));
+                mesInfo.setPastFillingLiquidMachine(getFacilityFinishTime("pouch_1"));
+                mesInfo.setPastFillingJellyMachine(getFacilityFinishTime("liquid_stick_1"));
+                mesInfo.setPastExaminationMachine(getFacilityFinishTime("inspection"));
+                mesInfo.setPastPackagingTime(getProcessFinishTime("포장"));
 
                 // 예상납품일 계산기 실행
                 if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
@@ -92,12 +101,15 @@ public class SalesOrderService {
 
                 createProcessPlan(mesInfo);
                 createPurchaseOrder(mesInfo);
+                createMaterialStorage(mesInfo);
 
                 salesOrderRepository.save(salesOrder);
-            }
+                workOrderRepository.save(workOrder);
 
             }
+
         }
+    }
 
 
 
@@ -121,6 +133,27 @@ public class SalesOrderService {
             salesOrderRepository.delete(salesOrder);
         }
     }
+
+//    // 수주 검색
+//    public List<SalesOrder> searchSalesOrder(String productName, String vendorId, LocalDateTime startDateTime, LocalDateTime endDateTime, Status salesStatus) {
+//        QSalesOrder qSalesOrder = QSalesOrder.salesOrder;
+//        BooleanBuilder builder = new BooleanBuilder();
+//
+//        if(productName != null){
+//            builder.and(qSalesOrder.productName.eq(productName));
+//        }
+//        if(vendorId != null){
+//            builder.and(qSalesOrder.vendorId.eq(vendorId));
+//        }
+//        if(startDateTime != null && endDateTime != null){
+//            builder.and(qSalesOrder.salesDate.between(startDateTime, endDateTime));
+//        }
+//        if(salesStatus != null){
+//            builder.and(qSalesOrder.salesStatus.eq(salesStatus));
+//        }
+//        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
+//        return (List<SalesOrder>) salesOrderRepository.findAll(builder, sort);
+//    }
 
 
     // 수주 기간 검색
@@ -170,14 +203,14 @@ public class SalesOrderService {
 
     // 수주 확정 시 DB 공정계획 인설트
     public void createProcessPlan(MESInfo mesInfo){
+        System.out.println("mesInfo정보임디냐"+mesInfo.getSalesOrderId());
         ProcessPlan processPlan = new ProcessPlan();
         // 원료계량
         processPlan.setProcessStage("원료계량");
         processPlan.setFacilityId(null);
         processPlan.setStartTime(mesInfo.getStartMeasurement());
         processPlan.setEndTime(mesInfo.getFinishMeasurement());
-//        processPlan.setWorkOrder(workOrderRepository.findByWorkOrderId());
-        processPlan.setWorkOrder(null);
+        processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
         processPlanRepository.save(processPlan);
         // 전처리
         for (int i=0; i<mesInfo.getStartPreProcessing().size(); i++){
@@ -186,7 +219,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(null);
             processPlan.setStartTime(mesInfo.getStartPreProcessing().get(i));
             processPlan.setEndTime(mesInfo.getFinishPreProcessing().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
         }
         // 추출 및 혼합
@@ -196,7 +229,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("extraction_1"));
             processPlan.setStartTime(mesInfo.getStartExtractionMachine1().get(i));
             processPlan.setEndTime(mesInfo.getFinishExtractionMachine1().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
         }
         for (int i=0; i<mesInfo.getStartExtractionMachine2().size(); i++){ // 추출기2
@@ -205,7 +238,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("extraction_2"));
             processPlan.setStartTime(mesInfo.getStartExtractionMachine2().get(i));
             processPlan.setEndTime(mesInfo.getFinishExtractionMachine2().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
         }
         // 충진
@@ -215,7 +248,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("pouch_1"));
             processPlan.setStartTime(mesInfo.getStartFillingLiquidMachine().get(i));
             processPlan.setEndTime(mesInfo.getFinishFillingLiquidMachine().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
         }
         for (int i=0; i<mesInfo.getStartFillingJellyMachine().size(); i++){ // 충진기(젤리)
@@ -224,7 +257,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("liquid_stick_1"));
             processPlan.setStartTime(mesInfo.getStartFillingJellyMachine().get(i));
             processPlan.setEndTime(mesInfo.getFinishFillingJellyMachine().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
         }
         // 검사
@@ -234,7 +267,7 @@ public class SalesOrderService {
             processPlan.setFacilityId(facilityRepository.findByFacilityId("inspection"));
             processPlan.setStartTime(mesInfo.getStartExamination().get(i));
             processPlan.setEndTime(mesInfo.getFinishExamination().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
         }
         // 포장
@@ -244,11 +277,31 @@ public class SalesOrderService {
             processPlan.setFacilityId(null);
             processPlan.setStartTime(mesInfo.getStartPackaging().get(i));
             processPlan.setEndTime(mesInfo.getFinishPackaging().get(i));
-            processPlan.setWorkOrder(null);
+            processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+
         }
         // 출하
+        Shipment shipment = new Shipment();
+        shipment.setShipmentProduct(mesInfo.getProductName());
+        shipment.setShipmentQty(mesInfo.getSalesQty());
+        System.out.println(shipment.getShipmentQty());
+        shipment.setShipmentDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+//        LocalDateTime currentDateTime = LocalDateTime.of(2023,10,15,9,0,0);
+        LocalDateTime shipmentDate = processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId());
+
+        if (currentDateTime.isAfter(shipmentDate)) {
+            shipment.setShipmentState(ShipmentState.B);
+        } else {
+            shipment.setShipmentState(ShipmentState.A);
+        }
+        shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+        shipment.setProduction(null);
+        shipmentRepository.save(shipment);
     }
+
 
     // 수주 확정 시 DB 발주 테이블 인설트
     public void createPurchaseOrder(MESInfo mesInfo){
@@ -269,7 +322,139 @@ public class SalesOrderService {
 
     }
 
+    // 수주 등록 시 작업 지시 테이블 인설트(대기상태)
+    public void createWorkOrder(WorkOrder workOrder){
+        workOrderRepository.save(workOrder);
+    }
+
+    // 공정별 마지막 공정시간
+    public LocalDateTime getProcessFinishTime(String processStage){
+        System.out.println(processStage);
+        List<ProcessPlan> processPlan = processPlanRepository.findProcessPlanByProcessStage(processStage);
+        System.out.println(processPlan);
+        LocalDateTime processEndTime;
+
+        if (processPlan.isEmpty()){
+            processEndTime = LocalDateTime.of(1,1,1,1,1,1);
+        } else {
+            processEndTime = processPlan.get(0).getEndTime();
+        }
+        System.out.println(processStage + processEndTime);
+        return processEndTime;
+    }
+
+    // 설비별 마지막 공정시간
+    public LocalDateTime getFacilityFinishTime(String facilityId){
+        System.out.println(facilityId);
+        List<ProcessPlan> processPlan = processPlanRepository.findProcessPlanByFacilityId(facilityRepository.findByFacilityId(facilityId));
+        System.out.println(processPlan);
+        LocalDateTime facilityEndTime;
+
+        if (processPlan.isEmpty()){
+            facilityEndTime = LocalDateTime.of(1,1,1,1,1,1);
+        }else {
+            facilityEndTime = processPlan.get(0).getEndTime();
+        }
+        System.out.println(facilityId + facilityEndTime);
+        return facilityEndTime;
+    }
+
+
+    //메인화면에 수주 정보 출력
+    public List<Map<String, Object>> getEventList() {
+//        List<SalesOrder> salesOrderList = salesOrderRepository.findAll();
+        List<SalesOrder> salesOrderList = salesOrderRepository.findBySalesStatusNot(Status.C);
+
+        List<Map<String, Object>> eventList = new ArrayList<>();
+
+        for (SalesOrder salesOrder : salesOrderList){
+            Map<String, Object> eventData = new HashMap<>();
+
+
+//            eventData.put("start", salesOrder.getSalesDate());
+            eventData.put("start", salesOrder.getSalesDate().toLocalDate()); //날짜만 반환
+            eventData.put("title",salesOrder.getSalesOrderId() +"_" + salesOrder.getProductName());
+            eventData.put("extendedProps", Collections.singletonMap("status", salesOrder.getSalesStatus()));
+
+
+            eventList.add(eventData);
+        }
+
+        return eventList;
+    }
+
+    // 수주 확정시 db에 원자재 입출고 테이블 insert
+    public void createMaterialStorage(MESInfo mesInfo) {
+        List<String> keys = new ArrayList<>(mesInfo.getPurchaseMap().keySet());
+
+        for (int i = 0; i < keys.size(); i++) {
+            String materialName = keys.get(i);
+            int quantity = mesInfo.getPurchaseMap().get(materialName);
+
+            // 원자재 재고 객체 생성
+            MaterialStorage materialStorage = new MaterialStorage();
+            materialStorage.setMaterialName(materialRepository.findByMaterialName(materialName));
+            materialStorage.setMaterialQty(quantity);
+
+            // unit 설정
+            if (materialName.contains("파") || materialName.contains("박")) {
+                materialStorage.setUnit("ea");
+            } else {
+                materialStorage.setUnit("kg");
+            }
+
+            materialStorage.setMaterialStorageState(MaterialState.I);  // 입고 상태로 설정
+            materialStorage.setMaterialStorageDate(mesInfo.getArrivalMaterial());  // 입고날짜
+
+            // 원자재 재고를 데이터베이스에 저장
+            materialStorageRepository.save(materialStorage);
+        }
+
+        List<String> materialKeys = new ArrayList<>(mesInfo.getRequiredMaterial().keySet());
+
+        for (int i = 0; i < materialKeys.size(); i++) {
+            String materialName = materialKeys.get(i);
+            int quantity = mesInfo.getPurchaseMap().get(materialName);
+
+            // 원자재 재고 객체 생성
+            MaterialStorage materialStorage = new MaterialStorage();
+            materialStorage.setMaterialName(materialRepository.findByMaterialName(materialName));
+            materialStorage.setMaterialQty(quantity);
+
+            // unit 설정
+            if (materialName.contains("파") || materialName.contains("박")) {
+                materialStorage.setUnit("ea");
+            } else {
+                materialStorage.setUnit("kg");
+            }
+
+            materialStorage.setMaterialStorageState(MaterialState.O);  // 입고 상태로 설정
+            materialStorage.setMaterialStorageDate(mesInfo.getArrivalMaterial());  // 입고날짜
+
+            // 원자재 재고를 데이터베이스에 저장
+            materialStorageRepository.save(materialStorage);
+        }
+
+
+
+
+
+
+
+    }
+
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+

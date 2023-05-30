@@ -16,7 +16,7 @@ public class MaterialTest {
     VendorRepository vendorRepository;
 
 
-    @Test // 자재 기준정보 더미(인설트)
+/*    @Test // 자재 기준정보 더미(인설트)
     public void insertMaterial(){
         Material material = new Material();
 
@@ -99,7 +99,7 @@ public class MaterialTest {
         materialRepository.save(material7);
 
 
-    }
+    }*/
 
 }
 

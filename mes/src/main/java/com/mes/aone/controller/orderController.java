@@ -134,12 +134,6 @@ public class orderController {
                 WorkOrder workOrder = new WorkOrder();
                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
 //                workOrder.setWorkOrderQty();
-                
-                
-
-
-
-
 
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");

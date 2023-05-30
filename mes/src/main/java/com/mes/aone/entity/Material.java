@@ -27,14 +27,14 @@ public class Material implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
-    private Vendor vendorId;         // 거래처 고유ID
+    private Vendor vendor;         // 거래처 고유ID
 
     public Material(){
 
     }
-    public Material(String materialName,Integer materialLeadtime,Vendor vendorId){
+    public Material(String materialName,Integer materialLeadtime,Vendor vendor){
         this.materialName = materialName;
         this.materialLeadtime=materialLeadtime;
-        this.vendorId = vendorId;
+        this.vendor = vendor;
     }
 }
