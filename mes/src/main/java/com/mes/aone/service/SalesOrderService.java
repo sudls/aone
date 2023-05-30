@@ -13,8 +13,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.time.LocalDateTime;
 import java.util.*;
+
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -29,7 +35,9 @@ public class SalesOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final MaterialStorageRepository materialStorageRepository;
     private final ShipmentRepository shipmentRepository;
+
     private final WorkResultRepository workResultRepository;
+
 
     // 수주 등록
     public Long createSalesOrder(OrderDTO orderDTO) throws Exception{
@@ -107,6 +115,7 @@ public class SalesOrderService {
                 salesOrderRepository.save(salesOrder);
                 workOrderRepository.save(workOrder);
 
+
             }
 
         }
@@ -135,26 +144,6 @@ public class SalesOrderService {
         }
     }
 
-//    // 수주 검색
-//    public List<SalesOrder> searchSalesOrder(String productName, String vendorId, LocalDateTime startDateTime, LocalDateTime endDateTime, Status salesStatus) {
-//        QSalesOrder qSalesOrder = QSalesOrder.salesOrder;
-//        BooleanBuilder builder = new BooleanBuilder();
-//
-//        if(productName != null){
-//            builder.and(qSalesOrder.productName.eq(productName));
-//        }
-//        if(vendorId != null){
-//            builder.and(qSalesOrder.vendorId.eq(vendorId));
-//        }
-//        if(startDateTime != null && endDateTime != null){
-//            builder.and(qSalesOrder.salesDate.between(startDateTime, endDateTime));
-//        }
-//        if(salesStatus != null){
-//            builder.and(qSalesOrder.salesStatus.eq(salesStatus));
-//        }
-//        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
-//        return (List<SalesOrder>) salesOrderRepository.findAll(builder, sort);
-//    }
 
 
     // 수주 기간 검색
@@ -283,6 +272,7 @@ public class SalesOrderService {
 
         }
         // 출하
+
         Shipment shipment = new Shipment();
         shipment.setShipmentProduct(mesInfo.getProductName());
         shipment.setShipmentQty(mesInfo.getSalesQty());
@@ -421,5 +411,6 @@ public class SalesOrderService {
             materialStorageRepository.save(materialStorage);
         }
     }
+
 
 }

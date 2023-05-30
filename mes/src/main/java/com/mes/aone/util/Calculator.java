@@ -420,7 +420,7 @@ public class Calculator {
         for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
-            System.out.println("자재명: " + key + ", 발주량: " + value);
+            System.out.println("***자재명: " + key + ", 발주량: " + value);
         }
         // Map에 세팅된 자재명, 도착일 출력
         for (Map.Entry<String, LocalDateTime> entry : mesInfo.getPurchaseAndTimeMap().entrySet()) {
@@ -465,6 +465,8 @@ public class Calculator {
 
         mesInfo.setFinishMeasurement(currentTime); // 원료계량 완료시간 set
         mesInfo.setNowMeasurementOutput(workAmount); //
+
+
 
     }
 
