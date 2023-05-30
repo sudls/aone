@@ -1,15 +1,17 @@
 package com.mes.aone.dto;
 
-import com.mes.aone.entity.ProcessPlan;
+import com.mes.aone.entity.Production;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class ProductionDTO {
 
 
@@ -31,4 +33,23 @@ public class ProductionDTO {
         this.endTime=endTime;
         this.lotNumber=lotNumber;
     }
+
+
+    public static List<ProductionDTO> of(List<Production> productionList) {
+        List<ProductionDTO> productionDtoList = new ArrayList<>();
+        for (Production production : productionList) {
+            ProductionDTO productionDTO = new ProductionDTO(
+                    production.getProductionName(),
+                    production.getProductionQty(),
+                    production.getProcessPlan().getProcessStage(),
+                    production.getProcessPlan().getEndTime(),
+                    production.getLotNumber()
+            );
+            productionDtoList.add(productionDTO);
+        }
+        return productionDtoList;
+    }
+
+
+
 }

@@ -379,64 +379,63 @@ public class Calculator {
                     mesInfo.setRowMaterialName(key);
                     mesInfo.setStockOrderDate(stockOrderDate);
                     mesInfo.setRowMaterialAmount(value);
+                System.out.println(
+                        "\n발주자재: " + key +
+                                "\n발주일: " + stockOrderDate +
+                                "\n발주량: " + value);
+            }else if(salesDate.getDayOfWeek()== DayOfWeek.FRIDAY){  // 수주일이 금요일이면 3일뒤 오전 9시 주문(월요일)      -> 주문시간 = 이틀뒤 오전 9시 주문(월요일)
+                System.out.println("주주일 금");
+                stockOrderDate = salesDate.plusDays(3).withHour(9).withMinute(0).withSecond(0);
+                mesInfo.setRowMaterialName(key);
+                mesInfo.setStockOrderDate(stockOrderDate);
+                mesInfo.setRowMaterialAmount(value);
+                System.out.println(
+                        "\n발주자재: " + key +
+                        "\n발주일: " + stockOrderDate +
+                        "\n발주량: " + value);
+            } else { // 수주일이 주말일 때
+                stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+                mesInfo.setRowMaterialName(key);
+                mesInfo.setStockOrderDate(stockOrderDate);
+                mesInfo.setRowMaterialAmount(value);
+                System.out.println(
+                        "\n발주자재: " + key +
+                                "\n발주일: " + stockOrderDate +
+                                "\n발주량: " + value);
+            }
+            // 원자재 입고일, 입고자재, 입고량, 원자재창고 자재량, 출고자재, 출고자재, 출고량,
+            // 주문 요일이 목,금요일이면 +2일(주말)
+            if (stockOrderDate.getDayOfWeek() == DayOfWeek.THURSDAY || stockOrderDate.getDayOfWeek() == DayOfWeek.FRIDAY) {
+                stockOrderDate = stockOrderDate.plusDays(2);
+                stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
+            } else {
+                stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
+            }
+            // 입고 가능한 시간인지 확인하고, 월, 수, 금 오전 10시에 입고시간 설정
+            DayOfWeek dayOfWeek = stockInDate.getDayOfWeek();
+            if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.WEDNESDAY || dayOfWeek == DayOfWeek.FRIDAY) {
+                stockInDate = stockInDate.withHour(10).withMinute(0).withSecond(0);
+            } else if (dayOfWeek == DayOfWeek.TUESDAY || dayOfWeek == DayOfWeek.THURSDAY) {
+                stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
+            } else if (dayOfWeek == DayOfWeek.SATURDAY) {
+                stockInDate = stockInDate.plusDays(2).withHour(10).withMinute(0).withSecond(0);
+            } else if (dayOfWeek == DayOfWeek.SUNDAY) {
+                stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
+            }
 
-                    System.out.println(
-                            "\n발주자재: " + key +
-                                    "\n발주일: " + stockOrderDate +
-                                    "\n발주량: " + value);
-                }else if(salesDate.getDayOfWeek()== DayOfWeek.FRIDAY){  // 수주일이 금요일이면 3일뒤 오전 9시 주문(월요일)      -> 주문시간 = 이틀뒤 오전 9시 주문(월요일)
-                    System.out.println("주주일 금");
-                    stockOrderDate = salesDate.plusDays(3).withHour(9).withMinute(0).withSecond(0);
-                    mesInfo.setRowMaterialName(key);
-                    mesInfo.setStockOrderDate(stockOrderDate);
-                    mesInfo.setRowMaterialAmount(value);
-                    System.out.println(
-                            "\n발주자재: " + key +
-                                    "\n발주일: " + stockOrderDate +
-                                    "\n발주량: " + value);
-                } else { // 수주일이 주말일 때
-                    stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
-                    mesInfo.setRowMaterialName(key);
-                    mesInfo.setStockOrderDate(stockOrderDate);
-                    mesInfo.setRowMaterialAmount(value);
-                    System.out.println(
-                            "\n발주자재: " + key +
-                                    "\n발주일: " + stockOrderDate +
-                                    "\n발주량: " + value);
-                }
-                // 원자재 입고일, 입고자재, 입고량, 원자재창고 자재량, 출고자재, 출고자재, 출고량,
-                // 주문 요일이 목,금요일이면 +2일(주말)
-                if (stockOrderDate.getDayOfWeek() == DayOfWeek.THURSDAY || stockOrderDate.getDayOfWeek() == DayOfWeek.FRIDAY) {
-                    stockOrderDate = stockOrderDate.plusDays(2);
-                    stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
-                } else {
-                    stockInDate = stockOrderDate.plusDays(leadTime);  // 도착일 = 주문요일 + 리드타임
-                }
-                // 입고 가능한 시간인지 확인하고, 월, 수, 금 오전 10시에 입고시간 설정
-                DayOfWeek dayOfWeek = stockInDate.getDayOfWeek();
-                if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.WEDNESDAY || dayOfWeek == DayOfWeek.FRIDAY) {
-                    stockInDate = stockInDate.withHour(10).withMinute(0).withSecond(0);
-                } else if (dayOfWeek == DayOfWeek.TUESDAY || dayOfWeek == DayOfWeek.THURSDAY) {
-                    stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
-                } else if (dayOfWeek == DayOfWeek.SATURDAY) {
-                    stockInDate = stockInDate.plusDays(2).withHour(10).withMinute(0).withSecond(0);
-                } else if (dayOfWeek == DayOfWeek.SUNDAY) {
-                    stockInDate = stockInDate.plusDays(1).withHour(10).withMinute(0).withSecond(0);
-                }
+            mesInfo.setArrivalMaterial(stockInDate);      // 도착일
+            System.out.println("도착일: " + mesInfo.getArrivalMaterial());
+            System.out.println("자재명: " + mesInfo.getRowMaterialName());
+            System.out.println("수량: " + mesInfo.getRowMaterialAmount());
 
-                mesInfo.setArrivalMaterial(stockInDate);      // 도착일
-                System.out.println("도착일: " + mesInfo.getArrivalMaterial());
-                System.out.println("자재명: " + mesInfo.getRowMaterialName());
-                System.out.println("수량: " + mesInfo.getRowMaterialAmount());
+            // 자재명, 도착일 Map에 세팅
+            purchaseAndTime.put(mesInfo.getRowMaterialName(),  mesInfo.getArrivalMaterial());
+            mesInfo.setPurchaseAndTimeMap(purchaseAndTime);
 
-                // 자재명, 도착일 Map에 세팅
-                purchaseAndTime.put(mesInfo.getRowMaterialName(),  mesInfo.getArrivalMaterial());
-                mesInfo.setPurchaseAndTimeMap(purchaseAndTime);
-
-                // 가장 마지막 도착일자인지 확인 후 업데이트
-                if (latestStockInDate == null || stockInDate.isAfter(latestStockInDate)) {
-                    latestStockInDate = stockInDate;
-                }
+            // 가장 마지막 도착일자인지 확인 후 업데이트
+            if (latestStockInDate == null || stockInDate.isAfter(latestStockInDate)) {
+                latestStockInDate = stockInDate;
+            }
             }
         }
 
@@ -452,7 +451,7 @@ public class Calculator {
         for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
-            System.out.println("자재명: " + key + ", 발주량: " + value);
+            System.out.println("***자재명: " + key + ", 발주량: " + value);
         }
         // Map에 세팅된 자재명, 도착일 출력
         for (Map.Entry<String, LocalDateTime> entry : mesInfo.getPurchaseAndTimeMap().entrySet()) {
@@ -497,6 +496,8 @@ public class Calculator {
 
         mesInfo.setFinishMeasurement(currentTime); // 원료계량 완료시간 set
         mesInfo.setNowMeasurementOutput(workAmount); //
+
+
 
     }
 
@@ -828,6 +829,7 @@ public class Calculator {
         int addMinutes = 0;
 
         for (int i=0; i<coolingTimeList.size(); i++){ // 냉각 공정 수 만큼 반복
+//            currentTime = coolingTimeList.get(i);
             currentTime = coolingTimeList.get(i);
             workAmount = coolingOutputList.get(i); // i번째 냉각 생산량 (포)
             box = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙") ? workAmount/30 : workAmount/25 ); // 박스 생산량

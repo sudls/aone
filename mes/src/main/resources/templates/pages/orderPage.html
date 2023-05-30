@@ -14,6 +14,7 @@
 
 
 <div layout:fragment="content" id="contentStyle">
+    <div class="innerContent">
     <div class="titlebox">
         <h1>수주관리</h1>
 
@@ -95,7 +96,7 @@
                     </td>
                     <td th:text="${orderDTO.salesQty}"></td>
 
-                    <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　hh:mm')}"></td>
+                    <td th:text="${#temporals.format(orderDTO.salesDate, 'yy/MM/dd　kk:mm')}"></td>
                     <td th:text="${#temporals.format(orderDTO.estDelivery, 'yy/MM/dd')}"></td>
 
 
@@ -197,7 +198,7 @@
         </div>
     </div>
 
-
+    </div>
 </div>
 </body>
 </html>

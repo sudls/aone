@@ -13,8 +13,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.time.LocalDateTime;
 import java.util.*;
+
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -29,6 +35,8 @@ public class SalesOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final MaterialStorageRepository materialStorageRepository;
     private final ShipmentRepository shipmentRepository;
+    private final WorkResultRepository workResultRepository;
+
 
     // 수주 등록
     public Long createSalesOrder(OrderDTO orderDTO) throws Exception{
@@ -154,6 +162,7 @@ public class SalesOrderService {
 //        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
 //        return (List<SalesOrder>) salesOrderRepository.findAll(builder, sort);
 //    }
+
 
 
     // 수주 기간 검색
@@ -289,18 +298,30 @@ public class SalesOrderService {
         shipment.setShipmentDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
 
         LocalDateTime currentDateTime = LocalDateTime.now();
-//        LocalDateTime currentDateTime = LocalDateTime.of(2023,10,15,9,0,0);
+
+//        LocalDateTime currentDateTime = LocalDateTime.of(2024,10,15,9,0,0);
         LocalDateTime shipmentDate = processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId());
 
         if (currentDateTime.isAfter(shipmentDate)) {
             shipment.setShipmentState(ShipmentState.B);
+
+
+
+            WorkResult workResult = new WorkResult();
+            workResult.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
+            workResult.setWorkFinishDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
+            workResult.setWorkFinishQty(mesInfo.getSalesQty());
+            workResultRepository.save(workResult);
+
+
         } else {
             shipment.setShipmentState(ShipmentState.A);
         }
-        shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
-        shipment.setProduction(null);
-        shipmentRepository.save(shipment);
-    }
+            shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            shipment.setProduction(null);
+            shipmentRepository.save(shipment);
+        }
+
 
 
     // 수주 확정 시 DB 발주 테이블 인설트
@@ -383,6 +404,7 @@ public class SalesOrderService {
         return eventList;
     }
 
+
     // 수주 확정시 db에 원자재 입출고 테이블 insert
     public void createMaterialStorage(MESInfo mesInfo) {
         List<String> keys = new ArrayList<>(mesInfo.getPurchaseMap().keySet());
@@ -409,41 +431,7 @@ public class SalesOrderService {
             // 원자재 재고를 데이터베이스에 저장
             materialStorageRepository.save(materialStorage);
         }
-
-        List<String> materialKeys = new ArrayList<>(mesInfo.getRequiredMaterial().keySet());
-
-        for (int i = 0; i < materialKeys.size(); i++) {
-            String materialName = materialKeys.get(i);
-            int quantity = mesInfo.getPurchaseMap().get(materialName);
-
-            // 원자재 재고 객체 생성
-            MaterialStorage materialStorage = new MaterialStorage();
-            materialStorage.setMaterialName(materialRepository.findByMaterialName(materialName));
-            materialStorage.setMaterialQty(quantity);
-
-            // unit 설정
-            if (materialName.contains("파") || materialName.contains("박")) {
-                materialStorage.setUnit("ea");
-            } else {
-                materialStorage.setUnit("kg");
-            }
-
-            materialStorage.setMaterialStorageState(MaterialState.O);  // 입고 상태로 설정
-            materialStorage.setMaterialStorageDate(mesInfo.getArrivalMaterial());  // 입고날짜
-
-            // 원자재 재고를 데이터베이스에 저장
-            materialStorageRepository.save(materialStorage);
-        }
-
-
-
-
-
-
-
     }
-
-
 
 
 }

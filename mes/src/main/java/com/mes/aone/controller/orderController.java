@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -32,6 +31,7 @@ public class orderController {
 
     private final SalesOrderService salesOrderService;
     private final SalesOrderRepository salesOrderRepository;
+
 
 
     //기본 조회 리스트
@@ -80,7 +80,6 @@ public class orderController {
 
 
 
-
     // 수주 등록
     @PostMapping(value="/order")
     public String salesOrderWrite(@Valid OrderDTO orderDTO, BindingResult bindingResult,  Model model) {
@@ -96,6 +95,14 @@ public class orderController {
                 mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명
                 mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
+
+                mesInfo.setPastPreProcessingMachine(salesOrderService.getProcessFinishTime("전처리"));
+                mesInfo.setPastExtractionMachine1(salesOrderService.getFacilityFinishTime("extraction_1"));
+                mesInfo.setPastExtractionMachine2(salesOrderService.getFacilityFinishTime("extraction_2"));
+                mesInfo.setPastFillingLiquidMachine(salesOrderService.getFacilityFinishTime("pouch_1"));
+                mesInfo.setPastFillingJellyMachine(salesOrderService.getFacilityFinishTime("liquid_stick_1"));
+                mesInfo.setPastExaminationMachine(salesOrderService.getFacilityFinishTime("inspection"));
+                mesInfo.setPastPackagingTime(salesOrderService.getProcessFinishTime("포장"));
 
                 // 예상납품일 계산기 실행
                 if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
@@ -126,14 +133,20 @@ public class orderController {
                         calculator.packaging(); // 포장 메서드 실행
                     }
                 }
-
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 
 
                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
                 WorkOrder workOrder = new WorkOrder();
                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
-//                workOrder.setWorkOrderQty();
+
+                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+                workOrder.setWorkStatus(Status.A);
+                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+                salesOrderService.createWorkOrder(workOrder);
+
+
 
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");

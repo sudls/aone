@@ -15,6 +15,7 @@
 <div th:replace="fragments/nav::nav"></div>
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contentStyle">
+    <div class="innerContent">
     <div class="titlebox">
         <h1 style="display: inline-block">작업지시 현황</h1>
         <button class="bg-excel" onclick="downloadTablesAsExcel()">
@@ -42,15 +43,16 @@
         </div>
 
 
-        <!--        <select name="processStage" id="option2">-->
-        <!--            <option disabled selected>공정 단계</option>-->
-        <!--            <option value="전처리">전처리</option>-->
-        <!--            <option value="추출">추출</option>-->
-        <!--            <option value="혼합">혼합</option>-->
-        <!--            <option value="충진">충진</option>-->
-        <!--            <option value="검사">검사</option>-->
-        <!--            <option value="포장">포장</option>-->
-        <!--        </select>-->
+
+<!--        <select name="processStage" id="option2">-->
+<!--            <option disabled selected>공정 단계</option>-->
+<!--            <option value="전처리">전처리</option>-->
+<!--            <option value="추출">추출</option>-->
+<!--            <option value="혼합">혼합</option>-->
+<!--            <option value="충진">충진</option>-->
+<!--            <option value="검사">검사</option>-->
+<!--            <option value="포장">포장</option>-->
+<!--        </select>-->
 
         <select name="workStatus" id="option3">
             <option disabled selected>작업진행 상태</option>
@@ -76,11 +78,12 @@
             <tbody>
             <tr th:each="workOrder : ${workOrders}">
                 <td th:text="${workOrder.workOrderId}"></td>
-                <td th:text="${workOrder.productName}"></td>
+                <td th:text="${workOrder.getProductName()}"></td>
                 <td th:text="${workOrder.workOrderQty}"></td>
                 <td th:text="${#temporals.format(workOrder.workOrderDate, 'yy/MM/dd')}"></td>
-                <!--                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>-->
-                <!--<td th:text="${workOrder.processStage}"></td>-->
+
+<!--                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>-->
+<!--                <td th:text="${workOrder.processStage}"></td>-->
 
                 <td>
                     <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
@@ -114,6 +117,7 @@
             </tr>
             </tbody>
         </table>
+    </div>
     </div>
 </div>
 

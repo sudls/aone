@@ -29,7 +29,7 @@ public class Shipment {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ShipmentState shipmentState = ShipmentState.A;
+    private ShipmentState shipmentState;  //= ShipmentState.A;
 
     @OneToOne
     @JoinColumn(name = "sales_order_id")

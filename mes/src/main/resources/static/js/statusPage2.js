@@ -16,7 +16,10 @@ function updateGraph(data) {
         let span = progressCircle.querySelector('span');
         let valueBar = progressCircle.querySelector('.value-bar');
 
-        let currentTime = new Date(); //현재시간
+//현재시간
+       let currentTime = new Date();
+// let currentTime = new Date(2023, 5, 6, 14, 20); //임시
+
 
         //시작시간이 없을 때, 시작시간이 현재시간보다 미래일때
         if (startTime === null || startTime>currentTime) {
@@ -75,8 +78,7 @@ function updateGraph(data) {
 }
 
 
-window.onload = function() {
-
+function calGraph() {
     let data = [];
 
     for (let i = 1; i <= 10; i++) {
@@ -126,8 +128,7 @@ window.onload = function() {
 
 
     }
-    console.log(data);
-
+    //console.log(data);
 
     updateGraph(data);
 

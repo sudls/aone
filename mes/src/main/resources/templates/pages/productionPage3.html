@@ -12,25 +12,25 @@
 <div th:replace="fragments/nav::nav"></div>
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contentStyle">
-
+    <div class="innerContent">
     <div class="titlebox" >
         <h1 style="display: inline-block">생산현황</h1>
-        <form action="">
-            <select name="" id="option1">
+        <form action="/production3/search" method="get">
+            <select name="productName" id="option1">
                 <option disabled selected>제품명</option>
-                <option value="">양배추즙</option>
-                <option value="">흑마늘즙</option>
-                <option value="">석류젤리스틱</option>
-                <option value="">매실젤리스틱</option>
+                <option value="양배추즙">양배추즙</option>
+                <option value="흑마늘즙">흑마늘즙</option>
+                <option value="석류젤리스틱">석류젤리스틱</option>
+                <option value="매실젤리스틱">매실젤리스틱</option>
             </select>
-            <select name="" id="option2">
+            <select name="processStage" id="option2">
                 <option disabled selected>공정단계</option>
-                <option value="">전처리</option>
-                <option value="">추출</option>
-                <option value="">혼합</option>
-                <option value="">충진</option>
-                <option value="">검사</option>
-                <option value="">포장</option>
+                <option value="전처리">전처리</option>
+                <option value="추출">추출</option>
+                <option value="혼합">혼합</option>
+                <option value="충진">충진</option>
+                <option value="검사">검사</option>
+                <option value="포장">포장</option>
             </select>
             <button>검색</button>
         </form>
@@ -50,13 +50,13 @@
         </thead>
 
         <tbody>
-        <tr th:each="production : ${productions}">
+        <tr th:each="production, status : ${productions}">
             <td th:text="${production.productionName}"></td>
             <td th:text="${production.productionQty}"></td>
             <td>BOX</td>
             <td th:text="${production.processStage}"></td>
-            <td th:text="${#dates.format(production.endTime, 'yy/MM/dd')}"></td>
-            <td>yag-Bo1-23052001</td>
+            <td th:text="${#temporals.format(production.endTime, 'yy/MM/dd')}"></td>
+            <td th:text="${production.lotNumber}"></td>
         </tr>
 
 
@@ -64,6 +64,7 @@
     </table>
     </div>
 </div>
-
+</div>
 </body>
 </html>
+

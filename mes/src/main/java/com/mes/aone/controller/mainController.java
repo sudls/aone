@@ -1,43 +1,66 @@
 package com.mes.aone.controller;
-
-import com.mes.aone.dto.ProcessPlanDTO;
 import com.mes.aone.entity.ProcessPlan;
 import com.mes.aone.repository.ProcessPlanRepository;
+import com.mes.aone.repository.SalesOrderRepository;
+import com.mes.aone.service.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class statusController {
+public class mainController {
 
-
+    private final SalesOrderRepository salesOrderRepository;
     private final ProcessPlanRepository processPlanRepository;
+    private final SalesOrderService salesOrderService;
 
     @Autowired
-    public statusController(ProcessPlanRepository processPlanRepository) {
+    public mainController(SalesOrderService salesOrderService, ProcessPlanRepository processPlanRepository,SalesOrderRepository salesOrderRepository) {
         this.processPlanRepository = processPlanRepository;
+        this.salesOrderRepository = salesOrderRepository;
+        this.salesOrderService = salesOrderService;
     }
 
+    @GetMapping(value="/")
+    public String mainPage(Model model){
 
-    //현황 관리 페이지
-    @GetMapping(value="/status")
-    public String statusPage(Model model){
+        return"index";
+    }
+
+    @GetMapping(value ="/getEvent")
+    public @ResponseBody List<Map<String, Object>> getSalesOrderInfo(){
+
+        return salesOrderService.getEventList();
+    }
+
+    //작업지시에 따른 수주 정보 조회
+    @GetMapping(value = "/check")
+    public String mainPageCheck(@RequestParam("selectDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate selectDate, Model model){
+        LocalDateTime selectDateTime = null;
+        if(selectDate != null){
+            selectDateTime =  LocalDateTime.of(selectDate, LocalTime.MIN);
+        }
+
+
         LocalDateTime currentTime = LocalDateTime.now();
-//        currentTime=LocalDateTime.of(2023,06,02,10,20); //임시;
+//        currentTime=LocalDateTime.of(2023,06,02,13,20); //임시;
+        System.out.println("currentTime="+currentTime);
 
-        List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate2(currentTime);
-        System.out.println(processPlanList);
+        List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate(currentTime,selectDateTime);
+        System.out.println("here" + processPlanList);
+        model.addAttribute("processPlanList", processPlanList);
 
-        // processStage에 따라 번호를 매기고 결과를 리스트에 담기
         List<Integer> processStageNumbers = new ArrayList<>();
         for (ProcessPlan processPlan : processPlanList) {
             String processStage = processPlan.getProcessStage();
@@ -74,32 +97,12 @@ public class statusController {
         }
         System.out.println(processStageNumbers);
 
-        model.addAttribute("processPlanList",processPlanList);
         model.addAttribute("processStageNumbers", processStageNumbers);
 
-        return"pages/statusPage";
+
+        return "index";
     }
 
 
 
-
-    @GetMapping(value = "/status/facility-info")
-    public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
-        LocalDateTime currentTime = LocalDateTime.now();
-//        currentTime=LocalDateTime.of(2023,06,02,13,20); //임시;
-
-        System.out.println(currentTime);
-        List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
-        List<ProcessPlanDTO> result = new ArrayList<>();
-
-        for (ProcessPlan plan : currentPlans) {
-            if(plan.getFacilityId()!=null){
-                result.add(new ProcessPlanDTO(plan.getStartTime(), plan.getEndTime(), plan.getFacilityId().getFacilityId(),
-                        plan.getWorkOrder().getSalesOrder().getProductName(), plan.getWorkOrder().getWorkOrderId()));
-            }
-
-        }
-
-        return result;
-    }
 }
