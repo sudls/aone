@@ -10,14 +10,18 @@ import com.mes.aone.repository.*;
 import com.mes.aone.util.Calculator;
 import com.mes.aone.util.MESInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -120,6 +124,27 @@ public class SalesOrderService {
             salesOrderRepository.delete(salesOrder);
         }
     }
+
+//    // 수주 검색
+//    public List<SalesOrder> searchSalesOrder(String productName, String vendorId, LocalDateTime startDateTime, LocalDateTime endDateTime, Status salesStatus) {
+//        QSalesOrder qSalesOrder = QSalesOrder.salesOrder;
+//        BooleanBuilder builder = new BooleanBuilder();
+//
+//        if(productName != null){
+//            builder.and(qSalesOrder.productName.eq(productName));
+//        }
+//        if(vendorId != null){
+//            builder.and(qSalesOrder.vendorId.eq(vendorId));
+//        }
+//        if(startDateTime != null && endDateTime != null){
+//            builder.and(qSalesOrder.salesDate.between(startDateTime, endDateTime));
+//        }
+//        if(salesStatus != null){
+//            builder.and(qSalesOrder.salesStatus.eq(salesStatus));
+//        }
+//        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
+//        return (List<SalesOrder>) salesOrderRepository.findAll(builder, sort);
+//    }
 
 
     // 수주 기간 검색
