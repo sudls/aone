@@ -3,6 +3,7 @@ package com.mes.aone.service;
 import com.mes.aone.constant.MaterialState;
 import com.mes.aone.constant.ShipmentState;
 import com.mes.aone.constant.Status;
+import com.mes.aone.constant.StockManageState;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.entity.*;
 import com.mes.aone.repository.*;
@@ -37,6 +38,8 @@ public class SalesOrderService {
     private final ShipmentRepository shipmentRepository;
 
     private final WorkResultRepository workResultRepository;
+    private final StockRepository stockRepository;
+    private final StockManageRepository stockManageRepository;
 
 
     // 수주 등록
@@ -271,21 +274,33 @@ public class SalesOrderService {
             processPlanRepository.save(processPlan);
 
         }
-        // 출하
 
+        // 완제품 창고 입고 insert
+        StockManage stockManage = new StockManage();
+        stockManage.setStockDate(mesInfo.getEstDelivery());
+        int sumPackage=0;
+        for (int i=0; i<mesInfo.getNowPackagingOutput().size(); i++){ // 포장
+            sumPackage = mesInfo.getNowPackagingOutput().get(i);
+        }
+        stockManage.setStockManageQty(sumPackage);
+        stockManage.setStockManageState(StockManageState.I);
+        stockManage.setStockManageName(mesInfo.getProductName());
+        stockManage.setStock(stockRepository.findByStockName(mesInfo.getProductName()));
+        stockManageRepository.save(stockManage);
+
+
+        // 출하
         Shipment shipment = new Shipment();
         shipment.setShipmentProduct(mesInfo.getProductName());
         shipment.setShipmentQty(mesInfo.getSalesQty());
-        System.out.println(shipment.getShipmentQty());
         shipment.setShipmentDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
-//        LocalDateTime currentDateTime = LocalDateTime.of(2024,10,15,9,0,0);
+//        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime currentDateTime = LocalDateTime.of(2024,10,15,9,0,0);
         LocalDateTime shipmentDate = processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId());
 
         if (currentDateTime.isAfter(shipmentDate)) {
             shipment.setShipmentState(ShipmentState.B);
-
 
             WorkResult workResult = new WorkResult();
             workResult.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
@@ -293,14 +308,25 @@ public class SalesOrderService {
             workResult.setWorkFinishQty(mesInfo.getSalesQty());
             workResultRepository.save(workResult);
 
-
         } else {
             shipment.setShipmentState(ShipmentState.A);
         }
-            shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
-            shipment.setProduction(null);
-            shipmentRepository.save(shipment);
+        shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+        shipment.setProduction(null);
+        shipmentRepository.save(shipment);
+
+
+        // 완제품 창고 출고 insert
+        StockManage stockManage1 = new StockManage();
+        stockManage1.setStockDate(mesInfo.getEstDelivery());
+        stockManage1.setStockManageQty(mesInfo.getSalesQty());
+        stockManage1.setStockManageState(StockManageState.O);
+        stockManage1.setStockManageName(mesInfo.getProductName());
+        stockManage1.setStock(stockRepository.findByStockName(mesInfo.getProductName()));
+        stockManageRepository.save(stockManage1);
+
         }
+
 
 
     // 수주 확정 시 DB 발주 테이블 인설트
