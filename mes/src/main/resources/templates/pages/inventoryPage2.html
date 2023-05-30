@@ -77,24 +77,10 @@
                 <span th:if="${purchaseOrderDTO.vendorId == 'ven-po'}">○○포장</span>
             </td>
             <td th:text="${purchaseOrderDTO.purchaseQty}"></td>
-            <td></td>
-            <td></td>
-<!--            <td>23.12.12</td>-->
-<!--            <td>23.12.14</td>-->
+            <td th:text="${#temporals.format(purchaseOrderDTO.purchaseDate,'yy/MM/dd')}"></td>
+            <td th:text="${#temporals.format(purchaseOrderDTO.estArrival, 'yy/MM/dd')}"></td>
 
         </tr>
-
-
-<!--        <tr>-->
-<!--            <td>123123</td>-->
-<!--            <td>양배추</td>-->
-<!--            <td>에이농장</td>-->
-<!--            <td>222</td>-->
-<!--            <td>23.12.12</td>-->
-<!--            <td>23.12.14</td>-->
-
-<!--        </tr>-->
-
         </tbody>
     </table>
     </div>

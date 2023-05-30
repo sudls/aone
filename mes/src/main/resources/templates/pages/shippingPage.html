@@ -76,9 +76,10 @@
 
             <td th:text="${shipment.shipmentProduct}"></td>
             <td th:text="${shipment.shipmentQty}"></td>
-            <td th:text="${shipment.shipmentDate}"></td>
+            <td th:text="${#temporals.format(shipment.shipmentDate, 'yy/MM/dd　kk:mm')}"></td>
             <td>
-                <span th:text="${shipment.shipmentState.name()=='A'} ? '대기' : '완료'"></span>
+                <span th:if="${shipment.shipmentState.name()=='A'}" style="color: #04ba71">대기</span>
+                <span th:if="${shipment.shipmentState.name()=='B'}" style="color: #3196e2">완료</span>
             </td>
         </tr>
 

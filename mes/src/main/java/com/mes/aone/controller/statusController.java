@@ -32,7 +32,7 @@ public class statusController {
     @GetMapping(value="/status")
     public String statusPage(Model model){
         LocalDateTime currentTime = LocalDateTime.now();
-        currentTime=LocalDateTime.of(2023,06,02,10,20); //임시;
+//        currentTime=LocalDateTime.of(2023,06,02,10,20); //임시;
 
         List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate2(currentTime);
         System.out.println(processPlanList);
@@ -85,7 +85,7 @@ public class statusController {
     @GetMapping(value = "/status/facility-info")
     public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
         LocalDateTime currentTime = LocalDateTime.now();
-        currentTime=LocalDateTime.of(2023,06,02,13,20); //임시;
+//        currentTime=LocalDateTime.of(2023,06,02,13,20); //임시;
 
         System.out.println(currentTime);
         List<ProcessPlan> currentPlans = processPlanRepository.findByStartTimeBeforeAndEndTimeAfter(currentTime, currentTime);
