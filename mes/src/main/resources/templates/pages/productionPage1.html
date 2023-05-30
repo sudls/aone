@@ -80,7 +80,7 @@
                 <td th:text="${workOrder.workOrderQty}"></td>
                 <td th:text="${#temporals.format(workOrder.workOrderDate, 'yy/MM/dd')}"></td>
 <!--                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>-->
-                <td th:text="${workOrder.processStage}"></td>
+<!--                <td th:text="${workOrder.processStage}"></td>-->
 
                 <td>
                     <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>

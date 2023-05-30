@@ -32,45 +32,6 @@ public class orderController {
     private final SalesOrderService salesOrderService;
     private final SalesOrderRepository salesOrderRepository;
 
-    //기본 조회 리스트
-//    @GetMapping(value="/order")
-//    public String orderPage(Model model){
-//
-//        List<SalesOrder> salesOrderList = salesOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "salesOrderId"));       // 내림차순
-//        model.addAttribute("orderDTOList",salesOrderList);
-////        model.addAttribute("orderDTO", new OrderDTO());
-////        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
-//        return"pages/orderPage";
-//    }
-//
-//
-//    //조건 검색
-//    @GetMapping(value="/order/search")
-//    public String orderPage(
-//            @RequestParam(value = "searchProduct", required = false) String productName,
-//            @RequestParam(value = "searchVendor", required = false) String vendorId,
-//            @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-//            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-//            @RequestParam(value = "searchState", required = false) Status salesStatus,
-//            Model model){
-//        // 날짜 변환
-//        LocalDateTime startDateTime = null;
-//        LocalDateTime endDateTime = null;
-//        if(startDate != null && endDate != null){
-//            startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
-//            endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
-//        }
-//
-//        // 검색결과
-//        List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(productName, vendorId, startDateTime, endDateTime, salesStatus);
-//        List<SalesOrderDTO> salesOrderDTOList = SalesOrderDTO.of(salesOrderList);
-//
-//        model.addAttribute("orderDTOList", salesOrderDTOList);
-////        model.addAttribute("orderDTO", new OrderDTO());
-////        model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
-//        return "pages/orderPage";
-//    }
-//
 
     //기본 조회 리스트
     @GetMapping(value="/order")
@@ -182,6 +143,8 @@ public class orderController {
                 workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
 
                 salesOrderService.createWorkOrder(workOrder);
+
+
 
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");

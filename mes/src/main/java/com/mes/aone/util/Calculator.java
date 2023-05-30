@@ -796,6 +796,7 @@ public class Calculator {
         int addMinutes = 0;
 
         for (int i=0; i<coolingTimeList.size(); i++){ // 냉각 공정 수 만큼 반복
+//            currentTime = coolingTimeList.get(i);
             currentTime = coolingTimeList.get(i);
             workAmount = coolingOutputList.get(i); // i번째 냉각 생산량 (포)
             box = (mesInfo.productName.equals("양배추즙") || mesInfo.productName.equals("흑마늘즙") ? workAmount/30 : workAmount/25 ); // 박스 생산량
