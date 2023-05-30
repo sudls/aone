@@ -35,5 +35,4 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long>, Que
 
    WorkOrder findBySalesOrderSalesOrderId(Long salesOrderId);
 
-
 }

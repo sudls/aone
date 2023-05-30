@@ -82,6 +82,7 @@ public class statusController {
 
 
 
+
     @GetMapping(value = "/status/facility-info")
     public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
         LocalDateTime currentTime = LocalDateTime.now();

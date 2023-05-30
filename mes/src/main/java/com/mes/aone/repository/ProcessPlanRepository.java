@@ -1,13 +1,12 @@
 package com.mes.aone.repository;
 
-
-
 import com.mes.aone.entity.Facility;
 import com.mes.aone.entity.ProcessPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 
 
 import java.sql.Timestamp;
@@ -69,7 +68,4 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
             "JOIN pp.workOrder wo JOIN wo.salesOrder so " +
             "WHERE so.salesOrderId = :salesOrderId AND pp.processStage = '포장'")
     LocalDateTime getShipmentDate(@Param("salesOrderId") Long salesOrderId);
-
-
-
 }

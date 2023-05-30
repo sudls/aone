@@ -4,6 +4,7 @@ import com.mes.aone.constant.StockManageState;
 import com.mes.aone.dto.StockDTO;
 import com.mes.aone.entity.Stock;
 import com.mes.aone.entity.StockManage;
+import com.mes.aone.util.MESInfo;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -35,7 +36,7 @@ public interface StockManageRepository extends JpaRepository<StockManage, Long> 
     List<StockManage> findByStockDateBetween(LocalDateTime stockStartDateTime, LocalDateTime stockEndDateTime, Sort sort);
   
 
-    //완제품 자재 조회
+    //완제품 조회
     @Query("SELECT new com.mes.aone.dto.StockDTO(s.stockName, SUM(CASE WHEN sm.stockManageState = 'I' THEN sm.stockManageQty ELSE -sm.stockManageQty END)) " +
             "FROM StockManage sm " +
             "JOIN sm.stock s " +
@@ -49,7 +50,6 @@ public interface StockManageRepository extends JpaRepository<StockManage, Long> 
             "WHERE st.stockName = :stockName " +
             "AND :stockQty IS NOT NULL")
     void updateStock(@Param("stockName") String stockName, @Param("stockQty") Integer stockQty);
-
 
 }
 

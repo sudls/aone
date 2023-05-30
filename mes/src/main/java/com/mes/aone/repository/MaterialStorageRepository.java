@@ -24,7 +24,6 @@ public interface MaterialStorageRepository extends JpaRepository<MaterialStorage
                 "GROUP BY m.materialName.materialName")
     List<MaterialDTO> getCurrentQuantitiesByMaterialNames();
 
-
     List<MaterialStorage> findAll();
 
     List<MaterialStorage> findByMaterialNameAndMaterialStorageStateAndMaterialStorageDateBetween(Material material, MaterialState materialState, LocalDateTime matStartDateTime, LocalDateTime matEndDate, Sort sort);
