@@ -134,6 +134,14 @@ public class orderController {
                 mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
 
+                mesInfo.setPastPreProcessingMachine(salesOrderService.getProcessFinishTime("전처리"));
+                mesInfo.setPastExtractionMachine1(salesOrderService.getFacilityFinishTime("extraction_1"));
+                mesInfo.setPastExtractionMachine2(salesOrderService.getFacilityFinishTime("extraction_2"));
+                mesInfo.setPastFillingLiquidMachine(salesOrderService.getFacilityFinishTime("pouch_1"));
+                mesInfo.setPastFillingJellyMachine(salesOrderService.getFacilityFinishTime("liquid_stick_1"));
+                mesInfo.setPastExaminationMachine(salesOrderService.getFacilityFinishTime("inspection"));
+                mesInfo.setPastPackagingTime(salesOrderService.getProcessFinishTime("포장"));
+
                 // 예상납품일 계산기 실행
                 if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
                     String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
