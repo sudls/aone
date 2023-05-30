@@ -88,8 +88,8 @@
         <span th:text="${stockManage.stockManageQty}"></span>
         /box</td>
       <td>
-        <span th:if="${stockManage.stockManageState.name()=='I'}">입고</span>
-        <span th:if="${stockManage.stockManageState.name()=='O'}">출고</span>
+        <span th:if="${stockManage.stockManageState.name()=='I'}" style="color: #3196e2">입고</span>
+        <span th:if="${stockManage.stockManageState.name()=='O'}" style="color: #ff6b6c">출고</span>
       </td>
       <td th:text="${#temporals.format(stockManage.stockDate, 'yy/MM/dd')}"></td>
     </tr>
