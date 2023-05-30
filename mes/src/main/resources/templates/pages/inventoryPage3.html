@@ -22,7 +22,7 @@
     <thead>
     <tr>
       <th>제품명</th>
-      <th colspan="2">수량</th>
+      <th>수량</th>
     </tr>
     </thead>
 
@@ -30,13 +30,9 @@
     <tr th:each="stockDTO : ${Stock}">
       <td th:text="${stockDTO.stockName}"></td>
       <td>
-        <span th:if="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty div 25}"></span>
-        <span th:unless="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty div 30}"></span>
+        <span th:text="${stockDTO.currentStockQty}"></span>
       /box</td>
-      <td>
-        <span th:if="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty % 25}"></span>
-        <span th:unless="${stockDTO.stockName.contains('젤')}" th:text="${stockDTO.currentStockQty % 30}"></span>
-        /ea</td>
+
     </tr>
     </tbody>
 
@@ -79,7 +75,7 @@
     <thead>
     <tr>
       <th>제품명</th>
-      <th colspan="2">수량</th>
+      <th>수량</th>
       <th>상태</th>
       <th>날짜</th>
     </tr>
@@ -89,14 +85,8 @@
       <td th:text="${stockManage.stockManageName}"></td>
 
       <td>
-        <span th:if="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty div 25}"></span>
-        <span th:unless="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty div 30}"></span>
+        <span th:text="${stockManage.stockManageQty}"></span>
         /box</td>
-      <td>
-        <span th:if="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty % 25}"></span>
-        <span th:unless="${stockManage.stockManageName.contains('젤')}" th:text="${stockManage.stockManageQty % 30}"></span>
-        /ea</td>
-
       <td>
         <span th:if="${stockManage.stockManageState.name()=='I'}">입고</span>
         <span th:if="${stockManage.stockManageState.name()=='O'}">출고</span>
