@@ -53,7 +53,7 @@ public class SalesOrderService {
             workOrder.setWorkStatus(Status.B); // 작업지시를 진행중으로 변경
             if (salesOrder != null) {
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
-                salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
+//                salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
 
 
                 MESInfo mesInfo = new MESInfo();
@@ -294,7 +294,7 @@ public class SalesOrderService {
         System.out.println(processPlan);
         LocalDateTime processEndTime;
 
-        if (processPlan == null){
+        if (processPlan.isEmpty()){
             processEndTime = LocalDateTime.of(1,1,1,1,1,1);
         } else {
             processEndTime = processPlan.get(0).getEndTime();

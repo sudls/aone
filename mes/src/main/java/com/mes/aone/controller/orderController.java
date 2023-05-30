@@ -91,12 +91,13 @@ public class orderController {
             }
 
             try {
+                orderDTO.setSalesDate(LocalDateTime.of(2023,5,23,10,0,0));
                 System.out.println("수주등록: " + orderDTO);
                 MESInfo mesInfo = new MESInfo();
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명
                 mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
-                mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
+                mesInfo.setSalesDay(orderDTO.getSalesDate()); // 수주일
 
                 mesInfo.setPastPreProcessingMachine(salesOrderService.getProcessFinishTime("전처리"));
                 mesInfo.setPastExtractionMachine1(salesOrderService.getFacilityFinishTime("extraction_1"));

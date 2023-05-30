@@ -30,8 +30,7 @@ public class SalesOrder {
     @Column(nullable = false)
     private Integer salesQty;
 
-    @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     private LocalDateTime salesDate;
 
     @Column(nullable = false)
