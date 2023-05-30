@@ -14,9 +14,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 @Transactional
@@ -294,6 +299,28 @@ public class SalesOrderService {
     }
 
 
+    //메인화면에 수주 정보 출력
+    public List<Map<String, Object>> getEventList() {
+//        List<SalesOrder> salesOrderList = salesOrderRepository.findAll();
+        List<SalesOrder> salesOrderList = salesOrderRepository.findBySalesStatusNot(Status.C);
+
+        List<Map<String, Object>> eventList = new ArrayList<>();
+
+        for (SalesOrder salesOrder : salesOrderList){
+            Map<String, Object> eventData = new HashMap<>();
+
+
+//            eventData.put("start", salesOrder.getSalesDate());
+            eventData.put("start", salesOrder.getSalesDate().toLocalDate()); //날짜만 반환
+            eventData.put("title",salesOrder.getSalesOrderId() +"_" + salesOrder.getProductName());
+            eventData.put("extendedProps", Collections.singletonMap("status", salesOrder.getSalesStatus()));
+
+
+            eventList.add(eventData);
+        }
+
+        return eventList;
+    }
 
 
 }

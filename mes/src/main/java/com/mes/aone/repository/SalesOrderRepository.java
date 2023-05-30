@@ -4,8 +4,10 @@ import com.mes.aone.constant.Status;
 import com.mes.aone.entity.SalesOrder;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,6 +57,7 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, Long> {
     // 기간 검색
     List<SalesOrder> findBySalesDateBetween(LocalDateTime startDate, LocalDateTime endDate, Sort sort);
 
-
+    //상태가 취소가 아닌것 검색
+    List<SalesOrder> findBySalesStatusNot(Status salesStatus);
 
 }
