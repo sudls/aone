@@ -3,6 +3,7 @@ package com.mes.aone.service;
 import com.mes.aone.constant.ShipmentState;
 import com.mes.aone.entity.QShipment;
 import com.mes.aone.entity.Shipment;
+import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.repository.ShipmentRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ShipmentService {
 
     private final ShipmentRepository shipmentRepository;
+    private final SalesOrderRepository salesOrderRepository;
 
     // 다중검색
     public List<Shipment> searchShipment(Long salesOrderId, String vendorId, String shipmentProduct, LocalDateTime startDateTime, LocalDateTime endDateTime,
@@ -46,4 +48,11 @@ public class ShipmentService {
         return (List<Shipment>) shipmentRepository.findAll(builder, sort);
     }
 
+//    public void setShippment(Long shippmentId){
+//        salesOrderRepository.findBySalesOrderId(Long salesOrderId);
+//
+//
+//
+//
+//    }
 }
