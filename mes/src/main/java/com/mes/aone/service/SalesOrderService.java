@@ -431,6 +431,37 @@ public class SalesOrderService {
             // 원자재 재고를 데이터베이스에 저장
             materialStorageRepository.save(materialStorage);
         }
+        System.out.println("출고맵: " + mesInfo.getRequiredMaterial());
+
+        List<String> materialKeys = new ArrayList<>(mesInfo.getRequiredMaterial().keySet());
+
+        for (int i = 0; i < materialKeys.size(); i++) {
+            String materialName = materialKeys.get(i);
+            if (mesInfo.getRequiredMaterial().get(materialName) == 0 || mesInfo.getRequiredMaterial().get(materialName) == null){
+                System.out.println("출고안해");
+            }
+            int quantity = mesInfo.getRequiredMaterial().get(materialName);
+
+            // 원자재 재고 객체 생성
+            MaterialStorage materialStorage = new MaterialStorage();
+            materialStorage.setMaterialName(materialRepository.findByMaterialName(materialName));
+            materialStorage.setMaterialQty(quantity);
+
+            // unit 설정
+            if (materialName.contains("파") || materialName.contains("박")) {
+                materialStorage.setUnit("ea");
+            } else {
+                materialStorage.setUnit("kg");
+            }
+
+            materialStorage.setMaterialStorageState(MaterialState.O);  // 출고 상태로 설정s
+            materialStorage.setMaterialStorageDate(mesInfo.getLastStockInDate());  // 출고날짜
+
+            // 원자재 재고를 데이터베이스에 저장
+            materialStorageRepository.save(materialStorage);
+        }
+
+
     }
 
 
