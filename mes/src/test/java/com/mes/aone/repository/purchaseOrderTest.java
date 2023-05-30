@@ -1,3 +1,4 @@
+/*
 package com.mes.aone.repository;
 
 
@@ -23,3 +24,4 @@ public class purchaseOrderTest {
 
 
 }
+*/

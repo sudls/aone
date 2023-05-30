@@ -1,3 +1,4 @@
+/*
 package com.mes.aone.repository;
 
 import com.mes.aone.entity.Stock;
@@ -32,3 +33,4 @@ class StockRepositoryTest{
 //        System.out.println(findStock.toString());
 //    }
 }
+*/

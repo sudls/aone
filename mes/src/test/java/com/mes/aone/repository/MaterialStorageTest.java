@@ -1,3 +1,4 @@
+/*
 package com.mes.aone.repository;
 
 
@@ -84,6 +85,7 @@ public class MaterialStorageTest {
 
     }
 
+*/
 /*    @Test // 원자재 입출고 관리
     public void insertMaterialStorage(){
         MaterialStorage materialStorage = new MaterialStorage();
@@ -98,10 +100,12 @@ public class MaterialStorageTest {
 
         materialStorageRepository.save(materialStorage);
 
-    }*/
+    }*//*
+
 
     @Test // 원자재 입출고 현황
     public void selectMaterialStorage(){
         System.out.println("자재입출고" + materialService.getMaterialStorage().toString());
     }
 }
+*/

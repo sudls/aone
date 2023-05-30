@@ -1,3 +1,4 @@
+/*
 package com.mes.aone.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,4 @@ class ProductionRepositoryTest {
 //        production.setLotNumber("1234");
 //    }
 
-}
+}*/

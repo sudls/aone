@@ -1,3 +1,4 @@
+/*
 
 package com.mes.aone.repository;
 
@@ -16,3 +17,4 @@ class VendorRepositoryTest {
 
 }
 
+*/

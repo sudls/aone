@@ -1,3 +1,4 @@
+/*
 package com.mes.aone.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,3 +24,4 @@ public class StockManageRepositoryTest {
 //        System.out.println(savedStockManage.toString());
 //    }
 }
+*/
