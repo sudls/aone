@@ -72,23 +72,4 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
 
 
 
-    // 공정별 마지막 공정시간
-    @Query("SELECT p FROM ProcessPlan p " +
-            "WHERE p.processStage = :processStage " +
-            "ORDER BY p.endTime DESC")
-    List<ProcessPlan> findProcessPlanByProcessStage(@Param("processStage") String processStage);
-
-    // 설비별 마지막 공정시간
-    @Query("SELECT p FROM ProcessPlan p " +
-            "WHERE p.facilityId = :facilityId " +
-            "ORDER BY p.endTime DESC")
-    List<ProcessPlan> findProcessPlanByFacilityId(@Param("facilityId") Facility facilityId);
-
-
-
-    @Query("SELECT MAX(pp.endTime) FROM ProcessPlan pp " +
-            "JOIN pp.workOrder wo JOIN wo.salesOrder so " +
-            "WHERE so.salesOrderId = :salesOrderId AND pp.processStage = '포장'")
-    LocalDateTime getShipmentDate(@Param("salesOrderId") Long salesOrderId);
-
 }
