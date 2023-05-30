@@ -1,14 +1,14 @@
 package com.mes.aone.dto;
 
 import com.mes.aone.constant.Status;
-import com.mes.aone.entity.ProcessPlan;
-import com.mes.aone.entity.SalesOrder;
+import com.mes.aone.entity.WorkOrder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +29,18 @@ public class WorkOrderDTO {
         this.productName = productName;
     }
 
+    public static List<WorkOrderDTO> of(List<WorkOrder> workOrderList) {
+        List<WorkOrderDTO> workOrderDTOList = new ArrayList<>();
+        for (WorkOrder workOrder : workOrderList) {
+            WorkOrderDTO workOrderDTO = new WorkOrderDTO(
+                    workOrder.getWorkOrderId(),
+                    workOrder.getWorkOrderDate(),
+                    workOrder.getWorkOrderQty(),
+                    workOrder.getWorkStatus(),
+                    workOrder.getSalesOrder().getProductName()
+            );
+            workOrderDTOList.add(workOrderDTO);
+        }
+        return workOrderDTOList;
+    }
 }

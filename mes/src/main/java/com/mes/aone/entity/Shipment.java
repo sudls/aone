@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -24,7 +24,7 @@ public class Shipment {
     private int shipmentQty;    //제품수량
 
     @Column(nullable = false)
-    private LocalDate shipmentDate; //출하날짜
+    private LocalDateTime shipmentDate; //출하날짜
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
