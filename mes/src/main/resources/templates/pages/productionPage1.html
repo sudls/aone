@@ -3,8 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 
-        <!-- 다른 스크립트 및 스타일 태그들 -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 다른 스크립트 및 스타일 태그들 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>aone-생산관리</title>
     <th:block th:replace="fragments/config::configFragment"></th:block>
@@ -41,6 +41,7 @@
             <span>~</span>
             <input type="date" id="endDate" name="endDate">
         </div>
+
 
 
 <!--        <select name="processStage" id="option2">-->
@@ -80,6 +81,7 @@
                 <td th:text="${workOrder.getProductName()}"></td>
                 <td th:text="${workOrder.workOrderQty}"></td>
                 <td th:text="${#temporals.format(workOrder.workOrderDate, 'yy/MM/dd')}"></td>
+
 <!--                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>-->
 <!--                <td th:text="${workOrder.processStage}"></td>-->
 
@@ -99,22 +101,22 @@
     </div>
 
     <div class="table-container" style="height: 200px">
-    <table id="resultTable">
-        <thead>
-        <tr>
-            <th>수주 ID</th>
-            <th>수주 날짜</th>
-            <th>주문 수량</th>
-        </tr>
-        </thead>
-        <tbody id="resultData">
-        <tr th:each="salesOrder : ${salesOrders}">
-            <td th:text="${salesOrder.salesOrderId}"></td>
-            <td th:text="${#temporals.format(salesOrder.salesDate, 'yy/MM/dd')}"></td>
-            <td th:text="${salesOrder.salesQty}"></td>
-        </tr>
-        </tbody>
-    </table>
+        <table id="resultTable">
+            <thead>
+            <tr>
+                <th>수주 ID</th>
+                <th>수주 날짜</th>
+                <th>주문 수량</th>
+            </tr>
+            </thead>
+            <tbody id="resultData">
+            <tr th:each="salesOrder : ${salesOrders}">
+                <td th:text="${salesOrder.salesOrderId}"></td>
+                <td th:text="${#temporals.format(salesOrder.salesDate, 'yy/MM/dd')}"></td>
+                <td th:text="${salesOrder.salesQty}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     </div>
 </div>

@@ -139,6 +139,7 @@ public class orderController {
                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
                 WorkOrder workOrder = new WorkOrder();
                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+
                 workOrder.setWorkOrderQty(mesInfo.getSalesQty());
                 workOrder.setWorkStatus(Status.A);
                 workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));

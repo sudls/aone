@@ -53,36 +53,35 @@
     </div>
     <hr>
     <div class="table-container" style="height: 900px">
-    <table>
-        <thead>
-        <tr>
-            <th>발주번호</th>
-            <th>원자재명</th>
-            <th>거래처명</th>
-            <th>수량</th>
-            <th>발주일자</th>
-            <th>예상 입고일자</th>
+        <table>
+            <thead>
+            <tr>
+                <th>발주번호</th>
+                <th>원자재명</th>
+                <th>거래처명</th>
+                <th>수량</th>
+                <th>발주일자</th>
+                <th>예상 입고일자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="purchaseOrderDTO, status: ${purchaseOrderDTOList}">
+                <td th:text="${purchaseOrderDTO.purchaseOrderId}"></td>
+                <td th:text="${purchaseOrderDTO.materialName.materialName}"></td>
+                <td>
+                    <span th:if="${purchaseOrderDTO.vendorId == 'ven-11'}">11번가</span>
+                    <span th:if="${purchaseOrderDTO.vendorId == 'ven-cou'}">쿠팡</span>
+                    <span th:if="${purchaseOrderDTO.vendorId == 'ven-a'}">에이농장</span>
+                    <span th:if="${purchaseOrderDTO.vendorId == 'ven-nh'}">○○농협</span>
+                    <span th:if="${purchaseOrderDTO.vendorId == 'ven-po'}">○○포장</span>
+                </td>
+                <td th:text="${purchaseOrderDTO.purchaseQty}"></td>
+                <td th:text="${#temporals.format(purchaseOrderDTO.purchaseDate,'yy/MM/dd')}"></td>
+                <td th:text="${#temporals.format(purchaseOrderDTO.estArrival, 'yy/MM/dd')}"></td>
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="purchaseOrderDTO, status: ${purchaseOrderDTOList}">
-            <td th:text="${purchaseOrderDTO.purchaseOrderId}"></td>
-            <td th:text="${purchaseOrderDTO.materialName.materialName}"></td>
-            <td>
-                <span th:if="${purchaseOrderDTO.vendorId == 'ven-11'}">11번가</span>
-                <span th:if="${purchaseOrderDTO.vendorId == 'ven-cou'}">쿠팡</span>
-                <span th:if="${purchaseOrderDTO.vendorId == 'ven-a'}">에이농장</span>
-                <span th:if="${purchaseOrderDTO.vendorId == 'ven-nh'}">○○농협</span>
-                <span th:if="${purchaseOrderDTO.vendorId == 'ven-po'}">○○포장</span>
-            </td>
-            <td th:text="${purchaseOrderDTO.purchaseQty}"></td>
-            <td th:text="${#temporals.format(purchaseOrderDTO.purchaseDate,'yy/MM/dd')}"></td>
-            <td th:text="${#temporals.format(purchaseOrderDTO.estArrival, 'yy/MM/dd')}"></td>
-
-        </tr>
-        </tbody>
-    </table>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </div>

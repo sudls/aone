@@ -35,7 +35,6 @@ public class SalesOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final MaterialStorageRepository materialStorageRepository;
     private final ShipmentRepository shipmentRepository;
-
     private final WorkResultRepository workResultRepository;
 
 
@@ -115,7 +114,6 @@ public class SalesOrderService {
                 salesOrderRepository.save(salesOrder);
                 workOrderRepository.save(workOrder);
 
-
             }
 
         }
@@ -143,6 +141,27 @@ public class SalesOrderService {
             salesOrderRepository.delete(salesOrder);
         }
     }
+
+//    // 수주 검색
+//    public List<SalesOrder> searchSalesOrder(String productName, String vendorId, LocalDateTime startDateTime, LocalDateTime endDateTime, Status salesStatus) {
+//        QSalesOrder qSalesOrder = QSalesOrder.salesOrder;
+//        BooleanBuilder builder = new BooleanBuilder();
+//
+//        if(productName != null){
+//            builder.and(qSalesOrder.productName.eq(productName));
+//        }
+//        if(vendorId != null){
+//            builder.and(qSalesOrder.vendorId.eq(vendorId));
+//        }
+//        if(startDateTime != null && endDateTime != null){
+//            builder.and(qSalesOrder.salesDate.between(startDateTime, endDateTime));
+//        }
+//        if(salesStatus != null){
+//            builder.and(qSalesOrder.salesStatus.eq(salesStatus));
+//        }
+//        Sort sort = Sort.by(Sort.Direction.DESC, "salesOrderId");
+//        return (List<SalesOrder>) salesOrderRepository.findAll(builder, sort);
+//    }
 
 
 
@@ -272,7 +291,6 @@ public class SalesOrderService {
 
         }
         // 출하
-
         Shipment shipment = new Shipment();
         shipment.setShipmentProduct(mesInfo.getProductName());
         shipment.setShipmentQty(mesInfo.getSalesQty());
@@ -280,11 +298,13 @@ public class SalesOrderService {
         shipment.setShipmentDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
 
         LocalDateTime currentDateTime = LocalDateTime.now();
+
 //        LocalDateTime currentDateTime = LocalDateTime.of(2024,10,15,9,0,0);
         LocalDateTime shipmentDate = processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId());
 
         if (currentDateTime.isAfter(shipmentDate)) {
             shipment.setShipmentState(ShipmentState.B);
+
 
 
             WorkResult workResult = new WorkResult();
@@ -301,6 +321,7 @@ public class SalesOrderService {
             shipment.setProduction(null);
             shipmentRepository.save(shipment);
         }
+
 
 
     // 수주 확정 시 DB 발주 테이블 인설트
@@ -410,7 +431,49 @@ public class SalesOrderService {
             // 원자재 재고를 데이터베이스에 저장
             materialStorageRepository.save(materialStorage);
         }
+        System.out.println("출고맵: " + mesInfo.getRequiredMaterial());
+
+        List<String> materialKeys = new ArrayList<>(mesInfo.getRequiredMaterial().keySet());
+
+        for (int i = 0; i < materialKeys.size(); i++) {
+            String materialName = materialKeys.get(i);
+            if (mesInfo.getRequiredMaterial().get(materialName) == 0 || mesInfo.getRequiredMaterial().get(materialName) == null){
+                System.out.println("출고안해");
+            }
+            int quantity = mesInfo.getRequiredMaterial().get(materialName);
+
+            // 원자재 재고 객체 생성
+            MaterialStorage materialStorage = new MaterialStorage();
+            materialStorage.setMaterialName(materialRepository.findByMaterialName(materialName));
+            materialStorage.setMaterialQty(quantity);
+
+            // unit 설정
+            if (materialName.contains("파") || materialName.contains("박")) {
+                materialStorage.setUnit("ea");
+            } else {
+                materialStorage.setUnit("kg");
+            }
+
+            materialStorage.setMaterialStorageState(MaterialState.O);  // 출고 상태로 설정s
+            materialStorage.setMaterialStorageDate(mesInfo.getLastStockInDate());  // 출고날짜
+
+            // 원자재 재고를 데이터베이스에 저장
+            materialStorageRepository.save(materialStorage);
+        }
+
+
     }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+

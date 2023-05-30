@@ -1,12 +1,14 @@
 package com.mes.aone.service;
 
 
+import com.mes.aone.constant.MaterialState;
 import com.mes.aone.dto.MaterialDTO;
 import com.mes.aone.entity.MaterialStorage;
 import com.mes.aone.entity.PurchaseOrder;
 import com.mes.aone.repository.MaterialRepository;
 import com.mes.aone.repository.MaterialStorageRepository;
 import com.mes.aone.repository.PurchaseOrderRepository;
+import com.mes.aone.util.MESInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,6 @@ public class MaterialService {
     public List<MaterialStorage> getMaterialStorage(){
         return materialStorageRepository.findAll();
     }
-
-/*    public List<MaterialDTO> getMaterial(){
-        return materialStorageRepository.getCurrentQuantitiesByMaterialNames();
-    }*/
 
     public List<MaterialDTO> getMaterial(){
         List<MaterialDTO> materialDTOList = materialStorageRepository.getCurrentQuantitiesByMaterialNames();
@@ -51,9 +49,12 @@ public class MaterialService {
         return dummyMaterialDTOList;
     }
 
+
     public List<PurchaseOrder> getPurchaseOrder(){
         return purchaseOrderRepository.findAll();
     }
+
+
 
 
 }
