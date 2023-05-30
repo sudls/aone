@@ -32,5 +32,6 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long>, Que
     // 수주 정보에 따른 작업지시 select
     WorkOrder findBySalesOrder(SalesOrder salesOrder);
 
+   WorkOrder findBySalesOrderSalesOrderId(Long salesOrderId);
 
 }
