@@ -18,7 +18,7 @@ function updateGraph(data) {
 
 //현재시간
 //        let currentTime = new Date();
-let currentTime = new Date(2023, 5, 2, 2, 20); //임시
+let currentTime = new Date(2023, 5, 2, 13, 50); //임시
 
 
         //시작시간이 없을 때, 시작시간이 현재시간보다 미래일때

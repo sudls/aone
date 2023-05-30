@@ -54,7 +54,7 @@ public class mainController {
 
 
         LocalDateTime currentTime = LocalDateTime.now();
-        currentTime=LocalDateTime.of(2023,06,02,02,20); //임시;
+        currentTime=LocalDateTime.of(2023,06,02,13,20); //임시;
         System.out.println("currentTime="+currentTime);
 
         List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate(currentTime,selectDateTime);
