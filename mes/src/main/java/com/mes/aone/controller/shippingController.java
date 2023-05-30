@@ -26,6 +26,9 @@ public class shippingController {
     @GetMapping(value="/shipping")
     public String shipmentPage(Model model){
 
+//        shipmentService.setShippment();
+
+
         List<ShipmentDTO> shipmentDTOList = shipmentRepository.findShipmentDetails();
         model.addAttribute("shipments", shipmentDTOList);
 

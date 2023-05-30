@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
-
 import java.util.*;
+
 
 
 import java.util.ArrayList;
@@ -35,6 +35,9 @@ public class SalesOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final MaterialStorageRepository materialStorageRepository;
     private final ShipmentRepository shipmentRepository;
+
+    private final WorkResultRepository workResultRepository;
+
 
     // 수주 등록
     public Long createSalesOrder(OrderDTO orderDTO) throws Exception{
@@ -112,10 +115,11 @@ public class SalesOrderService {
                 salesOrderRepository.save(salesOrder);
                 workOrderRepository.save(workOrder);
 
-            }
 
             }
+
         }
+    }
 
 
 
@@ -265,32 +269,39 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishPackaging().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+
         }
         // 출하
-        //System.out.println("출하날짜 "+processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
-        System.out.println("여기 555555555555555555555");
+
         Shipment shipment = new Shipment();
-        System.out.println("여기 6666666666666666666");
         shipment.setShipmentProduct(mesInfo.getProductName());
         shipment.setShipmentQty(mesInfo.getSalesQty());
         System.out.println(shipment.getShipmentQty());
-//        shipment.setShipmentDate(LocalDateTime.of(2024,3,14,9,20,0));
         shipment.setShipmentDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
 
-        System.out.println(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
+        LocalDateTime currentDateTime = LocalDateTime.now();
+//        LocalDateTime currentDateTime = LocalDateTime.of(2024,10,15,9,0,0);
+        LocalDateTime shipmentDate = processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId());
 
-        if (mesInfo.getPackagingBoxOutput() >= mesInfo.getSalesQty()) {
-            shipment.setShipmentState(ShipmentState.B); // 출하량이 수주량보다 같거나 크면 B로 세팅
+        if (currentDateTime.isAfter(shipmentDate)) {
+            shipment.setShipmentState(ShipmentState.B);
+
+
+            WorkResult workResult = new WorkResult();
+            workResult.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
+            workResult.setWorkFinishDate(processPlanRepository.getShipmentDate(mesInfo.getSalesOrderId()));
+            workResult.setWorkFinishQty(mesInfo.getSalesQty());
+            workResultRepository.save(workResult);
+
+
         } else {
-            shipment.setShipmentState(ShipmentState.A); // 출하량이 수주량보다 작으면 A로 세팅
+            shipment.setShipmentState(ShipmentState.A);
         }
-        shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
-        shipment.setProduction(null);
-        System.out.println("여기 7777777777777777777");
+            shipment.setSalesOrder(salesOrderRepository.findBySalesOrderId(mesInfo.getSalesOrderId()));
+            shipment.setProduction(null);
+            shipmentRepository.save(shipment);
+        }
 
-        shipmentRepository.save(shipment);
-        System.out.println("이거확인점여!"+shipment);
-    }
 
     // 수주 확정 시 DB 발주 테이블 인설트
     public void createPurchaseOrder(MESInfo mesInfo){
@@ -400,5 +411,6 @@ public class SalesOrderService {
             materialStorageRepository.save(materialStorage);
         }
     }
+
 
 }

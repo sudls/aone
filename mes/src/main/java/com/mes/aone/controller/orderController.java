@@ -145,6 +145,8 @@ public class orderController {
 
                 salesOrderService.createWorkOrder(workOrder);
 
+
+
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
                 }
