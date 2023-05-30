@@ -333,7 +333,7 @@ public class SalesOrderService {
             purchaseOrder = new PurchaseOrder();
             purchaseOrder.setMaterialName(materialRepository.findByMaterialName(keys.get(i)));
             purchaseOrder.setPurchaseQty(mesInfo.getPurchaseMap().get(keys.get(i)));
-            purchaseOrder.setVendorId("ven-11");
+            purchaseOrder.setVendorId(materialRepository.findVendorIdByMaterialName(keys.get(i)));
             purchaseOrder.setPurchaseDate(mesInfo.getSalesDay());
             purchaseOrder.setEstArrival(mesInfo.getPurchaseAndTimeMap().get(keys.get(i)));
 

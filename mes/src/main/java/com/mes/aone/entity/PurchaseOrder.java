@@ -28,6 +28,7 @@ public class PurchaseOrder {
     @Column(nullable = false)
     private LocalDateTime purchaseDate;               // 발주 날짜
 
+
     @Column(nullable = false)
     private String vendorId;                 // 거래처아이디와 fk
 
