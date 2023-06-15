@@ -65,11 +65,19 @@ public class SalesOrderService {
 
                 MESInfo mesInfo = new MESInfo();
                 Calculator calculator = new Calculator(mesInfo);
-                mesInfo.setProductName(salesOrder.getProductName()); //수주 제품명
+                mesInfo.setProductName(salesOrder.getProductName()); // 수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
-                mesInfo.setSalesOrderId(salesOrder.getSalesOrderId());//수주 아이디
+                mesInfo.setSalesOrderId(salesOrder.getSalesOrderId());// 수주 아이디
 
+                // 완제품 재고량 세팅
+//                mesInfo.setCabbagePackaging(getFnishedProduct("양배추즙"));
+//                mesInfo.setGarlicPackaging(getFnishedProduct("흑마늘즙"));
+//                mesInfo.setPomegranatePackaging(getFnishedProduct("석류젤리스틱"));
+//                mesInfo.setPlumPackaging(getFnishedProduct("매실젤리스틱"));
+//                System.out.println("완제품 재고량 세팅 완료");
+
+                // 공정 계획 세팅
                 mesInfo.setPastPreProcessingMachine(getProcessFinishTime("전처리"));
                 mesInfo.setPastExtractionMachine1(getFacilityFinishTime("extraction_1"));
                 mesInfo.setPastExtractionMachine2(getFacilityFinishTime("extraction_2"));
@@ -83,6 +91,7 @@ public class SalesOrderService {
                     String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
                     if (purchaseCheck.equals("enough")){ // 재고가 충분하면
                         mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+                        System.out.println("재고가 충분하면 들어옴");
                     } else {
                         calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
                         calculator.measurement(); // 원료계량 메서드 실행
@@ -109,10 +118,16 @@ public class SalesOrderService {
                 }
 
                 salesOrder.setEstDelivery(mesInfo.getEstDelivery()); // 예상 납품일 업데이트
+                System.out.println("예상 납품일 업데이트: " + mesInfo.getEstDelivery());
 
                 createProcessPlan(mesInfo);
+                System.out.println("공정계획 들어감");
                 createPurchaseOrder(mesInfo);
+                System.out.println("발주 현황 들어감");
                 createMaterialStorage(mesInfo);
+                System.out.println("원자재 입출고 들어감");
+                createWorkResult(mesInfo, workOrder);
+                System.out.println("작업 실적 들어감");
 
                 salesOrderRepository.save(salesOrder);
                 workOrderRepository.save(workOrder);
@@ -297,11 +312,12 @@ public class SalesOrderService {
 
         // 완제품 창고 입고 insert
         StockManage stockManage = new StockManage();
-        stockManage.setStockDate(mesInfo.getEstDelivery());
+
         int sumPackage=0;
         for (int i=0; i<mesInfo.getNowPackagingOutput().size(); i++){ // 포장
-            sumPackage = mesInfo.getNowPackagingOutput().get(i);
+            sumPackage = mesInfo.getNowPackagingOutput().get(i) + sumPackage;
         }
+        stockManage.setStockDate(mesInfo.getEstDelivery());
         stockManage.setStockManageQty(sumPackage);
         stockManage.setStockManageState(StockManageState.I);
         stockManage.setStockManageName(mesInfo.getProductName());
@@ -323,7 +339,6 @@ public class SalesOrderService {
 
         if (currentDateTime.isAfter(shipmentDate)) {
             shipment.setShipmentState(ShipmentState.B);
-
 
             WorkResult workResult = new WorkResult();
             workResult.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
@@ -347,7 +362,6 @@ public class SalesOrderService {
         stockManage1.setStockManageName(mesInfo.getProductName());
         stockManage1.setStock(stockRepository.findByStockName(mesInfo.getProductName()));
         stockManageRepository.save(stockManage1);
-
         }
 
 
@@ -490,6 +504,21 @@ public class SalesOrderService {
         }
 
 
+    }
+
+    // 수주 확정 시 작업실적 insert
+    public void createWorkResult(MESInfo mesInfo, WorkOrder workOrder) {
+        WorkResult workResult = new WorkResult();
+
+        workResult.setWorkOrder(workOrder);
+        workResult.setWorkFinishQty(workOrder.getWorkOrderQty());
+        workResult.setWorkFinishDate(mesInfo.getEstDelivery());
+
+        workResultRepository.save(workResult);
+    }
+
+    public int getFnishedProduct(String productName) {
+        return stockRepository.findByStockName(productName).getStockQty();
     }
 
 
