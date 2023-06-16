@@ -55,8 +55,11 @@ public class SalesOrderService {
         for (String salesOrderId : selectedIds) {
             Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
-            WorkOrder workOrder = workOrderRepository.findBySalesOrder(salesOrder);
-            workOrder.setWorkStatus(Status.B); // 작업지시를 진행중으로 변경
+//            WorkOrder workOrder = workOrderRepository.findBySalesOrder(salesOrder);
+//            workOrder.setWorkStatus(Status.B); // 작업지시를 진행중으로 변경
+
+            System.out.println("---------------------여기 ");
+
 
             if (salesOrder != null) {
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
@@ -109,13 +112,24 @@ public class SalesOrderService {
                 }
 
                 salesOrder.setEstDelivery(mesInfo.getEstDelivery()); // 예상 납품일 업데이트
-
                 createProcessPlan(mesInfo);
                 createPurchaseOrder(mesInfo);
                 createMaterialStorage(mesInfo);
 
                 salesOrderRepository.save(salesOrder);
-                workOrderRepository.save(workOrder);
+
+//                WorkOrder workOrder = new WorkOrder();
+//                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+//                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+//                workOrder.setWorkStatus(Status.B);
+//                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(orderId));
+//                System.out.println("-------여기 ---------- " + salesOrderRepository.findBySalesOrderId(orderId));
+//
+//                workOrderRepository.save(workOrder);
+
+
+
+//                workOrderRepository.save(workOrder);
 
             }
 

@@ -33,7 +33,7 @@ public class Calculator {
 
         if (mesInfo.getProductName().equals("양배추즙")) {                // 창고 재고량 확인 전 세팅
             requiredCabbage = mesInfo.salesQty;
-            if (mesInfo.cabbagePackaging >= requiredCabbage) {            // 재고량 > 주문량
+            if (mesInfo.cabbagePackaging >= requiredCabbage) {            // 재고량 >= 주문량
                 mesInfo.setShipmentBox(requiredCabbage);                // 출하량
                 mesInfo.setCabbagePackaging(mesInfo.cabbagePackaging - requiredCabbage);        // 창고 재고 뺴기
                 return "enough";
@@ -375,18 +375,18 @@ public class Calculator {
                         break;
 
                 }
-                // 원자재 발주일, 발주자재, 발주량
-                if (salesDate.getDayOfWeek() == DayOfWeek.MONDAY || salesDate.getDayOfWeek() == DayOfWeek.TUESDAY ||                   // 수주일이 월, 화, 수, 목이면
-                        salesDate.getDayOfWeek() == DayOfWeek.WEDNESDAY || salesDate.getDayOfWeek() == DayOfWeek.THURSDAY) {
+            // 원자재 발주일, 발주자재, 발주량
+            if (salesDate.getDayOfWeek() == DayOfWeek.MONDAY || salesDate.getDayOfWeek() == DayOfWeek.TUESDAY ||                   // 수주일이 월, 화, 수, 목이면
+                    salesDate.getDayOfWeek() == DayOfWeek.WEDNESDAY || salesDate.getDayOfWeek() == DayOfWeek.THURSDAY) {
 
-                    stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
-                    mesInfo.setRowMaterialName(key);
-                    mesInfo.setStockOrderDate(stockOrderDate);
-                    mesInfo.setRowMaterialAmount(value);
-                System.out.println(
-                        "\n발주자재: " + key +
-                                "\n발주일: " + stockOrderDate +
-                                "\n발주량: " + value);
+                stockOrderDate = salesDate.plusDays(1).withHour(9).withMinute(0).withSecond(0);
+                mesInfo.setRowMaterialName(key);
+                mesInfo.setStockOrderDate(stockOrderDate);
+                mesInfo.setRowMaterialAmount(value);
+            System.out.println(
+                    "\n발주자재: " + key +
+                            "\n발주일: " + stockOrderDate +
+                            "\n발주량: " + value);
             }else if(salesDate.getDayOfWeek()== DayOfWeek.FRIDAY){  // 수주일이 금요일이면 3일뒤 오전 9시 주문(월요일)      -> 주문시간 = 이틀뒤 오전 9시 주문(월요일)
                 System.out.println("주주일 금");
                 stockOrderDate = salesDate.plusDays(3).withHour(9).withMinute(0).withSecond(0);

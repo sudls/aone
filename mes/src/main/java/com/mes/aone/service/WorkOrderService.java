@@ -4,6 +4,7 @@ import com.mes.aone.constant.Status;
 import com.mes.aone.entity.QWorkOrder;
 import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.WorkOrderRepository;
+import com.mes.aone.util.MESInfo;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,24 @@ import java.util.List;
 public class WorkOrderService {
 
     private final WorkOrderRepository workOrderRepository;
+
+//    public WorkOrder createWorkOrder(WorkOrder workOrder){
+//        MESInfo mesInfo;
+//
+//        workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+//
+//        workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+//        workOrder.setWorkStatus(Status.A);
+//        workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+//
+//        salesOrderService.createWorkOrder(workOrder);
+//
+//
+//
+//        return
+//    }
+//
+
 
     // 다중검색
     public List<WorkOrder> searchWorkOrders(Long workOrderId, LocalDateTime startDateTime, LocalDateTime endDateTime,

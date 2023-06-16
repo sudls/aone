@@ -6,10 +6,13 @@ import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.SalesOrderRepository;
+import com.mes.aone.repository.WorkOrderRepository;
 import com.mes.aone.service.SalesOrderService;
+import com.mes.aone.service.WorkOrderService;
 import com.mes.aone.util.Calculator;
 import com.mes.aone.util.MESInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.gson.GsonProperties;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -31,6 +34,8 @@ public class orderController {
 
     private final SalesOrderService salesOrderService;
     private final SalesOrderRepository salesOrderRepository;
+    private final WorkOrderService workOrderService;
+    private final WorkOrderRepository workOrderRepository;
 
 
 
@@ -133,18 +138,19 @@ public class orderController {
                         calculator.packaging(); // 포장 메서드 실행
                     }
                 }
+
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 
 
                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
-                WorkOrder workOrder = new WorkOrder();
-                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
-
-                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
-                workOrder.setWorkStatus(Status.A);
-                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
-
-                salesOrderService.createWorkOrder(workOrder);
+//                WorkOrder workOrder = new WorkOrder();
+//                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+//
+//                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+//                workOrder.setWorkStatus(Status.A);
+//                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+//
+//                salesOrderService.createWorkOrder(workOrder);
 
 
 
@@ -162,11 +168,16 @@ public class orderController {
         String[] selectedIds = salesOrderFromDTO.getSelectedOrderIdList().split(",");
         System.out.println("수주확정: " + selectedIds);
         try {
+            System.out.println("22222222222222222222");
             salesOrderService.confirmSalesOrderState(selectedIds);
-
+//            WorkOrder workOrder = new WorkOrder();
+//            workOrderService.createWorkOrder(workOrder);
+            System.out.println("3333333333333" + selectedIds);
         } catch (Exception e) {
+            System.out.println("444444444444444444444");
             model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
         }
+        System.out.println("555555555555555555555555555");
         return "redirect:/order";
     }
 
