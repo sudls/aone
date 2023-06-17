@@ -109,6 +109,19 @@ public class orderController {
                     String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
                     if (purchaseCheck.equals("enough")){ // 재고가 충분하면
                         mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+
+                        // 예상납품일 세팅
+                        orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+                        Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+
+                        WorkOrder workOrder = new WorkOrder();
+                        workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+                        workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+                        workOrder.setWorkStatus(Status.A);
+                        workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+                        salesOrderService.createWorkOrder(workOrder);
+
                     } else {
                         calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
                         calculator.measurement(); // 원료계량 메서드 실행
@@ -118,11 +131,38 @@ public class orderController {
                         calculator.examination();//검사 메서드 실행
                         calculator.cooling();//열교환 메서드 실행
                         calculator.packaging(); // 포장 메서드 실행
+
+                        // 예상납품일 세팅
+                        orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+                        Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+
+                        // 작업지시 세팅
+                        WorkOrder workOrder = new WorkOrder();
+                        workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+                        workOrder.setWorkOrderQty(mesInfo.getRequiredBox());
+                        workOrder.setWorkStatus(Status.A);
+                        workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+                        salesOrderService.createWorkOrder(workOrder);
+
                     }
                 }else { // 젤리스틱 공정
                     String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
                     if (purchaseCheck.equals("enough")){ //재고가 충분하면
                         mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+
+                        // 예상납품일 세팅
+                        orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+                        Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+
+                        // 작업지시 세팅
+                        WorkOrder workOrder = new WorkOrder();
+                        workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+                        workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+                        workOrder.setWorkStatus(Status.A);
+                        workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+                        salesOrderService.createWorkOrder(workOrder);
                     } else {
                         calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
                         calculator.measurement(); // 원료계량 메서드 실행
@@ -131,20 +171,34 @@ public class orderController {
                         calculator.examination();//검사 메서드 실행
                         calculator.cooling();//열교환 메서드 실행
                         calculator.packaging(); // 포장 메서드 실행
+
+
+                        // 예상납품일 세팅
+                        orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+                        Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+
+                        // 작업지시 세팅
+                        WorkOrder workOrder = new WorkOrder();
+                        workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+                        workOrder.setWorkOrderQty(mesInfo.getRequiredBox());
+                        workOrder.setWorkStatus(Status.A);
+                        workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+                        salesOrderService.createWorkOrder(workOrder);
                     }
                 }
-                orderDTO.setEstDelivery(mesInfo.getEstDelivery());
-
-
-                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
-                WorkOrder workOrder = new WorkOrder();
-                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
-
-                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
-                workOrder.setWorkStatus(Status.A);
-                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
-
-                salesOrderService.createWorkOrder(workOrder);
+//                orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+//                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+//
+//
+//                WorkOrder workOrder = new WorkOrder();
+//                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+//
+//                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+//                workOrder.setWorkStatus(Status.A);
+//                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+//
+//                salesOrderService.createWorkOrder(workOrder);
 
 
 

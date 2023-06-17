@@ -41,8 +41,9 @@ public class MESInfo {
     int pomegranatePackaging = 0; // 석류젤리스틱 박스포장
     int plumPackaging = 0;       // 매실젤리스틱 박스포장
 
-  
-  
+  // 생산해야 할 박스 수
+  int makeBox;
+
 
    //원자재 발주량
    int cabbage = 0; // 양배추즙

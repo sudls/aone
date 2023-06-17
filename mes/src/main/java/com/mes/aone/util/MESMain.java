@@ -9,7 +9,7 @@ public class MESMain {
         Calculator calculator = new Calculator(mesInfo);
 
         String productName = "양배추즙"; // 제품명 입력
-        int salesAmount = 1000; // 제품량 입력
+        int salesAmount = 500; // 제품량 입력
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
@@ -21,6 +21,8 @@ public class MESMain {
             if (purchaseCheck.equals("enough")){
                 mesInfo.setEstDelivery(LocalDateTime.now());
             } else {
+//                System.out.println("-------------------만들어야 할 완제품 박스 수---------------------------------------------------------");
+//                calculator.makingBox(); // 만들어야 할 완제품 박스 계산 실행
                 System.out.println("-------------------발주 도착시간---------------------------------------------------------");
                 calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
                 System.out.println("-------------------원료계량------------------------------------------------------");
