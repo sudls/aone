@@ -371,10 +371,10 @@ public class SalesOrderService {
 
     }
 
-    // 수주 등록 시 작업 지시 테이블 인설트(대기상태)
-    public void createWorkOrder(WorkOrder workOrder){
-        workOrderRepository.save(workOrder);
-    }
+    // 수주 등록 시 작업 지시 테이블 인설트(대기상태)  -> workOrderRepository
+//    public void createWorkOrder(WorkOrder workOrder){
+//        workOrderRepository.save(workOrder);
+//    }
 
     // 공정별 마지막 공정시간
     public LocalDateTime getProcessFinishTime(String processStage){
