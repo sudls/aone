@@ -43,7 +43,7 @@ public class Calculator {
                 System.out.println("창고 완제품 재고 수: " + mesInfo.getCabbagePackaging() + " 박스");
                 System.out.println("만들어야 할 양배추즙 : " + requiredProduct + " 박스");
 
-                mesInfo.setCabbage((int) (Math.ceil((double) (requiredProduct * 30 / 20) / 1000) * 1000)); // 양배추 주문량
+                mesInfo.setCabbage((int) (Math.ceil(((double)(requiredProduct * 30) / 20) / 1000) * 1000)); // 양배추 주문량
                 System.out.println("1111111111111 필요한 양배추 ; " + mesInfo.getCabbage());
                 mesInfo.setRequiredCabbage(mesInfo.getCabbage());
                 requiredMap.put("양배추", mesInfo.getCabbage());
@@ -116,7 +116,7 @@ public class Calculator {
                 System.out.println("창고 완제품 재고 수: " + mesInfo.getGarlicPackaging() + " 박스");
                 System.out.println("만들어야 할 흑마늘즙: " + requiredProduct + " 박스");
 
-                mesInfo.setGarlic((int) Math.ceil((double) (requiredProduct * 30 / 120) / 10) * 10);  // 흑마늘 주문량
+                mesInfo.setGarlic((int) Math.ceil(((double)(requiredProduct * 30) / 120) / 10) * 10);  // 흑마늘 주문량
                 mesInfo.setRequiredGarlic(mesInfo.getGarlic());
                 requiredMap.put("흑마늘", mesInfo.getGarlic());
                 System.out.println("흑마늘 주문 수: " + mesInfo.getGarlic() + "kg");
@@ -186,7 +186,7 @@ public class Calculator {
                 System.out.println("주문할 원재고 수: " + requiredProduct + " 박스");
 
                 // 석류 농축액 주문량
-                mesInfo.setPomegranate((int) Math.ceil((double) (requiredProduct * 25 / 200) / 5) * 5);   // 석류 주문량
+                mesInfo.setPomegranate((int) Math.ceil(((double)(requiredProduct * 25) / 200) / 5) * 5);   // 석류 주문량
                 mesInfo.setRequiredPomegranate(mesInfo.getPomegranate());
                 requiredMap.put("석류농축액", mesInfo.getPomegranate());
                 System.out.println("석류농축액 주문 수: " + mesInfo.getPomegranate() + "kg");
@@ -270,7 +270,8 @@ public class Calculator {
                 System.out.println("남은 재고 수: " + mesInfo.getPlumPackaging() + " 박스");
                 System.out.println("주문할 원재고 수: " + requiredProduct + " 박스");
                 // 매실 액기스 주문량
-                mesInfo.setPlum((int) Math.ceil( (double) (requiredProduct * 25/200) / 5 ) * 5);
+                mesInfo.setPlum((int) Math.ceil(((double)(requiredProduct * 25) /200) / 5 ) * 5);
+
                 mesInfo.setRequiredPlum(mesInfo.getPlum());
                 requiredMap.put("매실농축액", mesInfo.getPlum());
                 System.out.println("매실농축액 주문 수: " + mesInfo.getPlum() + "kg");
@@ -928,11 +929,5 @@ public class Calculator {
 
         return startTime; // 근무 시간 안걸리면 그대로 리턴
     }
-
-//    // 만들어야 할 완제품 박스 수
-//    public void makingBox(){
-//        long createdBox = (long)((mesInfo.getCabbage() *2) * 0.8 / 0.08) / 30;
-//        System.out.println("-------------- createdBox : " + createdBox);
-//    }
 
 }
