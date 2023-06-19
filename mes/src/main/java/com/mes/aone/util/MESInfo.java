@@ -54,7 +54,6 @@ public class MESInfo {
    int box = 0; // 박스
    int pouch = 0; // 파우치(즙)
    int stickPouch = 0; // 파우치(스틱)
-
    int shipmentBox = 0;             // 출하량
   
   

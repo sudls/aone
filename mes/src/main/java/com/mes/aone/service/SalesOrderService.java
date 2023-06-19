@@ -122,6 +122,15 @@ public class SalesOrderService {
         }
     }
 
+    public void standByState(List<SalesOrder> salesOrderIds){
+
+
+
+
+    }
+
+
+
 
 
     // 수주 취소
