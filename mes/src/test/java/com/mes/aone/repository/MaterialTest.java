@@ -4,17 +4,32 @@ package com.mes.aone.repository;
 
 import com.mes.aone.entity.Material;
 import com.mes.aone.entity.Vendor;
+import com.mes.aone.repository.MaterialRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+import java.util.List;
 
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class MaterialTest {
 
     @Autowired
     MaterialRepository materialRepository;
-    @Autowired
-    VendorRepository vendorRepository;
+//    @Autowired
+//    VendorRepository vendorRepository;
+
+    @Test
+    public void 자재명수량테스트(){
+        List<Material> materialList = materialRepository.findByMaterialNameAndMaterialQuantity();
+        for(Material material: materialList){
+            System.out.println(material.toString());
+//            System.out.println(material.getMaterialName());
+//            System.out.println(material.getMaterialQuantity());
+        }
+    }
 
 
 */
@@ -101,9 +116,9 @@ public class MaterialTest {
         materialRepository.save(material7);
 
 
-    }*//*
+    }
 
 
-}
+}*/
 
-*/
+

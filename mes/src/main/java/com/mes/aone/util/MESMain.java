@@ -8,11 +8,13 @@ public class MESMain {
         MESInfo mesInfo = new MESInfo();
         Calculator calculator = new Calculator(mesInfo);
 
+
         String productName = "양배추즙"; // 제품명 입력
-        int salesAmount = 667; // 제품량 입력
+        int salesAmount = 500; // 제품량 입력
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);
+//        mesInfo.setMaterialStockQuantities();       // 원자재창고 세팅
 
 
         if (productName.equals("양배추즙") || productName.equals("흑마늘즙")){ // 즙 공정

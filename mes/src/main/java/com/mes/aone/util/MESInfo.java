@@ -1,6 +1,6 @@
 package com.mes.aone.util;
 
-
+import com.mes.aone.service.MaterialService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class MESInfo {
+  private MaterialService materialService;
 
    //수주 정보
    String productName = ""; // 제품명
@@ -24,18 +25,30 @@ public class MESInfo {
 
 
   // 창고 원자재량(--)
-    int stockCabbage = 0;       // 양배추
-    int stockGarlic = 0;         // 흑마늘
-    int stockPomegranate = 0;    // 석류농축액
-    int stockPlum = 0;           // 매실농축액
-    int stockCollagen = 0; // 콜라겐
-    int stockBox = 0; // 박스
-    int stockPouch = 0; // 파우치(즙)
-    int stockStickPouch = 0; // 파우치(스틱)
+//    int stockCabbage = 0;       // 양배추
+//    int stockGarlic = 0;         // 흑마늘
+//    int stockPomegranate = 0;    // 석류농축액
+//    int stockPlum = 0;           // 매실농축액
+//    int stockCollagen = 0; // 콜라겐
+//    int stockBox = 0; // 박스
+//    int stockPouch = 0; // 파우치(즙)
+//    int stockStickPouch = 0; // 파우치(스틱)
+
+//    public void setMaterialStockQuantities() {
+     List<Integer> stockMaterialQuantities = materialService.getMaterialStockQuantities();
+     int stockCabbage = stockMaterialQuantities.get(0);
+     int stockGarlic = stockMaterialQuantities.get(1);
+     int stockPomegranate = stockMaterialQuantities.get(2);
+     int stockPlum = stockMaterialQuantities.get(3);
+     int stockCollagen = stockMaterialQuantities.get(4);
+     int stockBox = stockMaterialQuantities.get(5);
+     int stockPouch = stockMaterialQuantities.get(6);
+     int stockStickPouch = stockMaterialQuantities.get(7);
+//    }
 
 
 
-    // 창고 재고량(--)
+ // 창고 재고량(--)
     int cabbagePackaging =0;    // 양배추즙 박스포장
     int garlicPackaging = 0;    // 흑마늘즙 박스포장
     int pomegranatePackaging = 0; // 석류젤리스틱 박스포장

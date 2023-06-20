@@ -1,14 +1,12 @@
 package com.mes.aone.service;
 
 
-import com.mes.aone.constant.MaterialState;
 import com.mes.aone.dto.MaterialDTO;
 import com.mes.aone.entity.MaterialStorage;
 import com.mes.aone.entity.PurchaseOrder;
 import com.mes.aone.repository.MaterialRepository;
 import com.mes.aone.repository.MaterialStorageRepository;
 import com.mes.aone.repository.PurchaseOrderRepository;
-import com.mes.aone.util.MESInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +67,25 @@ public class MaterialService {
 
 
         }
+    }
+
+    public List<Integer> getMaterialStockQuantities() {
+        System.out.println("1111111111111111111111");
+        List<Integer> materialQuantities = new ArrayList<>();
+        // 각 원자재의 재고량을 조회하여 stockQuantities 리스트에 추가
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("양배추"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("흑마늘"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("석류농축액"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("매실농축액"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("콜라겐"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("박스"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("파우치"));
+        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("스틱파우치"));
+        System.out.println("222222222222222222222");
+        for(Integer quantities : materialQuantities)
+            System.out.println(quantities);
+
+        return materialQuantities;
     }
 
 }

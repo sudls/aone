@@ -4,7 +4,6 @@ import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
-import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.service.SalesOrderService;
 import com.mes.aone.service.WorkOrderService;
@@ -82,19 +81,17 @@ public class orderController {
     // 수주 등록
     @PostMapping(value="/order")
     public String salesOrderWrite(@Valid OrderDTO orderDTO, BindingResult bindingResult,  Model model) {
-
             if (bindingResult.hasErrors()) {
                 return "/pages/orderPage";
             }
-
             try {
                 System.out.println("수주등록: " + orderDTO);
-                MESInfo mesInfo = new MESInfo();
+                MESInfo mesInfo = new MESInfo();                      // 인포에서 문제
                 Calculator calculator = new Calculator(mesInfo);
+
                 mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명
                 mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
-
 
 
                 mesInfo.setPastPreProcessingMachine(salesOrderService.getProcessFinishTime("전처리"));
@@ -125,26 +122,12 @@ public class orderController {
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
 
-//                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주 업데이트
-//                 WorkOrder workOrder = new WorkOrder();
-//                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
-
-//                 int sumPackage=0;
-//                 for (int i=0; i<mesInfo.getNowPackagingOutput().size(); i++){ // 포장
-//                     sumPackage = mesInfo.getNowPackagingOutput().get(i) + sumPackage;
-//                 }
-//                 workOrder.setWorkOrderQty(sumPackage);
-//                 workOrder.setWorkStatus(Status.A);
-//                 workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
-
-//                 salesOrderService.createWorkOrder(workOrder); // 작업 지시 현황 등록
-
-
                 // 작업지시 세팅
                 workOrderService.createWorkOrder(mesInfo, salesOrderId, purchaseCheck);
                 } catch (Exception e) {
-                    model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
-                }
+//                    model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
+                    e.printStackTrace();
+            }
         return "redirect:/order";
     }
 
@@ -157,10 +140,8 @@ public class orderController {
         System.out.println("수주확정: " + selectedIds);
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);
-            System.out.println("여기1----------------------------------");
             salesOrderRepository.findSalesStatusA();
             salesOrderService.standByState(salesOrderRepository.findSalesStatusA());      // 상태가 '대기'인 id들 찾아서 넣어줌
-            System.out.println("여기2----------------------------------");
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
