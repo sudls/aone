@@ -70,8 +70,6 @@ public class orderController {
 
         // 검색결과
         List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(searchProduct, searchVendor, searchState, startDateTime, endDateTime, sort);
-
-
         model.addAttribute("orderDTOList", salesOrderList);
         model.addAttribute("orderDTO", new OrderDTO());
         model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
@@ -142,9 +140,12 @@ public class orderController {
         System.out.println("수주확정: " + selectedIds);
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);
-            salesOrderService.standByState(salesOrderRepository.findSalesStatusAIds());      // 상태가 '대기'인 id들 찾아서 넣어줌
-
+            System.out.println("여기1----------------------------------");
+            salesOrderRepository.findSalesStatusA();
+            salesOrderService.standByState(salesOrderRepository.findSalesStatusA());      // 상태가 '대기'인 id들 찾아서 넣어줌
+            System.out.println("여기2----------------------------------");
         } catch (Exception e) {
+            e.printStackTrace();
             model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
         }
         return "redirect:/order";
