@@ -17,6 +17,12 @@ public class MaterialDTO {
         this.currentQuantity = currentQuantity != null? currentQuantity : 0L;
     }
 
+    public Long getCurrentQuantity() {
+        return currentQuantity;
+    }
 
+    public void setCurrentQuantity(Long currentQuantity) {
+        this.currentQuantity = currentQuantity;
+    }
 
 }
