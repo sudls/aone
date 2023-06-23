@@ -13,54 +13,55 @@
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contentStyle">
     <div class="innerContent">
-    <div class="titlebox">
-        <h1 style="display: inline-block">작업 실적</h1>
-        <form method="get" action="/production2/search"><form method="get" action="/production2/search">
-            <div class="periodBox">
-                <input type="date" id="startDate" name="startDate">
-                <span>~</span>
-                <input type="date" id="endDate" name="endDate">
-            </div>
-            <button>검색</button>
-        </form>
+        <div class="titlebox">
+            <h1 style="display: inline-block">작업 실적</h1>
+            <form method="get" action="/production2/search"><form method="get" action="/production2/search">
+                <div class="periodBox">
+                    <input type="date" id="startDate" name="startDate">
+                    <span>~</span>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                <button>검색</button>
+            </form>
+        </div>
+
+        <hr>
+        <div class="table-container" style="height: 900px">
+            <table>
+                <thead>
+                <tr>
+                    <th>작업 지시 ID</th>
+                    <th>제품명</th>
+                    <th>수량</th>
+                    <th>단위</th>
+                    <th>작업완료일자</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="workResult : ${workResults}">
+                    <td th:text="${workResult.workOrderId}"></td>
+                    <td th:text="${workResult.productName}"></td>
+                    <td th:text="${workResult.workFinishQty}"></td>
+                    <td>box</td>
+                    <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>
+
+                </tr>
+
+
+                <!--    <tr th:each="workResult : ${workResults}">-->
+                <!--        <td th:text="${workResult.workOrder.workOrderId}"></td>-->
+                <!--        <td th:text="${workResult.workOrder.salesOrder.productName}"></td>-->
+                <!--        <td th:text="${workResult.workFinishQty}"></td>-->
+                <!--        <td>box</td>-->
+                <!--        <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>-->
+
+                <!--    </tr>-->
+
+                </tbody>
+            </table>
+        </div>
     </div>
-    <hr>
-    <div class="table-container" style="height: 900px">
-    <table>
-        <thead>
-        <tr>
-            <th>작업 지시 ID</th>
-            <th>제품명</th>
-            <th>수량</th>
-            <th>단위</th>
-            <th>작업완료일자</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr th:each="workResult : ${workResults}">
-            <td th:text="${workResult.workOrderId}"></td>
-            <td th:text="${workResult.productName}"></td>
-            <td th:text="${workResult.workFinishQty}"></td>
-            <td>box</td>
-            <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>
-
-        </tr>
-
-
-<!--    <tr th:each="workResult : ${workResults}">-->
-<!--        <td th:text="${workResult.workOrder.workOrderId}"></td>-->
-<!--        <td th:text="${workResult.workOrder.salesOrder.productName}"></td>-->
-<!--        <td th:text="${workResult.workFinishQty}"></td>-->
-<!--        <td>box</td>-->
-<!--        <td th:text="${#temporals.format(workResult.workFinishDate,'yy/MM/dd')}"></td>-->
-
-<!--    </tr>-->
-
-        </tbody>
-    </table>
-    </div>
-</div>
 </div>
 </body>
 </html>
