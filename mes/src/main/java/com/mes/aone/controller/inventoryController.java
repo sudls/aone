@@ -177,7 +177,9 @@ public class inventoryController {
     //완제품 리스트
     @GetMapping(value = "/inventory3")
     public String inventoryPage3(Model model) {
-        List<StockManage> stockManageList = stockManageRepository.findAll(Sort.by(Sort.Direction.DESC, "stockManageId"));
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<StockManage> stockManageList = stockManageRepository.findAllByStockDateAfter(currentTime);
+//        List<StockManage> stockManageList = stockManageRepository.findAll(Sort.by(Sort.Direction.DESC, "stockManageId"));
         model.addAttribute("stockManageList", stockManageList);
         model.addAttribute("Stock", stockService.getStock());
         model.addAttribute("StockSumList", stockService.getSumStock());

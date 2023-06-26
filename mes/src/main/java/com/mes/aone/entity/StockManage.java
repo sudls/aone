@@ -18,7 +18,6 @@ public class StockManage {
     private Long stockManageId;
 
     // 입출고날짜
-    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime stockDate;
 

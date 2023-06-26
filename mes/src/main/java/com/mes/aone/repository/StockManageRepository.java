@@ -40,6 +40,7 @@ public interface StockManageRepository extends JpaRepository<StockManage, Long> 
     @Query("SELECT new com.mes.aone.dto.StockDTO(s.stockName, SUM(CASE WHEN sm.stockManageState = 'I' THEN sm.stockManageQty ELSE -sm.stockManageQty END)) " +
             "FROM StockManage sm " +
             "JOIN sm.stock s " +
+            "WHERE sm.stockDate < CURRENT_TIMESTAMP() " +
             "GROUP BY s.stockName")
     List<StockDTO> getCurrentQuantitiesByStockName();
 
@@ -50,6 +51,10 @@ public interface StockManageRepository extends JpaRepository<StockManage, Long> 
             "WHERE st.stockName = :stockName " +
             "AND :stockQty IS NOT NULL")
     void updateStock(@Param("stockName") String stockName, @Param("stockQty") Integer stockQty);
+
+    @Query("SELECT s FROM StockManage s WHERE s.stockDate < :currentDateTime ORDER BY s.stockManageId DESC")
+    List<StockManage> findAllByStockDateAfter(@Param("currentDateTime") LocalDateTime currentDateTime);
+
 
 }
 

@@ -96,6 +96,8 @@ public class orderController {
                 mesInfo.setSalesQty(orderDTO.getSalesQty()); // 수주량
                 mesInfo.setSalesDay(LocalDateTime.now()); // 수주일
 
+
+
                 mesInfo.setPastPreProcessingMachine(salesOrderService.getProcessFinishTime("전처리"));
                 mesInfo.setPastExtractionMachine1(salesOrderService.getFacilityFinishTime("extraction_1"));
                 mesInfo.setPastExtractionMachine2(salesOrderService.getFacilityFinishTime("extraction_2"));
@@ -136,15 +138,19 @@ public class orderController {
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
 
 
-                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주 업데이트
                 WorkOrder workOrder = new WorkOrder();
                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
 
-                workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+                int sumPackage=0;
+                for (int i=0; i<mesInfo.getNowPackagingOutput().size(); i++){ // 포장
+                    sumPackage = mesInfo.getNowPackagingOutput().get(i) + sumPackage;
+                }
+                workOrder.setWorkOrderQty(sumPackage);
                 workOrder.setWorkStatus(Status.A);
                 workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
 
-                salesOrderService.createWorkOrder(workOrder);
+                salesOrderService.createWorkOrder(workOrder); // 작업 지시 현황 등록
 
 
 
