@@ -31,7 +31,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -65,7 +67,7 @@ public class inventoryController {
     }
 
     //원자재 조회
-    @GetMapping(value="/inventory1")
+/*    @GetMapping(value="/inventory1")
     public String inventoryPage1(Model model) {
         List<MaterialStorage> materialStorageList = materialStorageRepository.findAll(Sort.by(Sort.Direction.DESC, "materialStorageId"));       // 내림차순
 
@@ -73,7 +75,28 @@ public class inventoryController {
         model.addAttribute("Material", materialService.getMaterial());
 
         return "pages/inventoryPage1";
+    }*/
+    @GetMapping(value="/inventory1")
+    public String inventoryPage1(Model model) {
+        List<MaterialStorage> materialStorageList = materialStorageRepository.findAll(Sort.by(Sort.Direction.DESC, "materialStorageId")); // 내림차순
+        LocalDateTime currentTime = LocalDateTime.now(); // 현재 시간 가져오기
+        materialService.getCurrentQuantitiesAndUpdate();
+        List<MaterialStorage> filteredList = new ArrayList<>();
+
+        // 현재시간과 비교해서 이전 데이터만 출력
+        for (MaterialStorage storage : materialStorageList) {
+            if (storage.getMaterialStorageDate().isBefore(currentTime)) {
+                filteredList.add(storage);
+            }
+        }
+
+        model.addAttribute("materialStorageList", filteredList);
+        model.addAttribute("Material", materialService.getMaterial());
+
+        return "pages/inventoryPage1";
     }
+
+
 
 
     //원자재 검색
@@ -84,6 +107,8 @@ public class inventoryController {
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate matStartDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate matEndDate,
             Model model) {
+
+        LocalDateTime currentTime = LocalDateTime.now(); // 현재 시간 가져오기
         Sort sort = Sort.by(Sort.Direction.DESC, "materialStorageId");
         List<MaterialStorage> materialStorageList;
 
@@ -127,14 +152,23 @@ public class inventoryController {
             materialStorageList = materialStorageRepository.findAll(Sort.by(Sort.Direction.DESC, "materialStorageId"));
         }
 
-        model.addAttribute("materialStorageList", materialStorageList);
+        // 현재 시간 이전인 경우만 필터링하여 새로운 리스트 생성
+        List<MaterialStorage> filteredList = new ArrayList<>();
+        for (MaterialStorage storage : materialStorageList) {
+            if (storage.getMaterialStorageDate().isBefore(currentTime)) {
+                filteredList.add(storage);
+            }
+        }
+
+        model.addAttribute("materialStorageList", filteredList);
         model.addAttribute("Material", materialService.getMaterial());
 
         return "pages/inventoryPage1";
     }
 
 
-    // 원자재 발주 조회 리스트
+
+        // 원자재 발주 조회 리스트
     @GetMapping(value="/inventory2")
     public String inventoryPage2(Model model){
         List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "purchaseOrderId"));       // 내림차순
@@ -177,7 +211,9 @@ public class inventoryController {
     //완제품 리스트
     @GetMapping(value = "/inventory3")
     public String inventoryPage3(Model model) {
-        List<StockManage> stockManageList = stockManageRepository.findAll(Sort.by(Sort.Direction.DESC, "stockManageId"));
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<StockManage> stockManageList = stockManageRepository.findAllByStockDateAfter(currentTime);
+//        List<StockManage> stockManageList = stockManageRepository.findAll(Sort.by(Sort.Direction.DESC, "stockManageId"));
         model.addAttribute("stockManageList", stockManageList);
         model.addAttribute("Stock", stockService.getStock());
         model.addAttribute("StockSumList", stockService.getSumStock());

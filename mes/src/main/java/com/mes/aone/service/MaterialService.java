@@ -27,6 +27,7 @@ public class MaterialService {
         return materialStorageRepository.findAll();
     }
 
+    // 원자재 초기값 없을때 0으로 세팅
     public List<MaterialDTO> getMaterial(){
         List<MaterialDTO> materialDTOList = materialStorageRepository.getCurrentQuantitiesByMaterialNames();
         List<MaterialDTO> dummyMaterialDTOList = new ArrayList<>();
@@ -49,12 +50,25 @@ public class MaterialService {
         return dummyMaterialDTOList;
     }
 
-
     public List<PurchaseOrder> getPurchaseOrder(){
         return purchaseOrderRepository.findAll();
     }
 
+    // materialDTO 값 material 테이블에 저장
+    public void getCurrentQuantitiesAndUpdate() {
+        List<MaterialDTO> materialDTOList = materialStorageRepository.getCurrentQuantitiesByMaterialNames();
+
+        for (MaterialDTO materialDTO : materialDTOList) {
+            String materialName = materialDTO.getMaterialName();
+            int currentQuantity = materialDTO.getCurrentQuantity().intValue();
+
+            System.out.println("이름: " + materialName);
+            System.out.println("수량: " + currentQuantity);
+
+            materialRepository.updateMaterialQuantityByName(currentQuantity, materialName);
 
 
+        }
+    }
 
 }

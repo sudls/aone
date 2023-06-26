@@ -40,14 +40,14 @@ public class DataLoader implements CommandLineRunner {
         vendorRepository.saveAll(Arrays.asList(vendor1, vendor2, vendor3, vendor4, vendor5));
 
         // Material 생성
-        Material material1 = new Material("양배추", 2, vendor4);
-        Material material2 = new Material("흑마늘", 2, vendor4);
-        Material material3 = new Material("석류농축액", 3, vendor3);
-        Material material4 = new Material("매실농축액", 3, vendor3);
-        Material material5 = new Material("콜라겐", 3, vendor3);
-        Material material6 = new Material("파우치", 2, vendor5);
-        Material material7 = new Material("스틱파우치", 2, vendor5);
-        Material material8 = new Material("박스", 2, vendor5);
+        Material material1 = new Material("양배추", 2, vendor4, 0);
+        Material material2 = new Material("흑마늘", 2, vendor4,0);
+        Material material3 = new Material("석류농축액", 3, vendor3,0);
+        Material material4 = new Material("매실농축액", 3, vendor3,0);
+        Material material5 = new Material("콜라겐", 3, vendor3,0);
+        Material material6 = new Material("파우치", 2, vendor5,0);
+        Material material7 = new Material("스틱파우치", 2, vendor5,0);
+        Material material8 = new Material("박스", 2, vendor5,0);
 
         materialRepository.saveAll(Arrays.asList(material1, material2, material3, material4, material5, material6, material7, material8));
 
