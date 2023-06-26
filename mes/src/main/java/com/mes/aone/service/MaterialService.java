@@ -67,9 +67,6 @@ public class MaterialService {
 
             materialRepository.updateMaterialQuantityByName(currentQuantity, materialName);
 
-            // material 테이블의 materialQuantity 업데이트
-//            materialRepository.updateMaterialQuantityByName();
-
 
         }
     }
