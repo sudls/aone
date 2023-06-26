@@ -9,7 +9,9 @@ import com.mes.aone.entity.MaterialStorage;
 import com.mes.aone.entity.StockManage;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -21,8 +23,10 @@ public interface MaterialStorageRepository extends JpaRepository<MaterialStorage
     @Query("SELECT new com.mes.aone.dto.MaterialDTO(m.materialName.materialName, SUM(CASE WHEN m.materialStorageState = 'I' THEN m.materialQty ELSE -m.materialQty END))" +
                 "FROM MaterialStorage m " +
                 "WHERE m.materialName.materialName IN ('양배추', '흑마늘', '석류농축액', '매실농축액', '콜라겐', '파우치', '스틱파우치', '박스') " +
+                "AND m.materialStorageDate < CURRENT_DATE " +
                 "GROUP BY m.materialName.materialName")
     List<MaterialDTO> getCurrentQuantitiesByMaterialNames();
+
 
     List<MaterialStorage> findAll();
 

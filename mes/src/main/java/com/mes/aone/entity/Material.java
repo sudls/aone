@@ -29,12 +29,16 @@ public class Material implements Serializable {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;         // 거래처 고유ID
 
+    @Column(nullable = false)
+    private Integer materialQuantity;     // 자재 수량
+
     public Material(){
 
     }
-    public Material(String materialName,Integer materialLeadtime,Vendor vendor){
+    public Material(String materialName,Integer materialLeadtime,Vendor vendor, Integer materialQuantity){
         this.materialName = materialName;
         this.materialLeadtime=materialLeadtime;
         this.vendor = vendor;
+        this.materialQuantity = materialQuantity;
     }
 }
