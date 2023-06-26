@@ -27,20 +27,12 @@
     </thead>
 
     <tbody>
-<!--    <tr th:each="stockDTO : ${Stock}">
+    <tr th:each="stockDTO : ${Stock}">
       <td th:text="${stockDTO.stockName}"></td>
       <td>
         <span th:text="${stockDTO.currentStockQty}"></span>
       /box</td>
-
-    </tr>-->
-      <tr th:each="stockDTO : ${StockSumList}">
-        <td th:text="${stockDTO.stockName}"></td>
-        <td>
-          <span th:text="${stockDTO.currentStockQty}"></span>
-          /box</td>
-
-      </tr>
+    </tr>
     </tbody>
 
   </table>

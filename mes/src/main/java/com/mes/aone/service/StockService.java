@@ -54,6 +54,7 @@ public class StockService {
 
     @Transactional
     public List<StockDTO> getSumStock(){
+        List<StockDTO> stockList;
         List<StockDTO>  stockDTOList = stockManageRepository.getCurrentQuantitiesByStockName();
         for (StockDTO stockDTO : stockDTOList) {
             Integer q = stockDTO.getCurrentStockQty().intValue();
