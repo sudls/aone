@@ -7,6 +7,7 @@ import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.service.SalesOrderService;
+import com.mes.aone.service.WorkOrderService;
 import com.mes.aone.util.Calculator;
 import com.mes.aone.util.MESInfo;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class orderController {
 
     private final SalesOrderService salesOrderService;
     private final SalesOrderRepository salesOrderRepository;
-
+    private final WorkOrderService workOrderService;
 
 
     //기본 조회 리스트
@@ -69,8 +70,6 @@ public class orderController {
 
         // 검색결과
         List<SalesOrder> salesOrderList = salesOrderService.searchSalesOrder(searchProduct, searchVendor, searchState, startDateTime, endDateTime, sort);
-
-
         model.addAttribute("orderDTOList", salesOrderList);
         model.addAttribute("orderDTO", new OrderDTO());
         model.addAttribute("salesOrderFromDTO", new SalesOrderFormDTO());
@@ -107,53 +106,42 @@ public class orderController {
                 mesInfo.setPastPackagingTime(salesOrderService.getProcessFinishTime("포장"));
 
                 // 예상납품일 계산기 실행
-                if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
-                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    if (purchaseCheck.equals("enough")){ // 재고가 충분하면
-                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
-                    } else {
-                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
-                        calculator.measurement(); // 원료계량 메서드 실행
+                String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                if (purchaseCheck.equals("enough")){ // 완제품 재고가 충분하면
+                    mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+                } else {                                             // 완제품 재고 불충분 시
+                    calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                    calculator.measurement(); // 원료계량 메서드 실행
+                    if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙"))  // 즙 공정일 경우 전처리
                         calculator.preProcessing(); // 전처리 메서드 실행
-                        calculator.extraction(); // 추출 메서드 실행
-                        calculator.fill();//충진 메서드 실행
-                        calculator.examination();//검사 메서드 실행
-                        calculator.cooling();//열교환 메서드 실행
-                        calculator.packaging(); // 포장 메서드 실행
-                    }
-                }else { // 젤리스틱 공정
-                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    if (purchaseCheck.equals("enough")){ //재고가 충분하면
-                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
-                    } else {
-                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
-                        calculator.measurement(); // 원료계량 메서드 실행
-                        calculator.extraction(); // 추출 메서드 실행
-                        calculator.fill();//충진 메서드 실행
-                        calculator.examination();//검사 메서드 실행
-                        calculator.cooling();//열교환 메서드 실행
-                        calculator.packaging(); // 포장 메서드 실행
-                    }
+                    calculator.extraction(); // 추출 메서드 실행
+                    calculator.fill();//충진 메서드 실행
+                    calculator.examination();//검사 메서드 실행
+                    calculator.cooling();//열교환 메서드 실행
+                    calculator.packaging(); // 포장 메서드 실행
                 }
+
+                // 예상납품일 세팅
                 orderDTO.setEstDelivery(mesInfo.getEstDelivery());
+                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주등록
+
+//                 Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주 업데이트
+//                 WorkOrder workOrder = new WorkOrder();
+//                 workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+
+//                 int sumPackage=0;
+//                 for (int i=0; i<mesInfo.getNowPackagingOutput().size(); i++){ // 포장
+//                     sumPackage = mesInfo.getNowPackagingOutput().get(i) + sumPackage;
+//                 }
+//                 workOrder.setWorkOrderQty(sumPackage);
+//                 workOrder.setWorkStatus(Status.A);
+//                 workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+//                 salesOrderService.createWorkOrder(workOrder); // 작업 지시 현황 등록
 
 
-                Long salesOrderId = salesOrderService.createSalesOrder(orderDTO); // 수주 업데이트
-                WorkOrder workOrder = new WorkOrder();
-                workOrder.setWorkOrderDate(mesInfo.getSalesDay());
-
-                int sumPackage=0;
-                for (int i=0; i<mesInfo.getNowPackagingOutput().size(); i++){ // 포장
-                    sumPackage = mesInfo.getNowPackagingOutput().get(i) + sumPackage;
-                }
-                workOrder.setWorkOrderQty(sumPackage);
-                workOrder.setWorkStatus(Status.A);
-                workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
-
-                salesOrderService.createWorkOrder(workOrder); // 작업 지시 현황 등록
-
-
-
+                // 작업지시 세팅
+                workOrderService.createWorkOrder(mesInfo, salesOrderId, purchaseCheck);
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
                 }
@@ -169,8 +157,12 @@ public class orderController {
         System.out.println("수주확정: " + selectedIds);
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);
-
+            System.out.println("여기1----------------------------------");
+            salesOrderRepository.findSalesStatusA();
+            salesOrderService.standByState(salesOrderRepository.findSalesStatusA());      // 상태가 '대기'인 id들 찾아서 넣어줌
+            System.out.println("여기2----------------------------------");
         } catch (Exception e) {
+            e.printStackTrace();
             model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
         }
         return "redirect:/order";
@@ -202,6 +194,5 @@ public class orderController {
         return "redirect:/order";
     }
 
-    //수주 정보 검색
 
 }

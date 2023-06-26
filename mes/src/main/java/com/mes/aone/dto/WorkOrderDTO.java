@@ -1,10 +1,13 @@
 package com.mes.aone.dto;
 
 import com.mes.aone.constant.Status;
+import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,21 +16,29 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class WorkOrderDTO {
 
     private Long workOrderId;
     private LocalDateTime workOrderDate;
     private int workOrderQty;
     private Status workStatus;
-    private String productName;
+    private String salesOrder;
 
-    public WorkOrderDTO(Long workOrderId, LocalDateTime workOrderDate, int workOrderQty, Status workStatus,String productName) {
+    public WorkOrderDTO(Long workOrderId, LocalDateTime workOrderDate, int workOrderQty, Status workStatus,String salesOrder) {
         this.workOrderId = workOrderId;
         this.workOrderDate = workOrderDate;
         this.workOrderQty = workOrderQty;
         this.workStatus = workStatus;
-        this.productName = productName;
+        this.salesOrder = salesOrder;
     }
+
+    // DTO -> 엔티티
+    private static ModelMapper modelMapper = new ModelMapper();
+
+
+    public WorkOrder toWorkOrder(){ return modelMapper.map(this, WorkOrder.class); }
+
 
     public static List<WorkOrderDTO> of(List<WorkOrder> workOrderList) {
         List<WorkOrderDTO> workOrderDTOList = new ArrayList<>();

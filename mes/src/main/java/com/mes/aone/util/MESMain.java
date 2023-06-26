@@ -9,7 +9,7 @@ public class MESMain {
         Calculator calculator = new Calculator(mesInfo);
 
         String productName = "양배추즙"; // 제품명 입력
-        int salesAmount = 1000; // 제품량 입력
+        int salesAmount = 667; // 제품량 입력
 
         mesInfo.setProductName(productName);
         mesInfo.setSalesQty(salesAmount);

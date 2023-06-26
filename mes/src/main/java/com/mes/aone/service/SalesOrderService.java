@@ -52,13 +52,16 @@ public class SalesOrderService {
 
     // 수주 확정
     public void confirmSalesOrderState(String[] selectedIds){
+
         for (String salesOrderId : selectedIds) {
+
             Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
             WorkOrder workOrder = workOrderRepository.findBySalesOrder(salesOrder);
             workOrder.setWorkStatus(Status.B); // 작업지시를 진행중으로 변경
 
             if (salesOrder != null) {
+
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
                 salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
 
@@ -136,6 +139,50 @@ public class SalesOrderService {
 
         }
     }
+
+    @Transactional
+    public void standByState(List<SalesOrder> salesOrderStateAs){
+        for (SalesOrder salesOrderStateA : salesOrderStateAs) {
+            MESInfo mesInfo = new MESInfo();
+            Calculator calculator = new Calculator(mesInfo);
+            mesInfo.setProductName(salesOrderStateA.getProductName());
+            mesInfo.setSalesQty(salesOrderStateA.getSalesQty());
+            mesInfo.setSalesDay(LocalDateTime.now());         // 현재 업데이트 시간
+
+            mesInfo.setPastPreProcessingMachine(getProcessFinishTime("전처리"));
+            mesInfo.setPastExtractionMachine1(getFacilityFinishTime("extraction_1"));
+            mesInfo.setPastExtractionMachine2(getFacilityFinishTime("extraction_2"));
+            mesInfo.setPastFillingLiquidMachine(getFacilityFinishTime("pouch_1"));
+            mesInfo.setPastFillingJellyMachine(getFacilityFinishTime("liquid_stick_1"));
+            mesInfo.setPastExaminationMachine(getFacilityFinishTime("inspection"));
+            mesInfo.setPastPackagingTime(getProcessFinishTime("포장"));
+
+
+            // 예상납품일 계산기 실행
+            String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+            if (purchaseCheck.equals("enough")){ // 완제품 재고가 충분하면
+                mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+            } else {                                             // 완제품 재고 불충분 시
+                calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                calculator.measurement(); // 원료계량 메서드 실행
+                if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙"))  // 즙 공정일 경우 전처리
+                    calculator.preProcessing(); // 전처리 메서드 실행
+                calculator.extraction(); // 추출 메서드 실행
+                calculator.fill();//충진 메서드 실행
+                calculator.examination();//검사 메서드 실행
+                calculator.cooling();//열교환 메서드 실행
+                calculator.packaging(); // 포장 메서드 실행
+            }
+
+            // 예상납품일 업데이트
+            salesOrderStateA.setEstDelivery(mesInfo.getEstDelivery());
+        }
+
+
+
+    }
+
+
 
 
 
@@ -385,10 +432,10 @@ public class SalesOrderService {
 
     }
 
-    // 수주 등록 시 작업 지시 테이블 인설트(대기상태)
-    public void createWorkOrder(WorkOrder workOrder){
-        workOrderRepository.save(workOrder);
-    }
+    // 수주 등록 시 작업 지시 테이블 인설트(대기상태)  -> workOrderRepository
+//    public void createWorkOrder(WorkOrder workOrder){
+//        workOrderRepository.save(workOrder);
+//    }
 
     // 공정별 마지막 공정시간
     public LocalDateTime getProcessFinishTime(String processStage){

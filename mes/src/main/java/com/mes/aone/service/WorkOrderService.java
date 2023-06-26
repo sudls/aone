@@ -1,9 +1,12 @@
 package com.mes.aone.service;
 
 import com.mes.aone.constant.Status;
+import com.mes.aone.dto.WorkOrderDTO;
 import com.mes.aone.entity.QWorkOrder;
 import com.mes.aone.entity.WorkOrder;
+import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.repository.WorkOrderRepository;
+import com.mes.aone.util.MESInfo;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -20,6 +23,21 @@ import java.util.List;
 public class WorkOrderService {
 
     private final WorkOrderRepository workOrderRepository;
+    private final SalesOrderRepository salesOrderRepository;
+
+    // 작업지시 등록
+    public void createWorkOrder(MESInfo mesInfo, Long salesOrderId, String purchaseCheck){
+        WorkOrder workOrder = new WorkOrder();
+        workOrder.setWorkOrderDate(mesInfo.getSalesDay());
+        if (purchaseCheck.equals("enough"))     // 재고가 충분할 때 : 수주량
+            workOrder.setWorkOrderQty(mesInfo.getSalesQty());
+        else                                    // 완제품 재고가 부족할 때 : 메인 원재료 주문량
+            workOrder.setWorkOrderQty(mesInfo.getRequiredBox());
+        workOrder.setWorkStatus(Status.A);
+        workOrder.setSalesOrder(salesOrderRepository.findBySalesOrderId(salesOrderId));
+
+        workOrderRepository.save(workOrder);
+    }
 
     // 다중검색
     public List<WorkOrder> searchWorkOrders(Long workOrderId, LocalDateTime startDateTime, LocalDateTime endDateTime,

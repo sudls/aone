@@ -16,108 +16,108 @@
 <!--<div layout:fragment="nav"></div>-->
 <div layout:fragment="content" id="contentStyle">
     <div class="innerContent">
-    <div class="titlebox">
-        <h1 style="display: inline-block">작업지시 현황</h1>
-        <button class="bg-excel" onclick="downloadTablesAsExcel()">
-            Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
-        </button>
-    </div>
-
-    <hr>
-    <form action="/production1/search" method="get">
-        <input type="text" placeholder="작업 지시 ID">
-
-        <select name="productName" id="option1">
-            <option disabled selected>제품명</option>
-            <option value="양배추즙">양배추즙</option>
-            <option value="흑마늘즙">흑마늘즙</option>
-            <option value="석류젤리스틱">석류젤리스틱</option>
-            <option value="매실젤리스틱">매실젤리스틱</option>
-        </select>
-        <br><br>
-
-        <div class="periodBox">
-            <input type="date" id="startDate" name="startDate">
-            <span>~</span>
-            <input type="date" id="endDate" name="endDate">
+        <div class="titlebox">
+            <h1 style="display: inline-block">작업지시 현황</h1>
+            <button class="bg-excel" onclick="downloadTablesAsExcel()">
+                Excel <i class="fa-sharp fa-solid fa-file-arrow-down"></i>
+            </button>
         </div>
 
+        <hr>
+        <form action="/production1/search" method="get">
+            <input type="text" placeholder="작업 지시 ID">
+
+            <select name="productName" id="option1">
+                <option disabled selected>제품명</option>
+                <option value="양배추즙">양배추즙</option>
+                <option value="흑마늘즙">흑마늘즙</option>
+                <option value="석류젤리스틱">석류젤리스틱</option>
+                <option value="매실젤리스틱">매실젤리스틱</option>
+            </select>
+            <br><br>
+
+            <div class="periodBox">
+                <input type="date" id="startDate" name="startDate">
+                <span>~</span>
+                <input type="date" id="endDate" name="endDate">
+            </div>
 
 
-<!--        <select name="processStage" id="option2">-->
-<!--            <option disabled selected>공정 단계</option>-->
-<!--            <option value="전처리">전처리</option>-->
-<!--            <option value="추출">추출</option>-->
-<!--            <option value="혼합">혼합</option>-->
-<!--            <option value="충진">충진</option>-->
-<!--            <option value="검사">검사</option>-->
-<!--            <option value="포장">포장</option>-->
-<!--        </select>-->
 
-        <select name="workStatus" id="option3">
-            <option disabled selected>작업진행 상태</option>
-            <option value="A">대기</option>
-            <option value="B">진행</option>
-        </select>
+            <!--        <select name="processStage" id="option2">-->
+            <!--            <option disabled selected>공정 단계</option>-->
+            <!--            <option value="전처리">전처리</option>-->
+            <!--            <option value="추출">추출</option>-->
+            <!--            <option value="혼합">혼합</option>-->
+            <!--            <option value="충진">충진</option>-->
+            <!--            <option value="검사">검사</option>-->
+            <!--            <option value="포장">포장</option>-->
+            <!--        </select>-->
 
-        <button type="submit">검색</button>
+            <select name="workStatus" id="option3">
+                <option disabled selected>작업진행 상태</option>
+                <option value="A">대기</option>
+                <option value="B">진행</option>
+            </select>
 
-    </form>
-    <hr>
-    <div class="table-container" style="height: 500px">
-        <table id="workListTable">
-            <thead>
-            <tr>
-                <th>작업지시 ID</th>
-                <th>제품명</th>
-                <th>작업지시 수량</th>
-                <th>작업지시 일자</th>
-                <th>작업 진행 상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="workOrder : ${workOrders}">
-                <td th:text="${workOrder.workOrderId}"></td>
-                <td th:text="${workOrder.getProductName()}"></td>
-                <td th:text="${workOrder.workOrderQty}"></td>
-                <td th:text="${#temporals.format(workOrder.workOrderDate, 'yy/MM/dd')}"></td>
+            <button type="submit">검색</button>
 
-<!--                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>-->
-<!--                <td th:text="${workOrder.processStage}"></td>-->
+        </form>
+        <hr>
+        <div class="table-container" style="height: 500px">
+            <table id="workListTable">
+                <thead>
+                <tr>
+                    <th>작업지시 ID</th>
+                    <th>제품명</th>
+                    <th>작업지시 수량</th>
+                    <th>작업지시 일자</th>
+                    <th>작업 진행 상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="workOrder : ${workOrders}">
+                    <td th:text="${workOrder.workOrderId}"></td>
+                    <td th:text="${workOrder.getSalesOrder()}"></td>
+                    <td th:text="${workOrder.workOrderQty}"></td>
+                    <td th:text="${#temporals.format(workOrder.workOrderDate, 'yy/MM/dd')}"></td>
 
-                <td>
-                    <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
-                </td>
-            </tr>
+                    <!--                <td th:text="${workOrder.workOrderDate != null ? #dates.format(workOrder.workOrderDate, 'yy/MM/dd') : ''}"></td>-->
+                    <!--                <td th:text="${workOrder.processStage}"></td>-->
 
-            </tbody>
-        </table>
-    </div>
-    <hr>
+                    <td>
+                        <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
+                    </td>
+                </tr>
 
-    <div style="margin:20px 0;">
-        <b>작업 지시 ID : </b><span id="workId" style="min-width: 100px; display: inline-block; margin-right: 50px;" ></span>
-        <b>제품명 : </b><span id="workProduct" style="min-width: 100px; display: inline-block" ></span>
-    </div>
+                </tbody>
+            </table>
+        </div>
+        <hr>
 
-    <div class="table-container" style="height: 200px">
-        <table id="resultTable">
-            <thead>
-            <tr>
-                <th>수주 ID</th>
-                <th>수주 날짜</th>
-                <th>주문 수량</th>
-            </tr>
-            </thead>
-            <tbody id="resultData">
-            <tr th:each="salesOrder : ${salesOrders}">
-                <td th:text="${salesOrder.salesOrderId}"></td>
-                <td th:text="${#temporals.format(salesOrder.salesDate, 'yy/MM/dd')}"></td>
-                <td th:text="${salesOrder.salesQty}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+        <div style="margin:20px 0;">
+            <b>작업 지시 ID : </b><span id="workId" style="min-width: 100px; display: inline-block; margin-right: 50px;" ></span>
+            <b>제품명 : </b><span id="workProduct" style="min-width: 100px; display: inline-block" ></span>
+        </div>
+
+        <div class="table-container" style="height: 200px">
+            <table id="resultTable">
+                <thead>
+                <tr>
+                    <th>수주 ID</th>
+                    <th>수주 날짜</th>
+                    <th>주문 수량</th>
+                </tr>
+                </thead>
+                <tbody id="resultData">
+                <tr th:each="salesOrder : ${salesOrders}">
+                    <td th:text="${salesOrder.salesOrderId}"></td>
+                    <td th:text="${#temporals.format(salesOrder.salesDate, 'yy/MM/dd')}"></td>
+                    <td th:text="${salesOrder.salesQty}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

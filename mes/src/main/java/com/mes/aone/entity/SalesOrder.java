@@ -45,10 +45,9 @@ public class SalesOrder {
 
     private static ModelMapper modelMapper = new ModelMapper();
 
-    // DTO -> 엔티티
-    public static SalesOrder toSalesOrder(OrderDTO dto) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(dto, SalesOrder.class);
+    // 엔티티 -> DTO
+    public static OrderDTO toSalesOrder(SalesOrder salesOrder) {
+        return modelMapper.map(salesOrder, OrderDTO.class);
     }
 
 

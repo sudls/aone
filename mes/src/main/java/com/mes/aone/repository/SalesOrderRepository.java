@@ -1,13 +1,13 @@
 package com.mes.aone.repository;
 
 import com.mes.aone.constant.Status;
+import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.entity.SalesOrder;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +19,10 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, Long> {
 
 
     SalesOrder findBySalesOrderId(Long salesOrderId);
+
+    // 대기 상태
+    @Query("SELECT so FROM SalesOrder so WHERE so.salesStatus = 'A'")
+    List<SalesOrder> findSalesStatusA();
 
 
     // 제품명, 거래처, 수주상태, 기간 검색
