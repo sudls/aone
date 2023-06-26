@@ -41,8 +41,8 @@
 }
 
 .fc-daygrid-event-dot{
-    border: calc(var(--fc-daygrid-event-dot-width)/2) solid var(--blue);
-    border-radius: calc(var(--fc-daygrid-event-dot-width)/2);
+    /*border: calc(var(--fc-daygrid-event-dot-width)/2) solid var(--blue);*/
+    /*border-radius: calc(var(--fc-daygrid-event-dot-width)/2);*/
     box-sizing: content-box;
     height: 0px;
     margin: 0px 4px;
@@ -51,4 +51,8 @@
 
 .fc-daygrid-event-harness{
 background-color:transparent
+}
+
+.fc-event-main div{
+    overflow: hidden;
 }
