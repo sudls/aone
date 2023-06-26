@@ -67,8 +67,7 @@ public class SalesOrderService {
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(salesOrder.getProductName()); // 수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
-//                mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
-                mesInfo.setSalesDay(LocalDateTime.of(2022,06,23,10,10)); // 수주일
+                mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
                 mesInfo.setSalesOrderId(salesOrder.getSalesOrderId());// 수주 아이디
 
                 // 완제품 재고량 세팅
