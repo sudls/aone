@@ -1,7 +1,7 @@
 package com.mes.aone.dto;
 
 
-import com.mes.aone.constant.Status;
+import com.mes.aone.constant.SalesStatus;
 import com.mes.aone.entity.SalesOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class SalesOrderDTO {
     private String vendorId;                    // 거래처명
     private Integer salesQty;                   // 수량
     private LocalDateTime salesDate;                     // 수주일
-    private Status salesStatus = Status.A;      // 상태
+    private SalesStatus salesStatus = SalesStatus.A;      // 상태
     private LocalDateTime estDelivery;          // 예상납품일
 
     private static ModelMapper modelMapper = new ModelMapper();

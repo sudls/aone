@@ -1,5 +1,6 @@
 package com.mes.aone.entity;
 
+import com.mes.aone.constant.SalesStatus;
 import com.mes.aone.constant.Status;
 import com.mes.aone.dto.OrderDTO;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class SalesOrder {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status salesStatus = Status.A;          // 입력시 기본값 A:대기
+    private SalesStatus salesStatus = SalesStatus.A;          // 입력시 기본값 A:대기
 
 //     예상납품일
     @Column(nullable = false)

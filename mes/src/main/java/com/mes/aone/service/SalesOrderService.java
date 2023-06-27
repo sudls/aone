@@ -1,9 +1,6 @@
 package com.mes.aone.service;
 
-import com.mes.aone.constant.MaterialState;
-import com.mes.aone.constant.ShipmentState;
-import com.mes.aone.constant.Status;
-import com.mes.aone.constant.StockManageState;
+import com.mes.aone.constant.*;
 import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.entity.*;
 import com.mes.aone.repository.*;
@@ -62,7 +59,7 @@ public class SalesOrderService {
 
             if (salesOrder != null) {
 
-                salesOrder.setSalesStatus(Status.B); // 상태 업데이트
+                salesOrder.setSalesStatus(SalesStatus.B); // 상태 업데이트
                 salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
 
 
@@ -183,16 +180,13 @@ public class SalesOrderService {
     }
 
 
-
-
-
     // 수주 취소
     public void cancelSalesOrderState(String[] selectedIds){
         for (String salesOrderId : selectedIds) {
             Long orderId = Long.parseLong(salesOrderId); // 형변환 String -> Long
             SalesOrder salesOrder = salesOrderRepository.findBySalesOrderId(orderId);
             if (salesOrder != null) {
-                salesOrder.setSalesStatus(Status.C); // 상태
+                salesOrder.setSalesStatus(SalesStatus.C); // 상태
                 salesOrderRepository.save(salesOrder);
             }
         }
@@ -565,6 +559,7 @@ public class SalesOrderService {
     public int getFnishedProduct(String productName) {
         return stockRepository.findByStockName(productName).getStockQty();
     }
+
 
 
 }

@@ -55,6 +55,9 @@ public class productionController {
 
         List<WorkOrderDTO> workOrderDTOList = workOrderRepository.findWorkOrderDetails();
         model.addAttribute("workOrders", workOrderDTOList);
+
+        workOrderRepository.updateWorkOrderStatus();
+
         return "pages/productionPage1";
     }
 
@@ -107,6 +110,7 @@ public class productionController {
     public String workResultPage(Model model){
         List<WorkResultDTO> workResultDTOList = workResultRepository.findWorkResultDetails();
         model.addAttribute("workResults", workResultDTOList);
+
         return"pages/productionPage2";
     }
 

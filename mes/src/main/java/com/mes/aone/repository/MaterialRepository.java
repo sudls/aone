@@ -22,6 +22,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
     @Query("SELECT v.vendorId FROM Material m JOIN m.vendor v WHERE m.materialName = :materialName")
     String findVendorIdByMaterialName(@Param("materialName") String materialName);
 
+
     // 원자재입출고 내역으로 material 테이블의 수량 업데이트
     @Modifying
     @Transactional

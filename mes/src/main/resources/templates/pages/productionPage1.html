@@ -58,6 +58,7 @@
                 <option disabled selected>작업진행 상태</option>
                 <option value="A">대기</option>
                 <option value="B">진행</option>
+                <option value="C">완료</option>
             </select>
 
             <button type="submit">검색</button>
@@ -86,8 +87,9 @@
                     <!--                <td th:text="${workOrder.processStage}"></td>-->
 
                     <td>
-                        <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
+                        <span th:text="${workOrder.workStatus.name() == 'A' ? '대기' : (workOrder.workStatus.name() == 'B' ? '진행' : '완료')}"></span>
                     </td>
+
                 </tr>
 
                 </tbody>

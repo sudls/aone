@@ -4,11 +4,13 @@ import com.mes.aone.dto.WorkOrderDTO;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.entity.WorkOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -20,6 +22,13 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long>, Que
             "FROM WorkOrder w " +
             "JOIN w.salesOrder s " + "ORDER BY w.workOrderId DESC")
     List<WorkOrderDTO> findWorkOrderDetails();
+
+
+    //작업진행상태 업데이트
+    @Modifying
+    @Transactional
+    @Query("UPDATE WorkOrder w SET w.workStatus = 'C' WHERE w.salesOrder IN (SELECT s FROM SalesOrder s WHERE s.estDelivery <= CURRENT_DATE())")
+    void updateWorkOrderStatus();
 
 
 
