@@ -15,17 +15,7 @@ public class Lot {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long lotID;
 
-    private String process1;    //원료계량
+    private String lotNum;    // 로트번호
 
-    private String process2;    //전처리
-
-    private String process3;    //ㅊ출
-
-    private String process4;    //혼합및살균
-
-    private String process5;    //충진
-
-    private String process6;    //검사
-
-    private String process7;    //포장
+    private String parentLotNum;    // 부모로트번호
 }
