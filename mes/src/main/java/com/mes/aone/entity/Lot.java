@@ -18,4 +18,8 @@ public class Lot {
     private String lotNum;    // 로트번호
 
     private String parentLotNum;    // 부모로트번호
+
+    @OneToOne
+    @JoinColumn(name = "production_id")
+    private Production production;   //공정단계
 }

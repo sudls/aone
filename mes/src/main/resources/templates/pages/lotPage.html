@@ -15,9 +15,8 @@
     <h1>LOT(제품 역추적)</h1>
 
     <div class="titlebox">
-        <form action="">
-            <input type="text" placeholder="LOT 번호">
-
+        <form action="/lot/search">
+            <input type="text" name="lotNum" placeholder="LOT 번호">
             <button type="submit">검색</button>
         </form>
 
@@ -33,22 +32,22 @@
         <table>
             <thead>
             <tr>
-                <th></th>
+                <th>생산ID</th>
+                <th>공정단계</th>
                 <th>제품명</th>
-                <th>상태(출고/재고)</th>
                 <th>수량</th>
                 <th>단위</th>
                 <th>LOT</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>양배추즙</td>
-                <td>출고</td>
-                <td>500</td>
-                <td>box</td>
-                <td>k-756544</td>
+            <tr th:each="lotLists : ${lotList}">
+                <td th:text="${lotLists.getProduction().getProductionId()}"></td>
+                <td th:text="${lotLists.getProduction().getProcessPlan().getProcessStage()}"></td>
+                <td th:text="${lotLists.getProduction().getProductionName()}"></td>
+                <td th:text="${lotLists.getProduction().getProductionQty()}"></td>
+                <td th:text="box"></td>
+                <td th:text="${lotLists.getProduction().getLotNumber()}"></td>
             </tr>
 
             </tbody>
