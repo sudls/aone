@@ -63,8 +63,8 @@
         </thead>
         <tbody>
 
-
         <tr class="processPlanList" th:each="pp, status : ${processPlanList}">
+
             <td class="orderId" th:text="${pp.workOrder.salesOrder.salesOrderId}"></td>
             <td class="orderPN" th:text="${pp.workOrder.salesOrder.productName}"></td>
             <td class="stage1">

@@ -32,7 +32,6 @@ public class statusController {
     @GetMapping(value="/status")
     public String statusPage(Model model){
         LocalDateTime currentTime = LocalDateTime.now();
-//        currentTime=LocalDateTime.of(2023,06,02,10,20); //임시;
 
         List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate2(currentTime);
         System.out.println(processPlanList);
@@ -81,10 +80,16 @@ public class statusController {
     }
 
 
+    @GetMapping(value = "/status/saleOrder-date")
+    public @ResponseBody List<ProcessPlan> getProcessPlanWeek (){
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<ProcessPlan> processPlanList = processPlanRepository.findByCurrentTimeAndSalesDate2(currentTime);
+        return processPlanList;
+    }
 
 
     @GetMapping(value = "/status/facility-info")
-    public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (Model model){
+    public @ResponseBody List<ProcessPlanDTO> getCurrentProcessPlans (){
         LocalDateTime currentTime = LocalDateTime.now();
 //        currentTime=LocalDateTime.of(2023,06,02,13,20); //임시;
 
