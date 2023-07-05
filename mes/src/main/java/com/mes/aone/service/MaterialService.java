@@ -7,6 +7,7 @@ import com.mes.aone.entity.PurchaseOrder;
 import com.mes.aone.repository.MaterialRepository;
 import com.mes.aone.repository.MaterialStorageRepository;
 import com.mes.aone.repository.PurchaseOrderRepository;
+import com.mes.aone.util.MESInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -70,22 +71,33 @@ public class MaterialService {
     }
 
     public List<Integer> getMaterialStockQuantities() {
-        System.out.println("1111111111111111111111");
+        System.out.println("MaterialService1111111111111111111111");
         List<Integer> materialQuantities = new ArrayList<>();
         // 각 원자재의 재고량을 조회하여 stockQuantities 리스트에 추가
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("양배추"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("흑마늘"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("석류농축액"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("매실농축액"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("콜라겐"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("박스"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("파우치"));
-        materialQuantities.add(materialRepository.findMaterialQuantityByMaterialName("스틱파우치"));
-        System.out.println("222222222222222222222");
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("양배추").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("흑마늘").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("석류농축액").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("매실농축액").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("콜라겐").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("박스").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("파우치").getMaterialQuantity());
+        materialQuantities.add(materialRepository.findMaterialByMaterialName("스틱파우치").getMaterialQuantity());
+        System.out.println("MaterialService222222222222222222222");
         for(Integer quantities : materialQuantities)
             System.out.println(quantities);
 
         return materialQuantities;
     }
 
+        public void setMaterialStockQuantities(MESInfo mesInfo) {
+            List<Integer> stockMaterialQuantities = getMaterialStockQuantities();
+            mesInfo.setStockCabbage(stockMaterialQuantities.get(0));
+            mesInfo.setStockGarlic(stockMaterialQuantities.get(1));
+            mesInfo.setStockPomegranate(stockMaterialQuantities.get(2));
+            mesInfo.setStockPlum(stockMaterialQuantities.get(3));
+            mesInfo.setStockCollagen(stockMaterialQuantities.get(4));
+            mesInfo.setStockBox(stockMaterialQuantities.get(5));
+            mesInfo.setStockPouch(stockMaterialQuantities.get(6));
+            mesInfo.setStockStickPouch(stockMaterialQuantities.get(7));
+    }
 }

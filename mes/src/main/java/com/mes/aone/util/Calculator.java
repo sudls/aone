@@ -7,6 +7,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class Calculator {
@@ -449,7 +450,7 @@ public class Calculator {
         }
 
         // PurchaseMap에서 발주량이 0인 목록 삭제
-        for (Map.Entry<String, Integer> entry : mesInfo.getPurchaseMap().entrySet()) {
+        for (Map.Entry<String, Integer> entry : Set.copyOf(mesInfo.getPurchaseMap().entrySet())) {
             String key = entry.getKey();
             Integer value = entry.getValue();
             if (value == 0 || value == null){

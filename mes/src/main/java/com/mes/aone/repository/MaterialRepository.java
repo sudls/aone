@@ -28,8 +28,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
     @Query("UPDATE Material m SET m.materialQuantity = :quantity WHERE m.materialName = :name")
     void updateMaterialQuantityByName(@Param("quantity") int materialQuantity, @Param("name") String materialName);
 
-    // 자재명, 수량 가져오기
-//    List<Material> findByMaterialNameAndMaterialQuantity();
 
-    Integer findMaterialQuantityByMaterialName(String materialName);
+    // 자재명으로 Material 가져오기
+    Material findMaterialByMaterialName(String materialName);
 }

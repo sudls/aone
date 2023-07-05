@@ -39,6 +39,7 @@ public class SalesOrderService {
     private final WorkResultRepository workResultRepository;
     private final StockRepository stockRepository;
     private final StockManageRepository stockManageRepository;
+    private final MaterialService materialService;
 
 
     // 수주 등록
@@ -67,6 +68,9 @@ public class SalesOrderService {
 
 
                 MESInfo mesInfo = new MESInfo();
+                // 원자재 재고량 세팅
+                materialService.getMaterialStockQuantities();
+                materialService.setMaterialStockQuantities(mesInfo);
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(salesOrder.getProductName()); // 수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량

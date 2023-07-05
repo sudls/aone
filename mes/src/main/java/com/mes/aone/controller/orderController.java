@@ -5,6 +5,7 @@ import com.mes.aone.dto.OrderDTO;
 import com.mes.aone.dto.SalesOrderFormDTO;
 import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.SalesOrderRepository;
+import com.mes.aone.service.MaterialService;
 import com.mes.aone.service.SalesOrderService;
 import com.mes.aone.service.WorkOrderService;
 import com.mes.aone.util.Calculator;
@@ -32,6 +33,7 @@ public class orderController {
     private final SalesOrderService salesOrderService;
     private final SalesOrderRepository salesOrderRepository;
     private final WorkOrderService workOrderService;
+    private final MaterialService materialService;
 
 
     //기본 조회 리스트
@@ -80,13 +82,15 @@ public class orderController {
 
     // 수주 등록
     @PostMapping(value="/order")
-    public String salesOrderWrite(@Valid OrderDTO orderDTO, BindingResult bindingResult,  Model model) {
+    public String salesOrderWrite(@Valid OrderDTO orderDTO, BindingResult bindingResult) {
             if (bindingResult.hasErrors()) {
                 return "/pages/orderPage";
             }
             try {
                 System.out.println("수주등록: " + orderDTO);
                 MESInfo mesInfo = new MESInfo();                      // 인포에서 문제
+                materialService.getMaterialStockQuantities();
+                materialService.setMaterialStockQuantities(mesInfo);
                 Calculator calculator = new Calculator(mesInfo);
 
                 mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명
@@ -125,7 +129,6 @@ public class orderController {
                 // 작업지시 세팅
                 workOrderService.createWorkOrder(mesInfo, salesOrderId, purchaseCheck);
                 } catch (Exception e) {
-//                    model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");
                     e.printStackTrace();
             }
         return "redirect:/order";
