@@ -39,6 +39,7 @@ public class orderController {
     //기본 조회 리스트
     @GetMapping(value="/order")
     public String orderPage(Model model){
+//        salesOrderService.standByState(salesOrderRepository.findSalesStatusA());      // 상태가 '대기'인 id들 찾아서 넣어줌 : 예상납품일 업데이트
 
         List<SalesOrder> salesOrderList = salesOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "salesOrderId"));       // 내림차순
         model.addAttribute("orderDTOList",salesOrderList);
@@ -144,7 +145,7 @@ public class orderController {
         try {
             salesOrderService.confirmSalesOrderState(selectedIds);
             salesOrderRepository.findSalesStatusA();
-            salesOrderService.standByState(salesOrderRepository.findSalesStatusA());      // 상태가 '대기'인 id들 찾아서 넣어줌
+            salesOrderService.standByState(salesOrderRepository.findSalesStatusA());      // 상태가 '대기'인 id들 찾아서 넣어줌 : 예상납품일 업데이트
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMessage", "수주 등록 중 에러가 발생하였습니다");

@@ -64,8 +64,7 @@ public class SalesOrderService {
             if (salesOrder != null) {
 
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
-                salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
-
+//                salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
 
                 MESInfo mesInfo = new MESInfo();
                 // 원자재 재고량 세팅
@@ -74,7 +73,7 @@ public class SalesOrderService {
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(salesOrder.getProductName()); // 수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
-                mesInfo.setSalesDay(salesOrder.getSalesDate()); // 수주일
+                mesInfo.setSalesDay(LocalDateTime.now());       // 현재 시간으로 세팅
                 mesInfo.setSalesOrderId(salesOrder.getSalesOrderId());// 수주 아이디
 
                 // 완제품 재고량 세팅
@@ -136,7 +135,8 @@ public class SalesOrderService {
                 createWorkResult(mesInfo, workOrder);
                 System.out.println("작업 실적 들어감");
 
-                salesOrderRepository.save(salesOrder);
+//                salesOrderRepository.save(salesOrder);
+                System.out.println("확인하라고!!!!!!!!!!!!!!!!!!!" + salesOrder);
                 workOrderRepository.save(workOrder);
 
             }
@@ -144,7 +144,7 @@ public class SalesOrderService {
         }
     }
 
-    @Transactional
+    @Transactional          // 수주상태가 '대기'인 것들 예상납품일 업데이트
     public void standByState(List<SalesOrder> salesOrderStateAs){
         for (SalesOrder salesOrderStateA : salesOrderStateAs) {
             MESInfo mesInfo = new MESInfo();
