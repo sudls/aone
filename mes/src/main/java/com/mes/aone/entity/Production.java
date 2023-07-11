@@ -27,7 +27,7 @@ public class Production {
     @JoinColumn(name = "process_plan_id")
     private ProcessPlan processPlan;   //공정단계
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = true)
     private String lotNumber;   //lot번호
 }
 

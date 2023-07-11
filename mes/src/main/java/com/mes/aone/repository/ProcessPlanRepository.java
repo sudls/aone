@@ -68,4 +68,6 @@ public interface ProcessPlanRepository extends JpaRepository<ProcessPlan, Long> 
             "JOIN pp.workOrder wo JOIN wo.salesOrder so " +
             "WHERE so.salesOrderId = :salesOrderId AND pp.processStage = '포장'")
     LocalDateTime getShipmentDate(@Param("salesOrderId") Long salesOrderId);
+
+    ProcessPlan findByProcessPlanId(Long processPlanId);
 }

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -39,6 +40,8 @@ public class SalesOrderService {
     private final WorkResultRepository workResultRepository;
     private final StockRepository stockRepository;
     private final StockManageRepository stockManageRepository;
+    private final ProductionRepository productionRepository;
+    private final LotRepository lotRepository;
 
 
     // 수주 등록
@@ -286,6 +289,8 @@ public class SalesOrderService {
         processPlan.setEndTime(mesInfo.getFinishMeasurement());
         processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
         processPlanRepository.save(processPlan);
+        createProduction(mesInfo, processPlan, mesInfo.getNowMeasurementOutput(), 0);
+
         // 전처리
         for (int i=0; i<mesInfo.getStartPreProcessing().size(); i++){
             processPlan = new ProcessPlan();
@@ -295,8 +300,10 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishPreProcessing().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowPreProcessingOutput().get(i), i);
         }
         // 추출 및 혼합
+        int exKey = 0;
         for (int i=0; i<mesInfo.getStartExtractionMachine1().size(); i++){ // 추출기1
             processPlan = new ProcessPlan();
             processPlan.setProcessStage("추출 및 혼합");
@@ -305,6 +312,7 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishExtractionMachine1().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowExtractionMachine1Output().get(i), exKey++);
         }
         for (int i=0; i<mesInfo.getStartExtractionMachine2().size(); i++){ // 추출기2
             processPlan = new ProcessPlan();
@@ -314,6 +322,7 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishExtractionMachine2().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowExtractionMachine2Output().get(i), exKey++);
         }
         // 충진
         for (int i=0; i<mesInfo.getStartFillingLiquidMachine().size(); i++){ // 충진기(즙)
@@ -324,6 +333,7 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishFillingLiquidMachine().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowFillingLiquidMachineOutput().get(i), i);
         }
         for (int i=0; i<mesInfo.getStartFillingJellyMachine().size(); i++){ // 충진기(젤리)
             processPlan = new ProcessPlan();
@@ -333,6 +343,7 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishFillingJellyMachine().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowFillingJellyMachineOutput().get(i), i);
         }
         // 검사
         for (int i=0; i<mesInfo.getStartExamination().size(); i++){ // 검사
@@ -343,6 +354,7 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishExamination().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowExaminationOutput().get(i), i);
         }
         // 포장
         for (int i=0; i<mesInfo.getStartPackaging().size(); i++){ // 포장
@@ -353,6 +365,7 @@ public class SalesOrderService {
             processPlan.setEndTime(mesInfo.getFinishPackaging().get(i));
             processPlan.setWorkOrder(workOrderRepository.findBySalesOrderSalesOrderId(mesInfo.getSalesOrderId()));
             processPlanRepository.save(processPlan);
+            createProduction(mesInfo, processPlan, mesInfo.getNowPackagingOutput().get(i), i);
 
         }
 
@@ -425,11 +438,8 @@ public class SalesOrderService {
             purchaseOrder.setVendorId(materialRepository.findVendorIdByMaterialName(keys.get(i)));
             purchaseOrder.setPurchaseDate(mesInfo.getSalesDay());
             purchaseOrder.setEstArrival(mesInfo.getPurchaseAndTimeMap().get(keys.get(i)));
-
             purchaseOrderRepository.save(purchaseOrder);
         }
-
-
     }
 
     // 수주 등록 시 작업 지시 테이블 인설트(대기상태)  -> workOrderRepository
@@ -566,7 +576,149 @@ public class SalesOrderService {
         return stockRepository.findByStockName(productName).getStockQty();
     }
 
+    // 생산계획 insert
+    public void createProduction(MESInfo mesInfo, ProcessPlan processPlan, int productionQty, int bk ){
+        String productName = "";
+        String finishedProductName = "";
+        String processStage = "";
+        Production production = new Production();
+        Lot lot = new Lot();
 
+        production.setProductionQty(productionQty);
+        production.setProcessPlan(processPlanRepository.findByProcessPlanId(processPlan.getProcessPlanId()));
+
+        // 완제품 lot
+        if (mesInfo.getProductName().equals("양배추즙")) {
+            finishedProductName = "cbg";
+        } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+            finishedProductName = "gal";
+        } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
+            finishedProductName = "pom";
+        } else {
+            finishedProductName = "plm";
+        }
+
+        // 공정 단계 lot
+        if(processPlan.getProcessStage().equals("원료계량")){
+            processStage = "ms";
+            if (mesInfo.getProductName().equals("양배추즙")) {
+                productName = "양배추";
+            } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+                productName = "흑마늘";
+            } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
+                productName = "석류농축액";
+            } else {
+                productName = "매실농축액";
+            }
+        } else if (processPlan.getProcessStage().equals("전처리")){
+            processStage = "pp";
+            if (mesInfo.getProductName().equals("양배추즙")) {
+                productName = "양배추";
+            } else {
+                productName = "흑마늘";
+            }
+        } else if (processPlan.getProcessStage().equals("추출 및 혼합")){
+            if (processPlan.getFacilityId().getFacilityId().equals("extraction_1")) {
+                processStage = "et01";
+            } else {
+                processStage = "et02";
+            }
+            if (mesInfo.getProductName().equals("양배추즙")) {
+                productName = "양배추 추출액";
+            } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+                productName = "흑마늘 추출액";
+            } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
+                productName = "석류액기스";
+            } else {
+                productName = "매실액기스";
+            }
+        } else if (processPlan.getProcessStage().equals("충진")){
+            if (processPlan.getFacilityId().getFacilityId().equals("pouch_1")) {
+                processStage = "exl";
+            } else {
+                processStage = "exj";
+            }
+
+            if (mesInfo.getProductName().equals("양배추즙")) {
+                productName = "양배추즙(포)";
+            } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+                productName = "흑마늘즙(포)";
+            } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
+                productName = "석류젤리스틱(포)";
+            } else {
+                productName = "매실젤리스틱(포)";
+            }
+        } else if (processPlan.getProcessStage().equals("검사")){
+            processStage = "cl";
+            if (mesInfo.getProductName().equals("양배추즙")) {
+                productName = "양배추즙(포)";
+            } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+                productName = "흑마늘즙(포)";
+            } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
+                productName = "석류젤리스틱(포)";
+            } else {
+                productName = "매실젤리스틱(포)";
+            }
+        } else {
+            processStage = "pa";
+            if (mesInfo.getProductName().equals("양배추즙")) {
+                productName = "양배추즙(박스)";
+            } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+                productName = "흑마늘즙(박스)";
+            } else if (mesInfo.getProductName().equals("석류젤리스틱")) {
+                productName = "석류젤리스틱(박스)";
+            } else {
+                productName = "매실젤리스틱(박스)";
+            }
+        }
+        production.setProductionName(productName);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmm");
+        String processFinishTime = processPlan.getEndTime().format(formatter);
+        production.setLotNumber(finishedProductName + "-" + processStage + "-" + processFinishTime);
+
+        // mesinfo에 lot번호 저장
+        if(processPlan.getProcessStage().equals("원료계량")){
+            mesInfo.setLotMeasurement(production.getLotNumber());
+        } else if (processPlan.getProcessStage().equals("전처리")){
+            mesInfo.getLotPreProcessing().add(production.getLotNumber());
+        } else if (processPlan.getProcessStage().equals("추출 및 혼합")){
+            mesInfo.getLotExtraction().add(production.getLotNumber());
+        } else if (processPlan.getProcessStage().equals("충진")){
+            mesInfo.getLotFilling().add(production.getLotNumber());
+        } else if (processPlan.getProcessStage().equals("검사")){
+            mesInfo.getLotExamination().add(production.getLotNumber());
+        } else {
+            mesInfo.getLotPackaging().add(production.getLotNumber());
+        }
+
+        // 이전 공정 lot 세팅
+        String parentLot = null;
+        if(processPlan.getProcessStage().equals("원료계량")){
+
+        } else if (processPlan.getProcessStage().equals("전처리")){
+            parentLot = mesInfo.getLotMeasurement();
+        } else if (processPlan.getProcessStage().equals("추출 및 혼합")){
+            if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){
+                parentLot = mesInfo.getLotPreProcessing().get(bk);
+            } else {
+                parentLot = mesInfo.getLotMeasurement();
+            }
+        } else if (processPlan.getProcessStage().equals("충진")){
+            parentLot = mesInfo.getLotExtraction().get(bk);
+        } else if (processPlan.getProcessStage().equals("검사")){
+            parentLot = mesInfo.getLotFilling().get(bk);
+        } else {
+            parentLot = mesInfo.getLotExamination().get(bk);
+        }
+        lot.setLotNum(production.getLotNumber());
+        lot.setParentLotNum(parentLot);
+        lot.setProduction(production);
+
+        productionRepository.save(production);
+        lotRepository.save(lot);
+
+    }
 }
 
 
