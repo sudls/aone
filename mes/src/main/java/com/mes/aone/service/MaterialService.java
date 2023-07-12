@@ -70,10 +70,10 @@ public class MaterialService {
         }
     }
 
+
+    // 각 원자재의 재고량을 조회하여 materialQuantities 리스트에 추가
     public List<Integer> getMaterialStockQuantities() {
-        System.out.println("MaterialService1111111111111111111111");
         List<Integer> materialQuantities = new ArrayList<>();
-        // 각 원자재의 재고량을 조회하여 stockQuantities 리스트에 추가
         materialQuantities.add(materialRepository.findMaterialByMaterialName("양배추").getMaterialQuantity());
         materialQuantities.add(materialRepository.findMaterialByMaterialName("흑마늘").getMaterialQuantity());
         materialQuantities.add(materialRepository.findMaterialByMaterialName("석류농축액").getMaterialQuantity());
@@ -82,7 +82,6 @@ public class MaterialService {
         materialQuantities.add(materialRepository.findMaterialByMaterialName("박스").getMaterialQuantity());
         materialQuantities.add(materialRepository.findMaterialByMaterialName("파우치").getMaterialQuantity());
         materialQuantities.add(materialRepository.findMaterialByMaterialName("스틱파우치").getMaterialQuantity());
-        System.out.println("MaterialService222222222222222222222");
         for(Integer quantities : materialQuantities)
             System.out.println(quantities);
 

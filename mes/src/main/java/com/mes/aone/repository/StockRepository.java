@@ -15,5 +15,8 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     //제품명 불러오는 쿼리(초기값이 null일때)
     @Query("SELECT s.stockName FROM Stock s")
     List<String> getAllStockNames();
+
+    // 재고명으로 Stock 가져오기
+    Stock findStockByStockName(String stockname);
 }
 

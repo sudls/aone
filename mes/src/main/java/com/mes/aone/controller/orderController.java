@@ -7,6 +7,7 @@ import com.mes.aone.entity.SalesOrder;
 import com.mes.aone.repository.SalesOrderRepository;
 import com.mes.aone.service.MaterialService;
 import com.mes.aone.service.SalesOrderService;
+import com.mes.aone.service.StockService;
 import com.mes.aone.service.WorkOrderService;
 import com.mes.aone.util.Calculator;
 import com.mes.aone.util.MESInfo;
@@ -34,6 +35,7 @@ public class orderController {
     private final SalesOrderRepository salesOrderRepository;
     private final WorkOrderService workOrderService;
     private final MaterialService materialService;
+    private final StockService stockService;
 
 
     //기본 조회 리스트
@@ -89,9 +91,11 @@ public class orderController {
             }
             try {
                 System.out.println("수주등록: " + orderDTO);
-                MESInfo mesInfo = new MESInfo();                      // 인포에서 문제
+                MESInfo mesInfo = new MESInfo();
                 materialService.getMaterialStockQuantities();
                 materialService.setMaterialStockQuantities(mesInfo);
+                stockService.getStockQuantities();   // 여기 하는중 -------------------------------
+
                 Calculator calculator = new Calculator(mesInfo);
 
                 mesInfo.setProductName(orderDTO.getProductName()); //수주 제품명

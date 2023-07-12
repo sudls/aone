@@ -5,8 +5,10 @@ import com.mes.aone.dto.StockManageDTO;
 import com.mes.aone.entity.Stock;
 import com.mes.aone.repository.StockManageRepository;
 import com.mes.aone.repository.StockRepository;
+import org.springframework.boot.autoconfigure.gson.GsonProperties;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +61,23 @@ public class StockService {
         for (StockDTO stockDTO : stockDTOList) {
             Integer q = stockDTO.getCurrentStockQty().intValue();
             stockManageRepository.updateStock(stockDTO.getStockName(), q);
-
         }
 
         return stockDTOList;
     }
 
+    // ----------여기 하는 중
+    // 각 완제품 재고량을 조회하여 stockQuantities 리스트에 추가
+    public List<Integer> getStockQuantities(){
+        List<Integer> stockQuantities = new ArrayList<>();
+        stockQuantities.add(stockRepository.findStockByStockName("양배추즙").getStockQty());
+        stockQuantities.add(stockRepository.findStockByStockName("흑마늘즙").getStockQty());
+        stockQuantities.add(stockRepository.findStockByStockName("석류젤리스틱").getStockQty());
+        stockQuantities.add(stockRepository.findStockByStockName("매실젤리스틱").getStockQty());
+        for(Integer quantities : stockQuantities)
+            System.out.println(quantities);
+        return stockQuantities;
+    }
 
 
 
