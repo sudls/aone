@@ -5,6 +5,7 @@ import com.mes.aone.dto.StockManageDTO;
 import com.mes.aone.entity.Stock;
 import com.mes.aone.repository.StockManageRepository;
 import com.mes.aone.repository.StockRepository;
+import com.mes.aone.util.MESInfo;
 import org.springframework.boot.autoconfigure.gson.GsonProperties;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,7 @@ public class StockService {
     // ----------여기 하는 중
     // 각 완제품 재고량을 조회하여 stockQuantities 리스트에 추가
     public List<Integer> getStockQuantities(){
+        System.out.println("stockService 1111111111111111111111111");
         List<Integer> stockQuantities = new ArrayList<>();
         stockQuantities.add(stockRepository.findStockByStockName("양배추즙").getStockQty());
         stockQuantities.add(stockRepository.findStockByStockName("흑마늘즙").getStockQty());
@@ -76,9 +78,20 @@ public class StockService {
         stockQuantities.add(stockRepository.findStockByStockName("매실젤리스틱").getStockQty());
         for(Integer quantities : stockQuantities)
             System.out.println(quantities);
+        System.out.println("stockService 222222222222222222222222222");
         return stockQuantities;
     }
 
+    // 리스트에 추가된 완제품량 계산기에 세팅
+    public void setStockQuantities(MESInfo mesInfo){
+        System.out.println("stockService 33333333333333333333333333");
+        List<Integer> stockQuantities = getStockQuantities();
+        mesInfo.setCabbagePackaging(stockQuantities.get(0));
+        mesInfo.setGarlicPackaging(stockQuantities.get(1));
+        mesInfo.setPomegranatePackaging(stockQuantities.get(2));
+        mesInfo.setPlumPackaging(stockQuantities.get(3));
+        System.out.println("stockService 44444444444444444444444444");
+    }
 
-
+// ----------------------------------------------
 }

@@ -40,7 +40,7 @@ public class MESInfo {
 //     int stockPomegranate = stockMaterialQuantities.get(2);
 //     int stockPlum = stockMaterialQuantities.get(3);
 //     int stockCollagen = stockMaterialQuantities.get(4);
-//     int stockBox = stockMaterialQuantities.get(5);
+//     int stockBox = stockMaterialQuantities.get(5);ca
 //     int stockPouch = stockMaterialQuantities.get(6);
 //     int stockStickPouch = stockMaterialQuantities.get(7);
 //    }

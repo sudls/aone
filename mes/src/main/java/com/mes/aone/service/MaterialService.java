@@ -88,15 +88,16 @@ public class MaterialService {
         return materialQuantities;
     }
 
-        public void setMaterialStockQuantities(MESInfo mesInfo) {
-            List<Integer> stockMaterialQuantities = getMaterialStockQuantities();
-            mesInfo.setStockCabbage(stockMaterialQuantities.get(0));
-            mesInfo.setStockGarlic(stockMaterialQuantities.get(1));
-            mesInfo.setStockPomegranate(stockMaterialQuantities.get(2));
-            mesInfo.setStockPlum(stockMaterialQuantities.get(3));
-            mesInfo.setStockCollagen(stockMaterialQuantities.get(4));
-            mesInfo.setStockBox(stockMaterialQuantities.get(5));
-            mesInfo.setStockPouch(stockMaterialQuantities.get(6));
-            mesInfo.setStockStickPouch(stockMaterialQuantities.get(7));
+    // 리스트에 추가된 원자재량 계산기에 세팅
+    public void setMaterialStockQuantities(MESInfo mesInfo) {
+        List<Integer> stockMaterialQuantities = getMaterialStockQuantities();
+        mesInfo.setStockCabbage(stockMaterialQuantities.get(0));
+        mesInfo.setStockGarlic(stockMaterialQuantities.get(1));
+        mesInfo.setStockPomegranate(stockMaterialQuantities.get(2));
+        mesInfo.setStockPlum(stockMaterialQuantities.get(3));
+        mesInfo.setStockCollagen(stockMaterialQuantities.get(4));
+        mesInfo.setStockBox(stockMaterialQuantities.get(5));
+        mesInfo.setStockPouch(stockMaterialQuantities.get(6));
+        mesInfo.setStockStickPouch(stockMaterialQuantities.get(7));
     }
 }

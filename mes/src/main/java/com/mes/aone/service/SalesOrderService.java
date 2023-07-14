@@ -40,6 +40,7 @@ public class SalesOrderService {
     private final StockRepository stockRepository;
     private final StockManageRepository stockManageRepository;
     private final MaterialService materialService;
+    private final StockService stockService;
 
 
     // 수주 등록
@@ -70,6 +71,9 @@ public class SalesOrderService {
                 // 원자재 재고량 세팅
                 materialService.getMaterialStockQuantities();
                 materialService.setMaterialStockQuantities(mesInfo);
+                stockService.getStockQuantities();     // ---------------------
+                stockService.setStockQuantities(mesInfo);     // --------------
+
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(salesOrder.getProductName()); // 수주 제품명
                 mesInfo.setSalesQty(salesOrder.getSalesQty()); // 수주량
@@ -92,48 +96,39 @@ public class SalesOrderService {
                 mesInfo.setPastExaminationMachine(getFacilityFinishTime("inspection"));
                 mesInfo.setPastPackagingTime(getProcessFinishTime("포장"));
 
+                // ----------------------여기 바꿈 ------------------------------
                 // 예상납품일 계산기 실행
-                if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){ // 즙 공정
-                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    if (purchaseCheck.equals("enough")){ // 재고가 충분하면
-                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
-                        System.out.println("재고가 충분하면 들어옴");
-                    } else {
-                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
-                        calculator.measurement(); // 원료계량 메서드 실행
+                String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
+                if (purchaseCheck.equals("enough")){ // 완제품 재고가 충분하면
+                    mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
+
+                } else {                                             // 완제품 재고 불충분 시
+                    calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
+                    calculator.measurement(); // 원료계량 메서드 실행
+                    if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙"))  // 즙 공정일 경우 전처리
                         calculator.preProcessing(); // 전처리 메서드 실행
-                        calculator.extraction(); // 추출 메서드 실행
-                        calculator.fill();//충진 메서드 실행
-                        calculator.examination();//검사 메서드 실행
-                        calculator.cooling();//열교환 메서드 실행
-                        calculator.packaging(); // 포장 메서드 실행
-                    }
-                }else { // 젤리스틱 공정
-                    String purchaseCheck = calculator.purChaseAmount(); // 발주량 계산 메서드 실행
-                    if (purchaseCheck.equals("enough")){ //재고가 충분하면
-                        mesInfo.setEstDelivery(LocalDateTime.now()); // 당일 출고
-                    } else {
-                        calculator.materialArrived(); // 발주 원자재 도착시간 메서드 실행
-                        calculator.measurement(); // 원료계량 메서드 실행
-                        calculator.extraction(); // 추출 메서드 실행
-                        calculator.fill();//충진 메서드 실행
-                        calculator.examination();//검사 메서드 실행
-                        calculator.cooling();//열교환 메서드 실행
-                        calculator.packaging(); // 포장 메서드 실행
-                    }
+                    calculator.extraction(); // 추출 메서드 실행
+                    calculator.fill();//충진 메서드 실행
+                    calculator.examination();//검사 메서드 실행
+                    calculator.cooling();//열교환 메서드 실행
+                    calculator.packaging(); // 포장 메서드 실행
                 }
 
+                // 예상납품일 업데이트
                 salesOrder.setEstDelivery(mesInfo.getEstDelivery()); // 예상 납품일 업데이트
                 System.out.println("예상 납품일 업데이트: " + mesInfo.getEstDelivery());
 
-                createProcessPlan(mesInfo);
-                System.out.println("공정계획 들어감");
-                createPurchaseOrder(mesInfo);
-                System.out.println("발주 현황 들어감");
-                createMaterialStorage(mesInfo);
-                System.out.println("원자재 입출고 들어감");
-                createWorkResult(mesInfo, workOrder);
-                System.out.println("작업 실적 들어감");
+                if(!(purchaseCheck.equals("enough"))){
+                    createProcessPlan(mesInfo);
+                    System.out.println("공정계획 들어감");
+                    createPurchaseOrder(mesInfo);
+                    System.out.println("발주 현황 들어감");
+                    createMaterialStorage(mesInfo);
+                    System.out.println("원자재 입출고 들어감");
+                    createWorkResult(mesInfo, workOrder);
+                    System.out.println("작업 실적 들어감");
+                }
+// --------------------------------------------------------------------------------
 
 //                salesOrderRepository.save(salesOrder);
                 System.out.println("확인하라고!!!!!!!!!!!!!!!!!!!" + salesOrder);
@@ -432,8 +427,6 @@ public class SalesOrderService {
 
             purchaseOrderRepository.save(purchaseOrder);
         }
-
-
     }
 
     // 수주 등록 시 작업 지시 테이블 인설트(대기상태)  -> workOrderRepository

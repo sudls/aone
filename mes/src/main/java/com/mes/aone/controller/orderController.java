@@ -95,6 +95,7 @@ public class orderController {
                 materialService.getMaterialStockQuantities();
                 materialService.setMaterialStockQuantities(mesInfo);
                 stockService.getStockQuantities();   // 여기 하는중 -------------------------------
+                stockService.setStockQuantities(mesInfo);   // ----------------------
 
                 Calculator calculator = new Calculator(mesInfo);
 
