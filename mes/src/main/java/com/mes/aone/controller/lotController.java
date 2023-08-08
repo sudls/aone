@@ -22,16 +22,25 @@ public class lotController {
         return "pages/lotPage";
     }
 
-    @GetMapping(value="/lot/search")
-    public String productionPage( @RequestParam(required = false) String lotNum,
+    @GetMapping(value="/lot/backwardsearch")
+    public String backSearch( @RequestParam(required = false) String lotNum,
                                   Model model){
-        model.addAttribute("lotList", lotService.getLot(lotNum));
+        model.addAttribute("lotList", lotService.getBackwardLot(lotNum));
+        model.addAttribute("finalLotList", lotService.getFinalLotList());
+        return "pages/lotPage";
+    }
+
+    @GetMapping(value="/lot/forwardsearch")
+    public String forwardSearch( @RequestParam(required = false) String lotNum,
+                                  Model model){
+        model.addAttribute("lotList", lotService.getForwardLot(lotNum));
+        model.addAttribute("finalLotList", lotService.getFinalLotList());
         return "pages/lotPage";
     }
 
     @PostMapping(value = "/lot")
     @ResponseBody
     public List<Lot> lotList(@RequestParam(required = false) String lotNum) {
-        return lotService.getLot(lotNum);
+        return lotService.getBackwardLot(lotNum);
     }
 }

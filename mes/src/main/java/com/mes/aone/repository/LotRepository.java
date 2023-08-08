@@ -12,6 +12,11 @@ public interface LotRepository extends JpaRepository<Lot, Long> {
 
     // 해당 로트
     @Query("SELECT l FROM Lot l WHERE l.lotNum = :lotNum")
-    Lot getLot(@Param("lotNum") String lotNum);
+    Lot getBackwardLot(@Param("lotNum") String lotNum);
+
+    @Query("SELECT l FROM Lot l WHERE l.parentLotNum = :lotNum")
+    List<Lot> getForwardLot(@Param("lotNum") String lotNum);
+
+
 
 }

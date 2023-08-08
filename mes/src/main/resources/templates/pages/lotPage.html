@@ -12,11 +12,15 @@
 
 <div layout:fragment="content" id="contentStyle">
     <div class="innerContent">
-    <h1>LOT(제품 역추적)</h1>
+    <h1>LOT 검색</h1>
 
     <div class="titlebox">
-        <form action="/lot/search">
-            <input type="text" name="lotNum" placeholder="LOT 번호">
+        <form action="/lot/backwardsearch">
+            <input type="text" name="lotNum" placeholder="LOT 번호(Backward)">
+            <button type="submit">검색</button>
+        </form>
+        <form action="/lot/forwardsearch">
+            <input type="text" name="lotNum" placeholder="LOT 번호(Forward)">
             <button type="submit">검색</button>
         </form>
 

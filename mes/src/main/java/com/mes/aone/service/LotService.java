@@ -19,11 +19,33 @@ public class LotService {
 
     private final LotRepository lotRepository;
 
-    public List<Lot> getLot(String lotNum) {
+    public List<Lot> getBackwardLot(String lotNum) {
         List<Lot> lotList = new ArrayList<>();
-        while (lotRepository.getLot(lotNum) != null){
-            lotList.add(lotRepository.getLot(lotNum)); // 리스트에 해당 로트의 생산계획 추가
-            lotNum = lotRepository.getLot(lotNum).getParentLotNum(); // 로트를 부모로트로 바꿈
+        while (lotRepository.getBackwardLot(lotNum) != null){ // 로트가 존재하는지 확인
+            lotList.add(lotRepository.getBackwardLot(lotNum)); // 리스트에 해당 로트를 추가
+            lotNum = lotRepository.getBackwardLot(lotNum).getParentLotNum(); // lotNum을 부모로트로 초기화
+        }
+        return lotList;
+    }
+
+    public List<Lot> getForwardLot(String lotNum) {
+        List<Lot> lotList = new ArrayList<>();
+        List<Lot> beforeLotList = new ArrayList<>();
+        List<Lot> currentLotList = new ArrayList<>();
+
+        lotList.add(lotRepository.getBackwardLot(lotNum));
+        beforeLotList.add(lotRepository.getBackwardLot(lotNum));
+
+        while (true){
+            for (int i = 0; i < beforeLotList.size(); i++){
+                currentLotList.addAll(lotRepository.getForwardLot(beforeLotList.get(i).getLotNum()));
+            }
+            lotList.addAll(currentLotList); // 조회한 로트 추가
+            beforeLotList.clear(); // 이전 로트리스트 삭제
+            beforeLotList.addAll(currentLotList); // 이전 로트리스트 재설정
+            currentLotList.clear(); // 현재 로트리스트 삭제
+
+            if (beforeLotList.get(0).getProduction().getProcessPlan().getProcessStage().equals("포장")) break;
         }
         return lotList;
     }
