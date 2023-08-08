@@ -36,6 +36,8 @@ public class LotService {
         lotList.add(lotRepository.getBackwardLot(lotNum));
         beforeLotList.add(lotRepository.getBackwardLot(lotNum));
 
+        if (lotRepository.getBackwardLot(lotNum).getProduction().getProcessPlan().getProcessStage().equals("포장")) return lotList;
+
         while (true){
             for (int i = 0; i < beforeLotList.size(); i++){
                 currentLotList.addAll(lotRepository.getForwardLot(beforeLotList.get(i).getLotNum()));
