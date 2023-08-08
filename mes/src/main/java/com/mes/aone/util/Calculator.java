@@ -479,6 +479,9 @@ public class Calculator {
         System.out.println("원료계량 도착시간 메서드 실행");
         System.out.println("수주일: " + mesInfo.salesDay);
         LocalDateTime currentTime = mesInfo.lastStockInDate; // 원료계량 시작시간
+        if (currentTime.isBefore(mesInfo.pastMeasurement)){
+            currentTime = mesInfo.pastMeasurement;
+        }
 
         int workAmount = 0;
 
@@ -505,9 +508,6 @@ public class Calculator {
 
         mesInfo.setFinishMeasurement(currentTime); // 원료계량 완료시간 set
         mesInfo.setNowMeasurementOutput(workAmount); //
-
-
-
     }
 
     public void preProcessing() { // 전처리

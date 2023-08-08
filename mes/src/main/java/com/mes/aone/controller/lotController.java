@@ -1,14 +1,13 @@
 package com.mes.aone.controller;
 
 import com.mes.aone.dto.ProductionDTO;
+import com.mes.aone.entity.Lot;
 import com.mes.aone.entity.Production;
 import com.mes.aone.service.LotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +17,8 @@ public class lotController {
     private final LotService lotService;
 
     @GetMapping(value="/lot")
-    public String inventoryPage1(){
+    public String inventoryPage1(Model model){
+        model.addAttribute("finalLotList", lotService.getFinalLotList());
         return "pages/lotPage";
     }
 
@@ -27,5 +27,11 @@ public class lotController {
                                   Model model){
         model.addAttribute("lotList", lotService.getLot(lotNum));
         return "pages/lotPage";
+    }
+
+    @PostMapping(value = "/lot")
+    @ResponseBody
+    public List<Lot> lotList(@RequestParam(required = false) String lotNum) {
+        return lotService.getLot(lotNum);
     }
 }

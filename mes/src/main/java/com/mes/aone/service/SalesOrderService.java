@@ -68,7 +68,6 @@ public class SalesOrderService {
                 salesOrder.setSalesStatus(Status.B); // 상태 업데이트
                 salesOrder.setSalesDate(LocalDateTime.now()); // 수주일 업데이트
 
-
                 MESInfo mesInfo = new MESInfo();
                 Calculator calculator = new Calculator(mesInfo);
                 mesInfo.setProductName(salesOrder.getProductName()); // 수주 제품명
@@ -84,6 +83,7 @@ public class SalesOrderService {
 //                System.out.println("완제품 재고량 세팅 완료");
 
                 // 공정 계획 세팅
+                mesInfo.setPastMeasurement(getProcessFinishTime("원료계량"));
                 mesInfo.setPastPreProcessingMachine(getProcessFinishTime("전처리"));
                 mesInfo.setPastExtractionMachine1(getFacilityFinishTime("extraction_1"));
                 mesInfo.setPastExtractionMachine2(getFacilityFinishTime("extraction_2"));
@@ -180,14 +180,7 @@ public class SalesOrderService {
             // 예상납품일 업데이트
             salesOrderStateA.setEstDelivery(mesInfo.getEstDelivery());
         }
-
-
-
     }
-
-
-
-
 
     // 수주 취소
     public void cancelSalesOrderState(String[] selectedIds){
@@ -699,8 +692,10 @@ public class SalesOrderService {
         } else if (processPlan.getProcessStage().equals("전처리")){
             parentLot = mesInfo.getLotMeasurement();
         } else if (processPlan.getProcessStage().equals("추출 및 혼합")){
-            if (mesInfo.getProductName().equals("양배추즙") || mesInfo.getProductName().equals("흑마늘즙")){
+            if (mesInfo.getProductName().equals("양배추즙")){
                 parentLot = mesInfo.getLotPreProcessing().get(bk);
+            } else if (mesInfo.getProductName().equals("흑마늘즙")) {
+                parentLot = mesInfo.getLotPreProcessing().get(bk/2);
             } else {
                 parentLot = mesInfo.getLotMeasurement();
             }

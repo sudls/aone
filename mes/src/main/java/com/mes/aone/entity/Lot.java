@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Lot {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lotID;
 
     private String lotNum;    // 로트번호

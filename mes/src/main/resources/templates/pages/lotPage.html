@@ -27,9 +27,9 @@
 
     <hr>
 
-<!--    <h3>출고 / 재고 목록</h3>-->
+    <h3>LOT 추적 결과</h3>
     <div class="table-container" style="height: 400px">
-        <table>
+        <table id="lotTable">
             <thead>
             <tr>
                 <th>생산ID</th>
@@ -53,36 +53,70 @@
             </tbody>
         </table>
     </div>
-    <!--<hr>
+    <hr>
 
-    <h3>생산</h3>
-    <div class="table-container" style="height: 500px">
-        <table>
-            <thead>
-            <tr>
-                <th></th>
-                <th>공정</th>
-                <th>공정 LOT</th>
-                <th>수량</th>
-                <th>단위</th>
-                <th>LOT</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>원료계량</td>
-                <td>a-01234</td>
-                <td>1000</td>
-                <td>kg</td>
-                <td>k-756544</td>
-            </tr>
-
-            </tbody>
-        </table>
-    </div>-->
+    <h3>완제품(box) 생산목록</h3>
+        <div class="table-container" style="height: 400px">
+            <table>
+                <thead>
+                <tr>
+                    <th>생산ID</th>
+                    <th>공정단계</th>
+                    <th>제품명</th>
+                    <th>수량</th>
+                    <th>단위</th>
+                    <th>LOT</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="finalLotLists : ${finalLotList}" th:attr="data-lot-number=${finalLotLists.getProduction().getLotNumber()}" onclick="getSelectLotList(this);">
+                    <td th:text="${finalLotLists.getProduction().getProductionId()}"></td>
+                    <td th:text="${finalLotLists.getProduction().getProcessPlan().getProcessStage()}"></td>
+                    <td th:text="${finalLotLists.getProduction().getProductionName()}"></td>
+                    <td th:text="${finalLotLists.getProduction().getProductionQty()}"></td>
+                    <td th:text="box"></td>
+                    <td th:text="${finalLotLists.getProduction().getLotNumber()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 </div>
 </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
+<script type="text/javascript">
+    function getSelectLotList(element){
+        var lotNum = element.getAttribute('data-lot-number');
+        console.log(lotNum);
+        $.ajax({
+            url: "/lot",
+            method: 'POST',
+            data: { lotNum: lotNum },
+            success: function(lotList) {
+                console.log(lotList);
+                setLotList(lotList);
+            },
+            error: function(error) {
+                console.log('Error fetching lots:', error);
+            }
+        });
+    }
+
+    function setLotList(lotList){
+        var tableBody = $('#lotTable > tbody');
+        tableBody.empty();
+
+        lotList.forEach(function(lot) {
+            var row = $('<tr>');
+            row.append($('<td>').text(lot.production.productionId));
+            row.append($('<td>').text(lot.production.processPlan.processStage));
+            row.append($('<td>').text(lot.production.productionName));
+            row.append($('<td>').text(lot.production.productionQty));
+            row.append($('<td>').text("box"));
+            row.append($('<td>').text(lot.lotNum));
+            tableBody.append(row);
+        });
+    }
+</script>
 </html>

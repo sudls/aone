@@ -78,7 +78,7 @@ public class MESInfo {
    int leadPackaging = 20; // 포장 리드타임
 
    // 공정 완료 시간
-//   LocalDateTime measurement = null; // 원료계량 완료시간
+   LocalDateTime measurement = null; // 원료계량 완료시간
    LocalDateTime preProcessing = null; // 전처리 완료시간
    LocalDateTime extraction = null; // 추출 완료시간
    LocalDateTime mixing = null; // 혼합 완료시간
@@ -89,6 +89,7 @@ public class MESInfo {
 
 
    // 설비/공정별 마지막 공정시간
+   LocalDateTime pastMeasurement = LocalDateTime.of(1,3,19,6,0,0);
    LocalDateTime pastPreProcessingMachine = LocalDateTime.of(1,3,19,6,0,0);
    LocalDateTime pastExtractionMachine1 = LocalDateTime.of(1,3,23,6,0,0);
    LocalDateTime pastExtractionMachine2 = LocalDateTime.of(1,3,23,7,0,0);
