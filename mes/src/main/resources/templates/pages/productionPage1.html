@@ -86,7 +86,8 @@
                     <!--                <td th:text="${workOrder.processStage}"></td>-->
 
                     <td>
-                        <span th:text="${workOrder.workStatus.name()=='A'} ? '대기' : '진행'"></span>
+                        <span th:if="${workOrder.workStatus.name()=='A'}" style="color: #04ba71">대기</span>
+                        <span th:if="${workOrder.workStatus.name()== 'B'}" style="color: #3196e2">진행</span>
                     </td>
                 </tr>
 

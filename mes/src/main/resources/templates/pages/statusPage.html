@@ -12,21 +12,30 @@
     <script th:src="@{/js/statusPage2.js}" defer></script>
     <script th:src="@{/js/statusPage1.js}" defer></script>
 
-
+    <script th:src="@{/js/statusPageDate.js}" defer></script>
 
 
 </head>
 <body>
 <div th:replace="fragments/nav::nav"></div>
 <div layout:fragment="content" id="contentStyle">
-    <div class="innerContent">
-        <h1 style="display: inline-block; margin-bottom: 0px;">수주 진척도 조회</h1>
-        <p style="text-align: right; margin-bottom: 10px">
-            <i class="fa-solid fa-check" style="color:var(--navy)"></i>　완료　　
-<!--            <i><span style="font-size:30px; font-weight: 500; color:var(&#45;&#45;grey)">-</span> </i>　미해당　　-->
-            <i class="fas fa-spinner" style="color:var(--green)"></i>　진행중　
-        </p>
 
+        <h1 style="margin-bottom: 20px;">수주 진척도 조회</h1>
+
+    <div class="innerContent" >
+        <div class="titlebox" style="margin-bottom: 10px">
+            <div class="dateTimeBox" style="display: inline-block">
+                <button class="bg-green" id="preWeek"><i class="fa-solid fa-caret-left" style="color:white;"></i></button>
+                <input type="date" id="staSDate" name="staSDate" style="text-align: center" readonly >　~　
+                <input type="date" id="staEDate" name="staEDate" style="text-align: center" readonly>
+                <button class="bg-green" id="nextWeek"><i class="fa-solid fa-caret-right" style="color:white"></i></button>
+            </div>
+
+            <p style="text-align: right; display: inline-block;">
+                <i class="fa-solid fa-check" style="color:var(--navy)"></i>　완료　　
+                <i class="fas fa-spinner" style="color:var(--green)"></i>　진행중　
+            </p>
+        </div>
 
     <div class="table-container" style="height: 300px;">
     <table>
@@ -54,8 +63,8 @@
         </thead>
         <tbody>
 
-
         <tr class="processPlanList" th:each="pp, status : ${processPlanList}">
+
             <td class="orderId" th:text="${pp.workOrder.salesOrder.salesOrderId}"></td>
             <td class="orderPN" th:text="${pp.workOrder.salesOrder.productName}"></td>
             <td class="stage1">

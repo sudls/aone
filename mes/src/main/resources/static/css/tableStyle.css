@@ -24,13 +24,13 @@ th, td {
 table thead{
     position: sticky;
     top: 0;
+    z-index: 99;
 }
 
 table thead th {
     height: 40px;
     background-color: #f2f2f2;
     vertical-align: middle;
-
 }
 
 
